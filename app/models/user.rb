@@ -14,7 +14,7 @@ class User < ApplicationRecord
 	validates :first_name,:last_name, length: {minimum:3,maximum:20}
 	
 	#first name and lastname must start with capital letter and match this regular expression
-	validates :first_name, :last_name, format:{ with: /\A[A-Z][a-z0-9]\z/}
+	validates :first_name, :last_name, format:{ with: /\A[A-Z]+[a-z0-9]*\z/}
 	
 	#email must be unique and case insensitive
 	validates :email, uniqueness: { case_sensitive: false }
@@ -32,6 +32,12 @@ class User < ApplicationRecord
 	
 	#address have at least 10 character and maximum 100 character
 	validates :address, length: {minimum:10, maximum:100}
+	
+	enum role: {
+		learner: 0,
+		instructor: 1,
+		admin: 2
+	}
 	
 	#this function name return the full_name of a person
 	def name

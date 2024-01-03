@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_02_081043) do
   create_table "contents", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.string "type", default: "text"
+    t.string "content_type", default: "text"
     t.bigint "lesson_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -44,7 +44,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_02_081043) do
   create_table "lessons", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "score"
+    t.integer "score", default: 0
     t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

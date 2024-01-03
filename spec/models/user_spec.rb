@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) {FactoryBot.create(:user) }
   
+  
+  let(:user) {FactoryBot.create(:user) }
   
   describe "Model : " do
     describe "check to be a valid " do
@@ -13,36 +14,41 @@ RSpec.describe User, type: :model do
         expect(user).to be_instance_of(User)
       end
     end
-    describe "check presence of user field" do
-      it "check the presence of first_name" do
+    describe "check the presence of " do
+      it "first_name" do
         expect(user.first_name).to be_present
         expect(user.first_name.length).to be_between(3,20)
       end
-      it "check the presence of last_name" do
+      it "last_name" do
         expect(user.last_name).to be_present
         expect(user.last_name.length).to be_between(3,20)
       end
-      it "check the presence of email" do
+      it "email" do
         expect(user.email).to be_present
         expect(user.email).to match(URI::MailTo::EMAIL_REGEXP )
       end
-      it "check the presence of phone" do
+      it "unique email" do
+        expect(user.errors[:email].size).to be 0
+      end
+      it "phone" do
         expect(user.phone).to be_present
         expect(user.phone).to match(/\A(\+?88)*01[3-9]\d{8}\z/)
       end
       
-      it "check the valid presence of address" do
+      it "address" do
         expect(user.address).to be_present
         expect(user.address.length).to be_between(10,100)
       end
       
-      it "allows setting valid roles" do
+      it "valid roles" do
         expect(User.roles.keys).to include("learner", "instructor", "admin")
       end
+      
+    
     
     end
     
-    describe "associations" do
+    describe "User Model " do
     
       it "have many enrollment" do
         expect(User._reflect_on_association(:enrollments).macro).to eq(:has_many)

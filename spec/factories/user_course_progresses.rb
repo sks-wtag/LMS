@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :user_course_progress do
-    complete_status {false}
-    complete_time{ DateTime.now}
-    user_id{ create(:user).id }
-    enrollment_id {create(:enrollment).id}
+    complete_status { false }
+    complete_time { DateTime.now }
+    user_id { create(:user).id }
+    enrollment_id { create(:enrollment).id }
     lesson_id { create(:lesson).id }
   end
 end

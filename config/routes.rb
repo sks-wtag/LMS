@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   resources :confirmations, only: %i[create edit new], param: :confirmation_token
-
+  resources :passwords, only: %i[create edit new update], param: :password_reset_token
   # Defines the root path route ("/")
   # root "posts#index"
 end

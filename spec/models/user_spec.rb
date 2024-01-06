@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -14,15 +16,15 @@ RSpec.describe User, type: :model do
     describe 'check the presence of ' do
       it 'first_name' do
         expect(user.first_name).to be_present
-        expect(user.first_name.length).to be_between(2,20)
+        expect(user.first_name.length).to be_between(2, 20)
       end
       it 'last_name' do
         expect(user.last_name).to be_present
-        expect(user.last_name.length).to be_between(2,20)
+        expect(user.last_name.length).to be_between(2, 20)
       end
       it 'email' do
         expect(user.email).to be_present
-        expect(user.email).to match(URI::MailTo::EMAIL_REGEXP )
+        expect(user.email).to match(URI::MailTo::EMAIL_REGEXP)
       end
       it 'unique email' do
         expect(user.errors[:email].size).to be 0
@@ -32,7 +34,7 @@ RSpec.describe User, type: :model do
       end
       it 'address' do
         expect(user.address).to be_present
-        expect(user.address.length).to be_between(10,100)
+        expect(user.address.length).to be_between(10, 100)
       end
       it 'valid roles' do
         expect(User.roles.keys).to include('learner', 'instructor', 'admin')

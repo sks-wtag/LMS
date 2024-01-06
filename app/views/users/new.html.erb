@@ -1,0 +1,50 @@
+<div style="width: 350px; margin: 0 auto;">
+  <div class="card mt-5">
+    <div class="card-header">
+      <h5>Registration </h5>
+    </div>
+    <div class="card-body">
+      <%= form_with(model: @user, url: sign_up_path) do |form| %>
+        <%= render partial: "shared/form_errors", locals: { object: form.object } %>
+        <div>
+          <%= form.label :first_name %> </br>
+          <%= form.text_field :first_name, required: true %>
+        </div>
+        <div>
+          <%= form.label :last_name %> </br>
+          <%= form.text_field :last_name, required: true %>
+        </div>
+        <div>
+          <%= form.label :email %> </br>
+          <%= form.email_field :email, required: true %>
+        </div>
+        <div>
+          <%= form.label :phone %> </br>
+          <%= form.phone_field :phone, required: true %>
+        </div>
+        <div>
+          <%= form.label :address %> </br>
+          <%= form.text_area :address, required: true %>
+        </div>
+        <div>
+            <%= form.label :password %></br>
+          <%= form.password_field :password, required: true %>
+        </div>
+        <div>
+            <%= form.label :password_confirmation %></br>
+          <%= form.password_field :password_confirmation, required: true %>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <%= form.submit "Sign Up" %>
+          </div>
+          <div class="col-6">
+            <%= link_to "Login here", login_path %>
+          </div>
+        </div>
+
+    <% end %>
+    </div>
+  </div>
+</div>

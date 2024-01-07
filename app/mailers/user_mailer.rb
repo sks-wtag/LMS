@@ -3,8 +3,6 @@ class UserMailer < ApplicationMailer
   # with the following lookup:
   #
   #   en.user_mailer.confirmation.subject
-
-  default from: User::MAILER_FROM_EMAIL
   def confirmation(user, confirmation_token)
     @user = user
     @confirmation_token = confirmation_token

@@ -8,6 +8,14 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   get 'login', to: 'sessions#new'
+  
+  get 'user/change_password', to: 'users#edit_password'
+  put 'user/change_password', to: 'users#change_password'
+  get 'user/update', to: 'users#edit'
+  put 'user/update', to: 'users#update'
+  delete 'user/delete', to: 'users#destroy'
+  
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -15,6 +23,7 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   resources :confirmations, only: %i[create edit new], param: :confirmation_token
+  resources :passwords, only: %i[create edit new update], param: :password_reset_token
   resources :passwords, only: %i[create edit new update], param: :password_reset_token
   # Defines the root path route ("/")
   # root "posts#index"

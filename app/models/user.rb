@@ -2,8 +2,8 @@
 
 class User < ApplicationRecord
   has_secure_password
-  CONFIRMATION_TOKEN_EXPIRATION = ENV['CONFIRMATION_TOKEN_EXPIRATION']
-  PASSWORD_RESET_TOKEN_EXPIRATION = ENV['PASSWORD_RESET_TOKEN_EXPIRATION']
+  CONFIRMATION_TOKEN_EXPIRATION = 10.minutes # ENV['CONFIRMATION_TOKEN_EXPIRATION']
+  PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes # ENV['PASSWORD_RESET_TOKEN_EXPIRATION']
   before_save :downcase_email
   has_many :enrollments
   has_many :courses, through: :enrollments

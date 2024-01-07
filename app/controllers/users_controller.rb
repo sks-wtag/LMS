@@ -25,8 +25,8 @@ class UsersController < ApplicationController
 
   def change_password
     @user = current_user
-    if @user.authenticate(params[:user][:current_password])
-      if @user.update(password: params[:password], password_confirmation: params[:password_confirmation])
+    if @user.authenticate(params[:user][:current_password][0])
+      if @user.update(password: params[:user][:password][0], password_confirmation: params[:user][:password_confirmation][0])
         redirect_to root_path, notice: 'Account updated'
       else
         redirect_to :edit_password, status: :unprocessable_entity

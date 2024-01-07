@@ -10,12 +10,10 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
   
   get 'user/change_password', to: 'users#edit_password'
-  put 'user/change_password', to: 'users#change_password'
+  post 'user/change_password', to: 'users#change_password'
   get 'user/update', to: 'users#edit'
-  put 'user/update', to: 'users#update'
+  post 'user/update', to: 'users#update'
   delete 'user/delete', to: 'users#destroy'
-  
-  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

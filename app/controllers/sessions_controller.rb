@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
 
     else
       flash[:alert] = 'Incorrect credentials'
+      render :new, status: :unprocessable_entity
     end
   end
 

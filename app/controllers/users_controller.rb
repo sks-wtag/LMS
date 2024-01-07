@@ -42,11 +42,11 @@ class UsersController < ApplicationController
     # assign current object property
     # because we did not available all of user model data into view
     # this reason i made a user_view_model and assign specific property and send to view
-    @user.first_name ||= params[:user_view_model][:first_name] if params[:user_view_model][:first_name].present?
-    @user.last_name ||= params[:user_view_model][:last_name] if params[:user_view_model][:last_name].present?
-    @user.phone ||= params[:user_view_model][:phone] if params[:user_view_model][:phone].present?
-    @user.address ||= params[:user_view_model][:address] if params[:user_view_model][:address].present?
-    # trying to save changes data into database
+    @user.first_name ||= params[:user][:first_name] if params[:user][:first_name].present?
+    @user.last_name ||= params[:user][:last_name] if params[:user][:last_name].present?
+    @user.phone ||= params[:user][:phone] if params[:user][:phone].present?
+    @user.address ||= params[:user][:address] if params[:user][:address].present?
+    # trying to save changes data in database
     if @user.save
       redirect_to root_path, notice: 'Account updated'
     else

@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   post 'sign_up', to: 'users#create'
   get 'sign_up', to: 'users#new'
-  
+
   post 'login', to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy'
+  get 'logout', to: 'sessions#destroy'
   get 'login', to: 'sessions#new'
-  
+
   get 'user/change_password', to: 'users#edit_password'
   post 'user/change_password', to: 'users#change_password'
   get 'user/update', to: 'users#edit'
@@ -21,7 +21,6 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   resources :confirmations, only: %i[create edit new], param: :confirmation_token
-  resources :passwords, only: %i[create edit new update], param: :password_reset_token
   resources :passwords, only: %i[create edit new update], param: :password_reset_token
   # Defines the root path route ("/")
   # root "posts#index"

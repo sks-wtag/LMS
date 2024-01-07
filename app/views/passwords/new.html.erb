@@ -1,5 +1,16 @@
 
-<%= form_with url: passwords_path, scope: :user do |form| %>
-  <%= form.email_field :email, required: true %>
-  <%= form.submit "Reset Password" %>
-<% end %>
+
+<div style="width: 350px; margin: 0 auto;">
+  <div class="card mt-5">
+    <div class="card-header">
+      <h5>Forgot Password </h5>
+    </div>
+    <div class="card-body">
+      <%= form_with url: passwords_path, scope: :user do |form| %>
+        <%= form.email_field :email,placeholder: "Enter your valid email", required: true %>
+        <%= form.submit "Send" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+

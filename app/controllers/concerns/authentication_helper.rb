@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module AuthenticationHelper
   def login(user)
     reset_session

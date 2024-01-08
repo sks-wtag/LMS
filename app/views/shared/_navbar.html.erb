@@ -8,6 +8,12 @@
       <ul class="navbar-nav me-auto">
         <% if user_signed_in?  %>
           <li class="nav-link">
+            <%= link_to 'Update Profile', user_update_path %>
+          </li>
+          <li class="nav-link">
+            <%= link_to 'Change Password', user_change_password_path %>
+          </li>
+          <li class="nav-link">
             <%= link_to 'Logout', logout_url %>
           </li>
           <%else %>

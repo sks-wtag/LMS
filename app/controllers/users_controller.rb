@@ -25,8 +25,8 @@ class UsersController < ApplicationController
 
   def change_password
     @user = current_user
-    if @user.authenticate(params[:user][:current_password][0])
-      if @user.update(password: params[:user][:password][0], password_confirmation: params[:user][:password_confirmation][0])
+    if @user.authenticate(params[:user][:current_password])
+      if @user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
         redirect_to root_path, notice: 'Account updated'
       else
         redirect_to :edit_password, status: :unprocessable_entity
@@ -42,16 +42,16 @@ class UsersController < ApplicationController
     # assign current object property
     # because we did not available all of user model data into view
     # this reason i made a user_view_model and assign specific property and send to view
-    @user.first_name ||= params[:user][:first_name] if params[:user][:first_name].present?
-    @user.last_name ||= params[:user][:last_name] if params[:user][:last_name].present?
-    @user.phone ||= params[:user][:phone] if params[:user][:phone].present?
-    @user.address ||= params[:user][:address] if params[:user][:address].present?
-    # trying to save changes data in database
-    if @user.save
+    @errors = []
+    @errors.push('first_name can not be empty') unless user_params[:first_name].present?
+    @errors.push('last_name can not be empty') unless user_params[:last_name].present?
+    @errors.push('phone can not be empty') unless user_params[:phone].present?
+    @errors.push('address can not be empty') unless user_params[:address].present?
+    if @user.update(update_params)
       redirect_to root_path, notice: 'Account updated'
     else
       flash[:error] = 'Please try again'
-      redirect_to :edit, status: :unprocessable_entity
+      render 'edit', status: :unprocessable_entity
     end
   end
 
@@ -79,5 +79,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation)
+  end
+
+  def update_params
+    params.require(:user).permit(:first_name, :last_name, :phone, :address)
   end
 end

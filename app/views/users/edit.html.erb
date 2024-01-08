@@ -1,0 +1,49 @@
+
+<div style="width: 350px; margin: 0 auto;">
+  <div class="card mt-5">
+    <div class="card-header">
+      <h5>Change password </h5>
+    </div>
+    <div class="card-body">
+      <%= form_with( url:'update',method: 'post' ) do |form| %>
+        <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
+       <% if @errors.present? %>
+          <% @errors.each do |message| %>
+            <div style="color: red"><%= message %></div>
+          <% end %>
+        <% end %>
+        <div>
+          <label for="user_first_name">First Name</label><br>
+          <%= text_field_tag 'user[first_name]', @user.first_name %>
+        </div>
+        <div>
+          <label for="user_last_name">Last Name</label><br>
+          <%= text_field_tag 'user[last_name]', @user.last_name %>
+        </div>
+        <div>
+          <div>
+            <label for="user_email">Email</label><br>
+            <%= text_field_tag 'user[email]', @user.email, disabled: true %>
+          </div>
+          <div>
+            <label for="user_phone">Phone</label><br>
+            <%= phone_field_tag 'user[phone]', @user.phone %>
+          </div>
+          <div>
+            <label for="user_address">Address</label><br>
+            <%= text_area_tag 'user[address]', @user.address %>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <%= form.submit "Update" %>
+            </div>
+
+          </div>
+
+      <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>

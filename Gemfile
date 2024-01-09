@@ -39,6 +39,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'phony_rails'
+  gem 'rails-controller-testing'
   gem 'rubocop', '~> 1.59', require: false
   gem 'rspec-rails', '~> 6.1.0'
 end

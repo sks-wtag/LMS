@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
         redirect_to root_path, notice: 'Successfully log in'
       else
         flash[:alert] = 'Incorrect credentials'
-        render :new, status: :unprocessable_entity
+        render 'sessions/new', status: :unprocessable_entity
       end
 
     else

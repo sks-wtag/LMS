@@ -49,7 +49,6 @@ class User < ApplicationRecord
   def unconfirmed?
     !confirmed?
   end
-  
   def send_confirmation_email!
     confirmation_token = generate_confirmation_token
     UserMailer.confirmation(self, confirmation_token).deliver_now

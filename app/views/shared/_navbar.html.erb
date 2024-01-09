@@ -14,7 +14,7 @@
             <%= link_to 'Change Password', user_change_password_path %>
           </li>
           <li class="nav-link">
-            <%= link_to 'Logout', logout_url %>
+            <%= link_to 'Logout', '/logout', method: :delete %>
           </li>
           <%else %>
           <li class="nav-link">

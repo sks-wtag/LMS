@@ -1,27 +1,28 @@
 require 'rails_helper'
 RSpec.describe "Sessions", type: :request do
-  include AuthenticationHelper
-  let(:user1) { FactoryBot.create(:user) }
+  let!(:user1) { FactoryBot.create(:user) }
   before(:each) do
-  
+    allow_any_instance_of(AuthenticationHelper).to receive(:current_user).and_return(user1)
+    allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(user1.present?)
+    allow_any_instance_of(AuthenticationHelper).to receive(:current_user_id).and_return(user1.id)
   end
   describe 'POST /login' do
-    let!(:user) { { user: { email: 'shorojit.kumar@welldev.io', password: 'Pass321' } } }
+    let!(:user) { { user: { email: user1.email, password: 'Pass321' } } }
     it 'redirect to home if success' do
       post '/login', params: user
       expect(response).to redirect_to('/')
     end
     it 'renders new template if credentials are wrong' do
-      post '/login', params: { user: { email: 'shorojit.kumar@welldev.io', password: 'Pass341' } }
+      post '/login', params: { user: { email: user1.present?, password: 'Pass341' } }
       expect(response).to have_http_status(:unprocessable_entity)
-      post '/login', params: { user: { email: 'shorojit.kum1ar@welldev.io', password: 'Pass341' } }
+      post '/login', params: { user: { email: user1.present?, password: 'Pass341' } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
-    # it 'should logged In user' do
-    #   post '/sign_in', params: user
-    #   expect(session[:current_user_id]).to eq(current_user.id)
-    #   expect(response).to have_http_status(:see_other)
-    # end
+    it 'should logged In user' do
+      post '/login', params: user
+      expect(session[:current_user_id]).to eq(current_user.id)
+      expect(response).to redirect_to('/')
+    end
   end
   describe 'DELETE /Logout' do
     it 'should logout' do

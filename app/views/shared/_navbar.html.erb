@@ -13,9 +13,9 @@
           <li class="nav-link">
             <%= link_to 'Change Password', user_change_password_path %>
           </li>
-          <li class="nav-link">
-            <%= link_to 'Logout', '/logout', method: :delete %>
-          </li>
+          <%= form_with url: logout_path, method: :delete do |form| %>
+            <%= form.button "Logout", class: 'nav-link'%>
+          <% end %>
           <%else %>
           <li class="nav-link">
             <%= link_to 'Login', login_path %>

@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :redirect_if_authenticated, only: %i[create new]
   # if a user is authenticated then he/she can access edit destroy or update
   # action otherwise it will redirect to the login path
-  before_action :authenticate_user!, only: %i[edit destroy update]
+  before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
   def new
     @user = User.new
   end
@@ -29,11 +29,11 @@ class UsersController < ApplicationController
       if @user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
         redirect_to root_path, notice: 'Account updated'
       else
-        redirect_to :edit_password, status: :unprocessable_entity
+        redirect_to edit_password, status: :unprocessable_entity
       end
     else
       flash[:error] = 'Incorrect password'
-      redirect_to :edit_password, status: :unprocessable_entity
+      redirect_to edit_password, status: :unprocessable_entity
     end
   end
 
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
       @user.send_confirmation_email!
       redirect_to root_path, notice: 'Please check your email confirmation instructions'
     else
-      render :new, status: :unauthorized
+      render :new, status: :unprocessable_entity
     end
   end
 

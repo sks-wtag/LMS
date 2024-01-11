@@ -53,7 +53,7 @@ RSpec.describe 'Users', type: :request do
   
   describe 'GET /user/change_password' do
     before do
-      allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(true)
+      allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(user.present?)
       allow_any_instance_of(AuthenticationHelper).to receive(:current_user).and_return(user)
     end
     it 'it return edit_password template' do
@@ -68,7 +68,7 @@ RSpec.describe 'Users', type: :request do
   end
   describe 'Post /user/change_password' do
     before do
-      allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(true)
+      allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(user.present?)
       allow_any_instance_of(AuthenticationHelper).to receive(:current_user).and_return(user)
     end
     it 'when valid request is created' do

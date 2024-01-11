@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    first_name { "A#{Faker::Name.first_name }" }
+    first_name { "A#{Faker::Name.first_name}" }
     last_name { "A#{Faker::Name.last_name }"}
     email { Faker::Internet.email.downcase }
     phone { "017#{Faker::PhoneNumber.subscriber_number(length: 8)}" }

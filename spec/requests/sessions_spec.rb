@@ -1,27 +1,24 @@
 require 'rails_helper'
 RSpec.describe "Sessions", type: :request do
-  let!(:user1) { FactoryBot.create(:user) }
-  before(:each) do
-    allow_any_instance_of(AuthenticationHelper).to receive(:current_user).and_return(user1)
-    allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(user1.present?)
-    allow_any_instance_of(AuthenticationHelper).to receive(:current_user_id).and_return(user1.id)
+  let!(:user) { FactoryBot.create(:user) }
+  describe  'GET /login' do
+    it 'return new login page' do
+      get '/login'
+      expect(response).to render_template :new
+    end
   end
+  
   describe 'POST /login' do
-    let!(:user) { { user: { email: user1.email, password: 'Pass321' } } }
     it 'redirect to home if success' do
-      post '/login', params: user
+      post '/login', params: { user: { email: user.email, password: 'Pass321' } }
       expect(response).to redirect_to('/')
+      expect(session[:current_user_id]).to eq(user.id)
     end
     it 'renders new template if credentials are wrong' do
-      post '/login', params: { user: { email: user1.present?, password: 'Pass341' } }
+      post '/login', params: { user: { email: user.email, password: 'Pass341' } }
       expect(response).to have_http_status(:unprocessable_entity)
-      post '/login', params: { user: { email: user1.present?, password: 'Pass341' } }
+      post '/login', params: { user: { email: 'random@gmail.com', password: 'Pass341' } }
       expect(response).to have_http_status(:unprocessable_entity)
-    end
-    it 'should logged In user' do
-      post '/login', params: user
-      expect(session[:current_user_id]).to eq(current_user.id)
-      expect(response).to redirect_to('/')
     end
   end
   describe 'DELETE /Logout' do
@@ -29,7 +26,6 @@ RSpec.describe "Sessions", type: :request do
       delete '/logout'
       expect(response).to redirect_to(root_path)
       expect(response).to have_http_status(:found)
-      expect(session[:user_id]).to eq(nil)
       expect(flash[:notice]).to eq('Signed out')
     end
   end

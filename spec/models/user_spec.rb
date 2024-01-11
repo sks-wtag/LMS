@@ -6,15 +6,15 @@ RSpec.describe User, type: :model do
   let(:user) { FactoryBot.create(:user) }
   let(:invalid_user) { FactoryBot.create(:user) }
   describe 'Model : ' do
-    describe 'check to be a valid ' do
-      it 'factory ' do
+    describe 'check to be a valid' do
+      it 'factory' do
         expect(user).to be_valid
       end
       it 'instance of user class' do
         expect(user).to be_instance_of(User)
       end
     end
-    describe 'check the presence of ' do
+    describe 'check the presence of' do
       it 'match with regular expression of first_name' do
         expect(user.first_name).to match(/\A[A-Z]+[a-z]*\z/)
       end
@@ -74,7 +74,7 @@ RSpec.describe User, type: :model do
         expect(User.roles.keys).to include('learner', 'instructor', 'admin')
       end
     end
-    describe 'User Model ' do
+    describe 'User Model' do
       it 'have many enrollment' do
         expect(User._reflect_on_association(:enrollments).macro).to eq(:has_many)
       end

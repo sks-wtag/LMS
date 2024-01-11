@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Lesson, type: :model do
   let(:lesson) { FactoryBot.create(:lesson) }
   let(:invalid_lesson) { FactoryBot.create(:lesson) }
-  describe 'When adding a lesson ' do
+  describe 'When adding a lesson' do
     it 'has valid factory' do
       expect(lesson).to be_valid
     end

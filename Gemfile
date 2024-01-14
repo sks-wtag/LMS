@@ -39,11 +39,11 @@ group :development, :test do
   gem 'debug', platforms: %i[ mri windows ]
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'phony_rails'
   gem 'letter_opener'
+  gem 'phony_rails'
   gem 'rails-controller-testing'
-  gem 'rubocop', '~> 1.59', require: false
   gem 'rspec-rails', '~> 6.1.0'
+  gem 'rubocop', '~> 1.59', require: false
 end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]

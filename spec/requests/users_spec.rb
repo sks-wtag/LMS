@@ -77,4 +77,40 @@ RSpec.describe 'Users', type: :request do
       expect(flash[:notice]).to eq('Account updated')
     end
   end
+  
+  describe 'Delete /user/delete' do
+    it 'when it requested it will delete a current user' do
+      login
+      delete user_delete_path
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq('This user account has been deleted')
+    end
+  end
+  describe 'GET /user/update' do
+    it 'when it requested it will return a edit form' do
+      login
+      get user_update_path
+      expect(response).to render_template :edit
+    end
+  end
+  
+  describe 'Post /user/update' do
+    it 'when it requested with valid params it will redirect to root path' do
+      login
+      post user_update_path, params: {  user: { first_name: 'Shuvo', last_name: 'Khan', phone: '01712198113', address: 'Whole universe is my address' } }
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq('Account updated')
+    end
+    it 'when it requested with invalid params it will redirect to root path' do
+      login
+      post user_update_path, params: {  user: { first_name: '', last_name: 'Khan', phone: '01712198113', address: 'Whole universe is my address' } }
+      expect(response).to render_template :edit
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+  
+  def login
+    post login_path, params: { user: { email: user.email, password: user.password } }
+  end
+  
 end

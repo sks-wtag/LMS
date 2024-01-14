@@ -9,7 +9,6 @@ RSpec.describe 'Confirmations', type: :request do
       expect(response).to render_template :new
     end
   end
-  
   describe 'GET /confirmations' do
     it 'when it requested with valid email and if user is unconfirmed then it send mail and redirect to root path' do
       allow_any_instance_of(User).to receive(:unconfirmed?).and_return(true)

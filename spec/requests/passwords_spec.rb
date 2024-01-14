@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe "Passwords", type: :request do
+RSpec.describe 'Passwords', type: :request do
   let!(:user) { FactoryBot.create(:user) }
-  describe "GET /new_password_path" do
+  describe 'GET /new_password_path' do
     it 'render template' do
       logout
       get new_password_path
@@ -41,6 +42,10 @@ RSpec.describe "Passwords", type: :request do
       post passwords_path, params: { user: { email: 'random@gmail.com' } }
       expect(flash[:alert]).to eq('Please provide correct email')
     end
+  end
+  
+  describe 'GET /passwords/password_reset_token' do
+    it 'when it requested'
   end
   
   # def login(user)

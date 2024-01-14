@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ConfirmationsController < ApplicationController
+  before_action :redirect_if_authenticated
   def create
     @user = User.find_by(email: params[:user][:email].downcase)
 

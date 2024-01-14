@@ -75,13 +75,12 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
   #this is for without mailer options
-  # config.action_mailer.delivery_method = :letter_opener
-  # config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: ENV['HOST'], port: ENV['HOST_PORT'] }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.default_url_options = { host: ENV['HOST'], port: ENV['HOST_PORT'] }
   config.action_mailer.raise_delivery_errors = true
-
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     domain: 'mail.google.com',

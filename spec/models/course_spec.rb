@@ -4,25 +4,25 @@ require 'rails_helper'
 
 RSpec.describe Course, type: :model do
   let!(:course) { FactoryBot.create(:course) }
-
   describe 'When adding a course' do
-    it 'has valid factory' do
+    it 'it has valid factory' do
       expect(course).to be_valid
     end
-    it 'has title' do
+    it 'check the valid presence of course title' do
       expect(course.title).to be_present
     end
-    it 'has minimum 5 character' do
-      expect(course.title.size).to be >= 5
+    it 'check the invalid presence of course title' do
+      course.title = '    '
+      course.valid?
+      expect(course.errors[:title]).to eq(["can't be blank"])
     end
-    it 'has maximum 30 character' do
-      expect(course.title.size).to be <= 30
-    end
-    it 'has descriptions' do
+    it 'check the valid presence of course description' do
       expect(course.description).to be_present
     end
-    it 'has minimum 10 character' do
-      expect(course.description.size).to be >= 10
+    it 'check the invalid presence of course description' do
+      course.description = '    '
+      course.valid?
+      expect(course.errors[:description]).to eq(["can't be blank"])
     end
   end
   describe 'Course' do

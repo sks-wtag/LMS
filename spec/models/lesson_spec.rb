@@ -30,18 +30,18 @@ RSpec.describe Lesson, type: :model do
     end
     it 'check the remove_trailling_and_leading_space_from_title methods' do
       lesson.title = '           lorm '
-      allow_any_instance_of(Lesson).to receive(:remove_trailling_and_leading_space_from_title) do |lesson|
+      allow_any_instance_of(Lesson).to receive(:remove_trailling_and_leading_space) do |lesson|
         lesson.title = lesson.title.strip if lesson.title.present?
       end
-      lesson.remove_trailling_and_leading_space_from_title
+      lesson.remove_trailling_and_leading_space
       expect(lesson.title).to eq('lorm')
     end
     it 'check the remove_trailling_and_leading_space_from_description methods' do
       lesson.description = 'lorm                           '
-      allow_any_instance_of(Lesson).to receive(:remove_trailling_and_leading_space_from_description) do |lesson|
+      allow_any_instance_of(Lesson).to receive(:remove_trailling_and_leading_space) do |lesson|
         lesson.description = lesson.description.strip if lesson.description.present?
       end
-      lesson.remove_trailling_and_leading_space_from_description
+      lesson.remove_trailling_and_leading_space
       expect(lesson.description).to eq('lorm')
     end
   end

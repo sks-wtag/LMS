@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  before_validation :remove_trailling_and_leading_space
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :user_course_progresses
@@ -18,5 +19,14 @@ class User < ApplicationRecord
   }
   def name
     "#{first_name} #{last_name}"
+  end
+
+  private
+  def remove_trailling_and_leading_space
+    self.first_name = first_name.strip if first_name.present?
+    self.last_name = last_name.strip if last_name.present?
+    self.email = email.strip if email.present?
+    self.phone = phone.strip if phone.present?
+    self.address = address.strip if address.present?
   end
 end

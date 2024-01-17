@@ -67,6 +67,46 @@ RSpec.describe User, type: :model do
       it 'check the full_name of a user' do
         expect(user.name).to eq("#{user.first_name} #{user.last_name}")
       end
+      it 'check the remove_trailling_and_leading_space_from_first_name' do
+        user.first_name = '           lorm '
+        allow_any_instance_of(User).to receive(:remove_trailling_and_leading_space) do |user|
+          user.first_name = user.first_name.strip if user.first_name.present?
+        end
+        user.remove_trailling_and_leading_space
+        expect(user.first_name).to eq('lorm')
+      end
+      it 'check the remove_trailling_and_leading_space_from_last_name' do
+        user.last_name = '           lorm '
+        allow_any_instance_of(User).to receive(:remove_trailling_and_leading_space) do |user|
+          user.last_name = user.last_name.strip if user.last_name.present?
+        end
+        user.remove_trailling_and_leading_space
+        expect(user.last_name).to eq('lorm')
+      end
+      it 'check the remove_trailling_and_leading_space_from_email' do
+        user.email = '      example@gmail.com  '
+        allow_any_instance_of(User).to receive(:remove_trailling_and_leading_space) do |user|
+          user.email = user.email.strip if user.email.present?
+        end
+        user.remove_trailling_and_leading_space
+        expect(user.email).to eq('example@gmail.com')
+      end
+      it 'check the remove_trailling_and_leading_space_from_phone' do
+        user.phone = '      01712198765  '
+        allow_any_instance_of(User).to receive(:remove_trailling_and_leading_space) do |user|
+          user.phone = user.phone.strip if user.phone.present?
+        end
+        user.remove_trailling_and_leading_space
+        expect(user.phone).to eq('01712198765')
+      end
+      it 'check the remove_trailling_and_leading_space_from_address' do
+        user.address = '      my homw town in chuadanga  '
+        allow_any_instance_of(User).to receive(:remove_trailling_and_leading_space) do |user|
+          user.address = user.address.strip if user.address.present?
+        end
+        user.remove_trailling_and_leading_space
+        expect(user.address).to eq('my homw town in chuadanga')
+      end
     end
     describe 'User Model' do
       it 'have many enrollment' do

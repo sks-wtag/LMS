@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-  before_validation :remove_trailling_and_leading_space_from_title
-  before_validation :remove_trailling_and_leading_space_from_description
+  before_validation :remove_trailling_and_leading_space
   has_many :enrollments
   has_many :users, through: :enrollments
   has_many :lessons
@@ -10,11 +9,8 @@ class Course < ApplicationRecord
 
   private
 
-  def remove_trailling_and_leading_space_from_title
+  def remove_trailling_and_leading_space
     self.title = title.strip if title.present?
-  end
-
-  def remove_trailling_and_leading_space_from_description
     self.description = description.strip if description.present?
   end
 end

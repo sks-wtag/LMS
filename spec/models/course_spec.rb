@@ -26,18 +26,18 @@ RSpec.describe Course, type: :model do
     end
     it 'check the remove_trailling_and_leading_space_from_title methods' do
       course.title = '           lorm '
-      allow_any_instance_of(Course).to receive(:remove_trailling_and_leading_space_from_title) do |course|
+      allow_any_instance_of(Course).to receive(:remove_trailling_and_leading_space) do |course|
         course.title = course.title.strip if course.title.present?
       end
-      course.remove_trailling_and_leading_space_from_title
+      course.remove_trailling_and_leading_space
       expect(course.title).to eq('lorm')
     end
     it 'check the remove_trailling_and_leading_space_from_description methods' do
       course.description = 'lorm                           '
-      allow_any_instance_of(Course).to receive(:remove_trailling_and_leading_space_from_description) do |course|
+      allow_any_instance_of(Course).to receive(:remove_trailling_and_leading_space) do |course|
         course.description = course.description.strip if course.description.present?
       end
-      course.remove_trailling_and_leading_space_from_description
+      course.remove_trailling_and_leading_space
       expect(course.description).to eq('lorm')
     end
   end

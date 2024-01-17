@@ -9,10 +9,8 @@ RSpec.describe Enrollment, type: :model do
     it "belongs to user" do
       expect(Enrollment._reflect_on_association(:user).macro).to eq(:belongs_to)
     end
-
     it "belongs to course" do
       expect(Enrollment._reflect_on_association(:course).macro).to eq(:belongs_to)
     end
-
   end
 end

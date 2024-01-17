@@ -64,6 +64,9 @@ RSpec.describe User, type: :model do
       it 'check the valid roles' do
         expect(User.roles.keys).to include('learner', 'instructor', 'admin')
       end
+      it 'check the full_name of a user' do
+        expect(user.name).to eq("#{user.first_name} #{user.last_name}")
+      end
     end
     describe 'User Model' do
       it 'have many enrollment' do

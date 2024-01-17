@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :courses, through: :enrollments
   has_many :user_course_progresses
   validates :first_name, :last_name, :email, :phone, :address, presence: true
-  validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }
+  validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, format: { with: /\A[A-Za-z]+\z/ }
   validates :email, uniqueness: { case_sensitive: false }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates_plausible_phone :phone, presence: true

@@ -2,7 +2,6 @@
 
 class SessionsController < ApplicationController
   before_action :redirect_if_authenticated, only: %i[create new]
-
   def create
     @user = User.find_by(email: params[:user][:email].downcase)
     if @user.present?
@@ -26,6 +25,5 @@ class SessionsController < ApplicationController
     logout
     redirect_to root_path, notice: 'Signed out'
   end
-
   def new; end
 end

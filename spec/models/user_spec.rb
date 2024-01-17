@@ -25,12 +25,14 @@ RSpec.describe User, type: :model do
       it 'check the invalid presence of first_name' do
         user.first_name = ''
         user.valid?
-        expect(user.errors[:first_name]).to eq(["can't be blank", 'is too short (minimum is 2 characters)'])
+        expect(user.errors[:first_name]).to eq(["can't be blank", 'is too short (minimum is 2 characters)',
+                                                "is invalid"])
       end
       it 'check the invalid presence of last_name' do
         user.last_name = ''
         user.valid?
-        expect(user.errors[:last_name]).to eq(["can't be blank", 'is too short (minimum is 2 characters)'])
+        expect(user.errors[:last_name]).to eq(["can't be blank", 'is too short (minimum is 2 characters)',
+                                               "is invalid"])
       end
       it 'check the valid presence of email' do
         expect(user.email).to be_present
@@ -106,6 +108,34 @@ RSpec.describe User, type: :model do
         end
         user.remove_trailling_and_leading_space
         expect(user.address).to eq('my homw town in chuadanga')
+      end
+      it 'check the confirm! methods to confirm email' do
+        expect(user.confirm!).to be true
+      end
+      it 'check a user is confirmed?' do
+        expect(user.confirmed?).to be true
+      end
+      it 'check a user is unconfirmed?' do
+        expect(user.unconfirmed?).to be false
+      end
+      it 'check the valid confirmation token generation' do
+        expect(user.generate_confirmation_token).to eq(user.generate_confirmation_token)
+      end
+      it 'check for send_confirmation email' do
+        mail_details = user.send_confirmation_email!
+        expect(mail_details.class.name).to eq('Mail::Message')
+      end
+      it 'check for reset_pasword_email!' do
+        mail_details = user.send_password_reset_email!
+        expect(mail_details.class.name).to eq('Mail::Message')
+      end
+      it 'check for email downcase' do
+        allow_any_instance_of(User).to receive(:downcase_email) do |user|
+          user.email = user.email.downcase
+        end
+        user.email = 'ShorojitKumar@gmail.com'
+        user.downcase_email
+        expect(user.email).to eq('shorojitkumar@gmail.com')
       end
     end
     describe 'User Model' do

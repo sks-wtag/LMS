@@ -27,13 +27,13 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
-        redirect_to root_path, notice: 'Account updated'
+        redirect_to root_path, notice: 'Password updated'
       else
-        redirect_to edit_password, status: :unprocessable_entity
+        redirect_to change_password, status: :unprocessable_entity
       end
     else
       flash[:error] = 'Incorrect password'
-      redirect_to edit_password, status: :unprocessable_entity
+      redirect_to change_password, status: :unprocessable_entity
     end
   end
 

@@ -14,7 +14,7 @@ class PasswordsController < ApplicationController
       redirect_to root_path, alert: 'Please provide correct email'
     end
   end
-
+  
   def new; end
 
   def edit

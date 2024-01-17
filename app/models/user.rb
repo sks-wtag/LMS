@@ -62,6 +62,7 @@ class User < ApplicationRecord
     self.email = email.strip if email.present?
     self.phone = phone.strip if phone.present?
     self.address = address.strip if address.present?
+  end
   def downcase_email
     self.email = email.downcase
   end

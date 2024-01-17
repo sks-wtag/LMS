@@ -177,6 +177,8 @@ GEM
     public_suffix (5.0.4)
     puma (6.4.0)
       nio4r (~> 2.0)
+    pundit (2.3.1)
+      activesupport (>= 3.0.0)
     racc (1.7.3)
     rack (3.0.8)
     rack-session (2.0.0)
@@ -314,6 +316,7 @@ DEPENDENCIES
   pg (~> 1.1)
   phony_rails
   puma (>= 5.0)
+  pundit (~> 2.3)
   rails (~> 7.1.2)
   rails-controller-testing
   rspec-rails (~> 6.1.0)

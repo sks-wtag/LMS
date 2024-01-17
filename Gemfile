@@ -15,8 +15,6 @@ gem 'puma', '>= 5.0'
 gem 'importmap-rails'
 # Hotwire's SPA-lke page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
-
-
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
@@ -61,3 +59,5 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
+
+gem "pundit", "~> 2.3"

@@ -20,12 +20,47 @@
       <td><%= user.email %></td>
       <td><%= user.phone %></td>
       <td><%= user.address %></td>
-      <th><%= user.role %></th>
+      <td><%= user.role %></td>
       <td>
-        <%= link_to 'Edit' %> |
-        <%#= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to user.status, dashboard_change_status_path %> |
+        <button type="button" class="btn btn-sm btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" data-user-id="<%= user.id %>">
+          Delete
+        </button>
       </td>
     </tr>
   <% end %>
   </tbody>
 </table>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete a user </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" id="modal-body">
+        <h5>Are you want to delete this user?</h5>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <%= link_to "Delete", "#", id: "delete-user-link", class: "btn btn-danger" %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+    $('#myModal').on('show.bs.modal', function (event) {
+        var userId = $(event.relatedTarget).data('user-id');
+        $('#delete-user-link').attr('href', '<%= dashboard_delete_user_path('') %>' + userId);
+    });
+</script>

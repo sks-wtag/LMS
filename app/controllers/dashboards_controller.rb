@@ -3,6 +3,7 @@ class DashboardsController < ApplicationController
   # if a user is authenticated then he/she can access edit destroy or update
   # action otherwise it will redirect to the login path
   before_action :authenticate_user!
+
   def index
     @page_title = 'Dashboard'
   end
@@ -24,12 +25,26 @@ class DashboardsController < ApplicationController
     end
   end
 
+  def change_status
+    @user = current_user
+    if @user.update(status: (@user.status == 'Active' ? 'Inactive' : 'Active'))
+      redirect_to dashboard_show_user_path, notice: 'Status successfully updated.'
+    else
+      redirect_to dashboard_show_user_path, notice: 'Please try again'
+    end
+  end
+
   def show_user
     @page_title = 'Dashboard -> Users'
     @users = User.where(organization_id: current_user.organization_id)
   end
 
+  def delete_user
+    @users = User.where(organization_id: current_user.organization_id)
+  end
+
   private
+
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password, :confirmation_password)
   end

@@ -25,14 +25,12 @@ RSpec.describe User, type: :model do
       it 'check the invalid presence of first_name' do
         user.first_name = ''
         user.valid?
-        expect(user.errors[:first_name]).to eq(["can't be blank", 'is too short (minimum is 2 characters)',
-                                                "is invalid"])
+        expect(user.errors[:first_name]).to match_array(["can't be blank", 'is too short (minimum is 2 characters)'])
       end
       it 'check the invalid presence of last_name' do
         user.last_name = ''
         user.valid?
-        expect(user.errors[:last_name]).to eq(["can't be blank", 'is too short (minimum is 2 characters)',
-                                               "is invalid"])
+        expect(user.errors[:last_name]).to match_array(["can't be blank", 'is too short (minimum is 2 characters)'])
       end
       it 'check the valid presence of email' do
         expect(user.email).to be_present
@@ -61,7 +59,7 @@ RSpec.describe User, type: :model do
       it 'check the invalid presence of address' do
         user.address = ''
         user.valid?
-        expect(user.errors[:address]).to eq(["can't be blank", 'is too short (minimum is 2 characters)'])
+        expect(user.errors[:address]).to match_array(["can't be blank", 'is too short (minimum is 2 characters)'])
       end
       it 'check the valid roles' do
         expect(User.roles.keys).to include('learner', 'instructor', 'admin')

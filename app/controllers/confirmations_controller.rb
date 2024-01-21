@@ -9,7 +9,7 @@ class ConfirmationsController < ApplicationController
       @user.send_confirmation_email!
       redirect_to root_path, notice: 'Please check your email for confirmation instructions'
     else
-      redirect_to new_confirmation_path, alert: 'We could not find a user with that email has already been confirmed'
+      redirect_to new_confirmation_path, notice: 'We could not find a user with that email has already been confirmed'
     end
   end
 
@@ -20,7 +20,7 @@ class ConfirmationsController < ApplicationController
         login(@user)
         redirect_to root_path, notice: 'Your account has been confirmed'
       else
-        redirect_to new_confirmation_path, alert: 'Invalid token'
+        redirect_to new_confirmation_path, notice: 'Invalid token'
       end
     end
   end

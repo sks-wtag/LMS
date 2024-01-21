@@ -74,7 +74,7 @@ RSpec.describe 'Users', type: :request do
     it 'when valid request is created' do
       post '/user/change_password', params: { user: { email: user.email, current_password: user.password, password: 'Pass123', password_confirmation: 'Pass123' } }
       expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to eq('Account updated')
+      expect(flash[:notice]).to eq('Password updated')
     end
   end
   

@@ -129,6 +129,7 @@
     <orderEntry type="library" scope="PROVIDED" name="timeout (v0.4.1, rbenv: 3.2.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="turbo-rails (v1.5.0, rbenv: 3.2.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, rbenv: 3.2.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="tzinfo-data (v1.2023.4, rbenv: 3.2.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-display_width (v2.5.0, rbenv: 3.2.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="web-console (v4.2.1, rbenv: 3.2.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="webrick (v1.8.1, rbenv: 3.2.2) [gem]" level="application" />

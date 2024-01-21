@@ -36,11 +36,11 @@ RSpec.describe 'Passwords', type: :request do
     it 'when get a valid email but unconfirmed return alert' do
       allow_any_instance_of(User).to receive(:confirmed?).and_return(false)
       post passwords_path, params: { user: { email: user.email } }
-      expect(flash[:alert]).to eq('Please confirm email first.')
+      expect(flash[:notice]).to eq('Please confirm email first.')
     end
     it 'when get a invalid email' do
       post passwords_path, params: { user: { email: 'random@gmail.com' } }
-      expect(flash[:alert]).to eq('Please provide correct email')
+      expect(flash[:notice]).to eq('Please provide correct email')
     end
   end
   describe 'GET /passwords/password_reset_token' do
@@ -59,7 +59,7 @@ RSpec.describe 'Passwords', type: :request do
       allow_any_instance_of(User).to receive(:unconfirmed?).and_return(true)
       password_reset_token = user.generate_password_reset_token
       get "/passwords/#{password_reset_token}/edit"
-      expect(flash[:alert]).to eq('You must have confirm email before sign in')
+      expect(flash[:notice]).to eq('You must have confirm email before sign in')
     end
     it 'when it requested with invalid token it redirect to new password path' do
       get '/passwords/fasfdasdasdasdfaseasdfasdfas/edit'
@@ -67,7 +67,7 @@ RSpec.describe 'Passwords', type: :request do
     end
     it 'when it requested with invalid token return an alert' do
       get '/passwords/fasfdasdasdasdfaseasdfasdfas/edit'
-      expect(flash[:alert]).to eq('Invalid or expired token')
+      expect(flash[:notice]).to eq('Invalid or expired token')
     end
   end
 
@@ -85,7 +85,7 @@ RSpec.describe 'Passwords', type: :request do
       put "/passwords/#{password_reset_token}",
           params: { user: { password: user.password, password_confirmation: user.password_confirmation } }
       expect(response).to redirect_to(new_confirmation_path)
-      expect(flash[:alert]).to eq('You must have confirm email before login')
+      expect(flash[:notice]).to eq('You must have confirm email before login')
     end
     it 'when it requested with invalid password_reset_token' do
       put "/passwords/sdfasdfasdasdasd",

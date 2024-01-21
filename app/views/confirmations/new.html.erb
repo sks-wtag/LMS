@@ -1,4 +1,3 @@
-
 <div style="width: 500px; margin: 0 auto;">
   <div class="card mt-5">
     <div class="card-header">
@@ -6,10 +5,9 @@
     </div>
     <div class="card-body">
       <%= form_with model: @user, url: confirmations_path do |form| %>
-        <%= form.email_field :email, placeholder:'Enter your confirmation email', required: true %>
+        <%= form.email_field :email, placeholder: 'Enter your confirmation email', required: true %>
         <%= form.submit "Confirm Email" %>
       <% end %>
-
     </div>
   </div>
 

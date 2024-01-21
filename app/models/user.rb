@@ -9,12 +9,10 @@ class User < ApplicationRecord
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :user_course_progresses
-  validates :first_name, :last_name, :email, :phone, :address, presence: true
-  validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, format: { with: /\A[A-Za-z]+\z/ }
-  validates :email, uniqueness: { case_sensitive: false }
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, presence: true
+  validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
   validates_plausible_phone :phone, presence: true
-  validates :address, length: { minimum: 2, maximum: 100 }
+  validates :address, length: { minimum: 2, maximum: 100 }, presence: true
   phony_normalize :phone, default_country_code: 'BD'
   enum role: {
     learner: 0,

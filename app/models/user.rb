@@ -21,6 +21,10 @@ class User < ApplicationRecord
     instructor: 1,
     admin: 2
   }
+  enum status: {
+    Inactive: 0,
+    Active: 1,
+  }
   def name
     "#{first_name} #{last_name}"
   end

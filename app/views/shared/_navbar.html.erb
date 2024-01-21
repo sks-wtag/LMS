@@ -1,12 +1,16 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+    <a class="navbar-brand" href="/">LMS</a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="mynavbar">
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
+          <li class="nav-link">
+            <%= link_to 'Dashboard', dashboard_path %>
+          </li>
           <li class="nav-link">
             <%= link_to 'Update Profile', user_update_path %>
           </li>

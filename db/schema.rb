@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_06_073249) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_21_045509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_06_073249) do
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
+  create_table "organizations", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_course_progresses", force: :cascade do |t|
     t.boolean "complete_status", default: false
     t.datetime "complete_time"
@@ -75,7 +81,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_06_073249) do
     t.datetime "updated_at", null: false
     t.datetime "confirmed_at"
     t.string "password_digest"
+    t.bigint "organization_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
   add_foreign_key "contents", "lessons"
@@ -85,4 +93,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_06_073249) do
   add_foreign_key "user_course_progresses", "enrollments"
   add_foreign_key "user_course_progresses", "lessons"
   add_foreign_key "user_course_progresses", "users"
+  add_foreign_key "users", "organizations"
 end

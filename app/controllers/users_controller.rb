@@ -66,8 +66,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
+    @organization = Organization.new(name: params[:user][:organization_name])
+    @user = @organization.users.new(user_params)
+    if @organization.save && @user.save
       @user.send_confirmation_email!
       redirect_to root_path, notice: 'Please check your email confirmation instructions'
     else

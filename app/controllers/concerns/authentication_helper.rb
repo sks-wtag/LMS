@@ -9,7 +9,6 @@ module AuthenticationHelper
     reset_session
   end
 
-  # if a user is already login then it will redirect to the root path
   def redirect_if_authenticated
     redirect_to root_path, alert: 'You are already logged in.' if user_signed_in?
   end

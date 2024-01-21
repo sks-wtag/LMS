@@ -40,7 +40,9 @@ class DashboardsController < ApplicationController
   end
 
   def delete_user
-    @users = User.where(organization_id: current_user.organization_id)
+    @user = User.find_by(id: params[:id])
+    @user.destroy
+    redirect_to dashboard_show_user_path
   end
 
   private

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
   let!(:organization) { FactoryBot.create(:organization) }
-  let!(:user) { FactoryBot.create(:user)}
+  let!(:user) { FactoryBot.create(:user) }
   describe 'GET /sign_up' do
     it 'return a sign_up view with status code success' do
       get '/sign_up'

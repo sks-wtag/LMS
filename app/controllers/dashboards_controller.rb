@@ -41,7 +41,6 @@ class DashboardsController < ApplicationController
     authorize :dashboard, :show_user?
     @users = policy_scope(User)
     @page_title = 'Dashboard -> Users'
-    # @users = User.where(organization_id: current_user.organization_id)
   end
 
   def delete_user

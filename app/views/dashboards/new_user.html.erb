@@ -1,7 +1,7 @@
 <div style="width: 350px; margin: 0 auto;">
   <div class="card m-3">
     <div class="card-header">
-      <h5>Registration </h5>
+      <h5>Add a user </h5>
     </div>
     <div class="card-body">
       <%= form_with(model: @user, url: dashboard_add_user_path) do |form| %>
@@ -55,13 +55,14 @@
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
+        <div>
+          <%= form.label :role %> </br>
+          <%= form.select :role, [["Learner", "learner"], ["Instructor", "instructor"], ["Admin", "admin"]], selected: "learner", style: 'width:100%;' %>
+        </div>
         <br>
         <div class="row">
           <div class="col-6">
-            <%= form.submit "Sign Up" %>
-          </div>
-          <div class="col-6">
-            <%= link_to "Login here", login_path %>
+            <%= form.submit "Add",class: 'btn btn-primary'  %>
           </div>
         </div>
       <% end %>

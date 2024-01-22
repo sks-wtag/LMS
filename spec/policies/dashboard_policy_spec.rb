@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ContentPolicy, type: :policy do
+RSpec.describe DashboardPolicy, type: :policy do
   let(:user) { User.new }
 
   subject { described_class }

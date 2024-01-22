@@ -2,9 +2,11 @@
   <div class="col-12 m-2 bg-light p-1 rounded">
     <%= link_to 'Users', dashboard_show_user_path %>
   </div>
-  <div class="col-12 m-2 bg-light p-1 rounded">
-    <%= link_to 'Add User', dashboard_add_user_path %>
-  </div>
+  <% if policy(:dashboard).new_user? %>
+    <div class="col-12 m-2 bg-light p-1 rounded">
+      <%= link_to 'Add User', dashboard_add_user_path %>
+    </div>
+  <% end %>
   <div class="col-12 m-2 bg-light p-1 rounded">
     <%= link_to 'Courses', user_change_password_path %>
   </div>

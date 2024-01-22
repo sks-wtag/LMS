@@ -1,8 +1,20 @@
-class UserPolicy < ApplicationPolicy
-  class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+class UserPolicy
+  class Scope
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.where(status: 'Active')
+      end
+    end
+
+    private
+
+    attr_reader :user, :scope
   end
 end

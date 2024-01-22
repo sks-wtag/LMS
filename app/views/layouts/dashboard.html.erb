@@ -17,14 +17,21 @@
   <%= render 'shared/show_flash_message' %>
   <div class="card mt-5">
     <div class="card-header bg-primary">
-      <h5 style="color: #ffffff; font-style: italic" ><%= @page_title || "Dashboard" %></h5>
+      <div class="row">
+        <div class="col-9">
+          <h5 style="color: #ffffff; font-style: italic"><%= @page_title || "Dashboard" %></h5>
+        </div>
+        <div class="col-2">
+          <h5 class="text-light">Mr. <%= current_user.name %></h5>
+        </div>
+      </div>
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-9">
+        <div class="col-10">
           <%= yield %>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <%= render 'shared/navbar_right' %>
         </div>
       </div>

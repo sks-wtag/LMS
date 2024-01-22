@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'dashboard/add_user', to: 'dashboards#new_user'
   post 'dashboard/add_user', to: 'dashboards#create_user'
   get 'dashboard/show_user', to: 'dashboards#show_user'
-  get 'dashboard/change_status', to: 'dashboards#change_status'
+  get 'dashboard/change_status/:id', to: 'dashboards#change_status'
   delete 'dashboard/delete_user/:id', to: 'dashboards#delete_user'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

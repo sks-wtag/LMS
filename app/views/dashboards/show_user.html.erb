@@ -8,7 +8,9 @@
     <th>Phone</th>
     <th>Address</th>
     <th>Role</th>
-    <th>Action</th>
+    <% if policy(:dashboard).admin? %>
+      <th style="width: 180px">Action</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
@@ -21,34 +23,33 @@
       <td><%= user.phone %></td>
       <td><%= user.address %></td>
       <td><%= user.role %></td>
-      <td>
-        <%= link_to user.status, dashboard_change_status_path %> |
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#myModal">
-          Delete
-        </button>
-        <div class="modal" id="myModal">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Delete a user</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                Are you want to delete this user?
-              </div>
-              <div class="modal-footer">
-                <%= form_with url: "/dashboard/delete_user/#{user.id}", method: :delete do |form| %>
-                  <%= form.button "Delete", class: 'nav-link btn-danger' %>
-                <% end %>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      <% if policy(:dashboard).admin? %>
+        <td>
+          <%= link_to user.status, "/dashboard/change_status/#{user.id}", class: 'btn btn-sm btn-warning' %> |
+          <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
+            Delete
+          </button>
+          <div class="modal" id="myModal<%= user.id %>">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Delete a user</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  Are you want to delete this user?
+                </div>
+                <div class="modal-footer">
+                  <%= form_with url: "/dashboard/delete_user/#{user.id}", method: :delete do |form| %>
+                    <%= form.button "Delete", class: 'nav-link btn-danger' %>
+                  <% end %>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-
-
-      </td>
+        </td>
+      <% end %>
     </tr>
   <% end %>
   </tbody>

@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if @user.present?
       if @user.unconfirmed?
         redirect_to new_confirmation_path, alert: 'Incorrect credentials'
-      elsif @user.authenticate(params[:user][:password])
+      elsif @user.authenticate(params[:user][:password]) && @user.status == 'Active'
         login(@user)
         redirect_to root_path, notice: 'Successfully log in'
       else

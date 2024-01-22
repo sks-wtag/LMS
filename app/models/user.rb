@@ -4,7 +4,6 @@ class User < ApplicationRecord
   has_secure_password
   CONFIRMATION_TOKEN_EXPIRATION = 10.minutes # ENV['CONFIRMATION_TOKEN_EXPIRATION']
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes # ENV['PASSWORD_RESET_TOKEN_EXPIRATION']
-  attr :organization_name
   before_validation :remove_trailling_and_leading_space
   before_save :downcase_email
   belongs_to :organization

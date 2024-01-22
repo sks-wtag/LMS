@@ -2,6 +2,7 @@ class DashboardsController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   layout 'dashboard'
   before_action :authenticate_user!
+
   def index
     @page_title = 'Dashboard'
   end
@@ -35,6 +36,7 @@ class DashboardsController < ApplicationController
       redirect_to dashboard_show_user_path, notice: 'Please try again'
     end
   end
+
   def show_user
     authorize :dashboard, :show_user?
     @users = policy_scope(User)

@@ -7,7 +7,8 @@ class UsersController < ApplicationController
   # action otherwise it will redirect to the login path
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
   def new
-    @user = User.new
+    @organization = Organization.new({})
+    @user = @organization.users.build({})
   end
 
   def destroy
@@ -66,10 +67,10 @@ class UsersController < ApplicationController
   end
 
   def create
-    @organization = Organization.new(name: params[:user][:organization_name])
-    @user = @organization.users.new(user_params)
-    @user.role = :admin
-    if @organization.save && @user.save
+    @organization = Organization.new(organization_params)
+    if @organization.save
+      current_email = params[:organization][:users_attributes]["0"][:email]
+      @user = @organization.users.find_by(email: current_email)
       @user.send_confirmation_email!
       redirect_to root_path, notice: 'Please check your email confirmation instructions'
     else
@@ -78,6 +79,9 @@ class UsersController < ApplicationController
   end
 
   private
+  def organization_params
+    params.require(:organization).permit(:name, users_attributes: [:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation])
+  end
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation)
@@ -85,5 +89,8 @@ class UsersController < ApplicationController
 
   def update_params
     params.require(:user).permit(:first_name, :last_name, :phone, :address)
+  end
+  def get_email
+    params.require(:organization).permit(users_attributes:[:email])
   end
 end

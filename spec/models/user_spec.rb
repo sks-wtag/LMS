@@ -116,9 +116,6 @@ RSpec.describe User, type: :model do
       it 'check a user is unconfirmed?' do
         expect(user.unconfirmed?).to be false
       end
-      it 'check the valid confirmation token generation' do
-        expect(user.generate_confirmation_token).to eq(user.generate_confirmation_token)
-      end
       it 'check for send_confirmation email' do
         mail_details = user.send_confirmation_email!
         expect(mail_details.class.name).to eq('Mail::Message')

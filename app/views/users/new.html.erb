@@ -1,72 +1,74 @@
-<div style="width: 350px; margin: 0 auto;">
+<div style="width: 500px; margin: 0 auto;">
   <div class="card mt-5">
     <div class="card-header">
-      <h5>Registration </h5>
+      <h5>Register as an administrator</h5>
     </div>
     <div class="card-body">
-      <%= form_with(model: @user, url: sign_up_path) do |form| %>
-        <%= render partial: "shared/form_errors", locals: { object: form.object } %>
+      <%= form_with(model: @organization, url: sign_up_path) do |parent_form| %>
         <div class="mb-4">
-          <%= form.label :organization_name %> </br>
-          <%= form.text_field :organization_name, style: 'width:100%', placeholder: 'Enter your unique organization name', required: true %>
-          <% @user.errors.full_messages_for(:organization_name).each do |message| %>
+          <%= parent_form.label "Organization name" %> </br>
+          <%= parent_form.text_field :name, style: 'width:100%', placeholder: 'Enter your unique organization name', required: true %>
+          <% @organization.errors.full_messages_for(:name).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div style="width: 100%; height: 2px; border-bottom: 2px solid #666666;"></div>
-        <div class="mt-4">
-          <%= form.label :first_name %> </br>
-          <%= form.text_field :first_name, style: 'width:100%', placeholder: 'Enter your first name', required: true %>
-          <% @user.errors.full_messages_for(:first_name).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
-        <div>
-          <%= form.label :last_name %> </br>
-          <%= form.text_field :last_name, style: 'width:100%', placeholder: 'Enter your last name', required: true %>
-          <% @user.errors.full_messages_for(:last_name).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
-        <div>
-          <%= form.label :email %> </br>
-          <%= form.email_field :email, style: 'width:100%', placeholder: 'Enter your email', required: true %>
-          <% @user.errors.full_messages_for(:email).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
-        <div>
-          <%= form.label :phone %> </br>
-          <%= form.phone_field :phone, style: 'width:100%', placeholder: 'Enter your phone number', required: true %>
-          <% @user.errors.full_messages_for(:phone).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
-        <div>
-          <%= form.label :address %> </br>
-          <%= form.text_area :address, style: 'width:100%', placeholder: 'Enter your address...', required: true %>
-          <% @user.errors.full_messages_for(:address).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
-        <div>
-          <%= form.label :password %> </br>
-          <%= form.password_field :password, style: 'width:100%', required: true %>
-          <% @user.errors.full_messages_for(:password).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
-        <div>
-          <%= form.label :password_confirmation %> </br>
-          <%= form.password_field :password_confirmation, style: 'width:100%', required: true %>
-          <% @user.errors.full_messages_for(:password_confirmation).each do |message| %>
-            <div class="text-danger"><%= message %></div>
-          <% end %>
-        </div>
+        <%= parent_form.fields_for :users do |form| %>
+          <div class="mt-4">
+            <%= form.label :first_name %> </br>
+            <%= form.text_field :first_name, style: 'width:100%', placeholder: 'Enter your first name', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:first_name).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+          <div>
+            <%= form.label :last_name %> </br>
+            <%= form.text_field :last_name, style: 'width:100%', placeholder: 'Enter your last name', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:last_name).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+          <div>
+            <%= form.label :email %> </br>
+            <%= form.email_field :email, style: 'width:100%', placeholder: 'Enter your email', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:email).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+          <div>
+            <%= form.label :phone %> </br>
+            <%= form.phone_field :phone, style: 'width:100%', placeholder: 'Enter your phone number', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:phone).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+          <div>
+            <%= form.label :address %> </br>
+            <%= form.text_area :address, style: 'width:100%', placeholder: 'Enter your address...', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:address).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+          <div>
+            <%= form.label :password %> </br>
+            <%= form.password_field :password, style: 'width:100%', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:password).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+          <div>
+            <%= form.label :password_confirmation %> </br>
+            <%= form.password_field :password_confirmation, style: 'width:100%', required: true %>
+            <% @organization.users.first.errors.full_messages_for(:password_confirmation).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div>
+        <% end %>
+
         <br>
         <div class="row">
           <div class="col-6">
-            <%= form.submit "Sign Up" %>
+            <%= parent_form.submit "Sign Up" %>
           </div>
           <div class="col-6">
             <%= link_to "Login here", login_path %>

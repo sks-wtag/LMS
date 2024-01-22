@@ -76,7 +76,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_21_111456) do
     t.string "email", null: false
     t.string "phone", null: false
     t.string "address", null: false
-    t.integer "role", default: 0
+    t.integer "role", default: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "confirmed_at"

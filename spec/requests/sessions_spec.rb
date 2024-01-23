@@ -26,7 +26,7 @@ RSpec.describe "Sessions", type: :request do
       delete '/logout'
       expect(response).to redirect_to(root_path)
       expect(response).to have_http_status(:found)
-      expect(flash[:notice]).to eq('Signed out')
+      expect(flash[:notice]).to eq("Logged out")
     end
   end
 end

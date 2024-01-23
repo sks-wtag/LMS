@@ -6,17 +6,17 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:user][:email].downcase)
     if @user.present?
       if @user.unconfirmed?
-        redirect_to new_confirmation_path, alert: 'Incorrect credentials'
+        redirect_to new_confirmation_path, notice: 'Incorrect credentials'
       elsif @user.authenticate(params[:user][:password])
         login(@user)
         redirect_to root_path, notice: 'Successfully log in'
       else
-        flash[:alert] = 'Incorrect credentials'
+        flash[:notice] = 'Incorrect credentials'
         render 'sessions/new', status: :unprocessable_entity
       end
 
     else
-      flash[:alert] = 'Incorrect credentials'
+      flash[:notice] = 'Incorrect credentials'
       render :new, status: :unprocessable_entity
     end
   end

@@ -1,0 +1,15 @@
+<div class="row">
+  <% @courses.each do |course| %>
+    <div class="col-4">
+      <div class="card" style="min-height: 200px;">
+        <div class="card-header"><h4><%= course.title %></h4> </div>
+        <div class="card-body"><p><%= course.description %></p> </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary">Details</button>
+          <button type="button" class="btn btn-sm btn-primary">Edit</button>
+          <button type="button" class="btn btn-sm btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

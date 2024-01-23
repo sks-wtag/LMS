@@ -12,12 +12,17 @@ Rails.application.routes.draw do
   get 'user/update', to: 'users#edit'
   post 'user/update', to: 'users#update'
   delete 'user/delete', to: 'users#destroy'
+  #all of dashboard routes
   get 'dashboard', to: 'dashboards#index'
   get 'dashboard/add_user', to: 'dashboards#new_user'
   post 'dashboard/add_user', to: 'dashboards#create_user'
   get 'dashboard/show_user', to: 'dashboards#show_user'
   get 'dashboard/change_status/:id', to: 'dashboards#change_status'
   delete 'dashboard/delete_user/:id', to: 'dashboards#delete_user'
+  #all of course releted routes
+  get 'dashboard/add_course', to: 'courses#new_course'
+  post 'dashboard/add_course', to: 'courses#create_course'
+  get 'dashboard/show_course', to: 'courses#show_course'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

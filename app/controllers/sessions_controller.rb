@@ -11,12 +11,11 @@ class SessionsController < ApplicationController
         login(@user)
         redirect_to root_path, notice: 'Successfully log in'
       else
-        flash[:notice] = 'Incorrect credentials'
+        flash[:notice] = 'Invalid credentials'
         render 'sessions/new', status: :unprocessable_entity
       end
-
     else
-      flash[:notice] = 'Incorrect credentials'
+      flash[:notice] = 'Invalid credentials'
       render :new, status: :unprocessable_entity
     end
   end

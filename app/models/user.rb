@@ -62,6 +62,6 @@ class User < ApplicationRecord
     self.address = address.strip if address.present?
   end
   def downcase_email
-    self.email = email.downcase
+    self.email = email&.downcase
   end
 end

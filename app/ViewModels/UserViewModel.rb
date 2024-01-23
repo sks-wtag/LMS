@@ -1,8 +1,25 @@
 # frozen_string_literal: true
 
 class UserViewModel
-  attr_accessor :first_name, :last_name, :email, :phone, :address, :password, :password_confirmation, :current_password
-  def initialize(first_name: nil, last_name: nil, email: nil, phone: nil, address: nil, password: nil, password_confirmation: nil, current_password: nil)
+  attr_accessor \
+    :first_name,\
+    :last_name,\
+    :email,\
+    :phone,\
+    :address,\
+    :password,\
+    :password_confirmation,\
+    :current_password
+
+  def initialize(
+    first_name: nil,
+    last_name: nil,
+    email: nil,
+    phone: nil,
+    address: nil,
+    password: nil,
+    password_confirmation: nil,
+    current_password: nil)
     @first_name = first_name
     @last_name = last_name
     @email = email

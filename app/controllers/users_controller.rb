@@ -17,16 +17,19 @@ class UsersController < ApplicationController
   end
 
   def edit_password
-    # assign current object property
-    # because we did not available all of user model data into view
-    # this reason i made a user_view_model and assign specific property and send to view
-    @user = UserViewModel.new(email: current_user.email, current_password: '', password: '', password_confirmation: '')
+    @user = UserViewModel.new(
+      email: current_user.email,
+      current_password: '',
+      password: '',
+      password_confirmation: '')
   end
 
   def change_password
     @user = current_user
     if @user.authenticate(params[:user][:current_password])
-      if @user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
+      if @user.update(
+        password: params[:user][:password],
+        password_confirmation: params[:user][:password_confirmation])
         redirect_to root_path, notice: 'Password updated'
       else
         redirect_to change_password, status: :unprocessable_entity
@@ -39,9 +42,6 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
-    # assign current object property
-    # because we did not available all of user model data into view
-    # this reason i made a user_view_model and assign specific property and send to view
     @errors = []
     @errors.push('first_name can not be empty') unless user_params[:first_name].present?
     @errors.push('last_name can not be empty') unless user_params[:last_name].present?
@@ -78,7 +78,14 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation)
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :email,
+      :phone,
+      :address,
+      :password,
+      :password_confirmation)
   end
 
   def update_params

@@ -19,7 +19,7 @@ RSpec.describe 'Confirmations', type: :request do
     it 'when it requested with valid email and if user is confirmed then it redirect to new confirmation path' do
       post confirmations_path, params: { user: { email: user.email } }
       expect(response).to redirect_to(new_confirmation_path)
-      expect(flash[:notice]).to eq('We could not find a user with that email has already been confirmed')
+      expect(flash[:notice]).to eq("Invalid Email or Password!")
     end
   end
   describe 'GET /confirmations/:confirmation_token/edit' do

@@ -4,7 +4,6 @@ class ConfirmationsController < ApplicationController
   before_action :redirect_if_authenticated
   def create
     @user = User.find_by(email: params[:user][:email].downcase)
-
     if @user.present? && @user.unconfirmed?
       @user.send_confirmation_email!
       redirect_to root_path, notice: 'Please check your email for confirmation instructions'

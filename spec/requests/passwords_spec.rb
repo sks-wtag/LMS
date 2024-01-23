@@ -40,7 +40,7 @@ RSpec.describe 'Passwords', type: :request do
     end
     it 'when get a invalid email' do
       post passwords_path, params: { user: { email: 'random@gmail.com' } }
-      expect(flash[:notice]).to eq('Please provide correct email')
+      expect(flash[:notice]).to eq("Invalid Email or Password!")
     end
   end
   describe 'GET /passwords/password_reset_token' do

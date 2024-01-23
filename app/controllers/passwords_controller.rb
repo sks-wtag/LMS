@@ -11,7 +11,7 @@ class PasswordsController < ApplicationController
         redirect_to root_path, notice: 'Please confirm email first.'
       end
     else
-      redirect_to root_path, notice: 'Please provide correct email'
+      redirect_to root_path, notice: 'Invalid Email or Password!'
     end
   end
   

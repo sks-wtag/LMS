@@ -30,7 +30,7 @@ class DashboardsController < ApplicationController
   def change_status
     authorize :dashboard, :change_status?
     @user = User.find_by(id: params[:id])
-    if @user.update(status: (@user.status == 'Active' ? 'Inactive' : 'Active'))
+    if @user.present? && @user.update(status: (@user.status == 'Active' ? 'Inactive' : 'Active'))
       redirect_to dashboard_show_user_path, notice: 'Status successfully updated.'
     else
       redirect_to dashboard_show_user_path, notice: 'Please try again'

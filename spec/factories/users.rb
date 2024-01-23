@@ -8,8 +8,8 @@ FactoryBot.define do
     password { 'Pass321' }
     password_confirmation { 'Pass321' }
     confirmed_at { Time.now }
-    role { 2 }
-    status { 1 }
+    role { "admin" }
+    status { "Active" }
     organization
   end
 end

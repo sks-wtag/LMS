@@ -45,7 +45,7 @@ group :development, :test do
   gem 'phony_rails'
   gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 6.1.0'
-  gem 'rubocop', '~> 1.59', require: false
+  # gem 'rubocop', '~> 1.59', require: false
 end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
@@ -60,5 +60,5 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
-
 gem "pundit", "~> 2.3"
+gem 'pundit-matchers'

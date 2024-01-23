@@ -15,6 +15,6 @@ class UserPolicy
 
     private
 
-    attr_reader :user, :scope
+    attr :user, :scope
   end
 end

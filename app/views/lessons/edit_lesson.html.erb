@@ -1,29 +1,29 @@
 <div style="width: 500px; margin: 0 auto;">
   <div class="card m-3">
     <div class="card-header">
-      <h5>Add a course </h5>
+      <h5>Edit a lesson </h5>
     </div>
     <div class="card-body">
-      <%= form_with(model: @course, url: dashboard_add_course_path) do |form| %>
+      <%= form_with(model: @lesson, url: "/dashboard/edit_lesson/#{@lesson.id}", method: :patch) do |form| %>
         <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
         <div class="mt-4">
           <%= form.label :title %> </br>
           <%= form.text_field :title, style: 'width:100%', placeholder: 'Enter your course title', required: true %>
-          <% @course.errors.full_messages_for(:title).each do |message| %>
+          <% @lesson.errors.full_messages_for(:title).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div>
           <%= form.label :description %> <br>
           <%= form.text_area :description, style: 'width:100%;', placeholder: 'Enter course descriptions', required: true %>
-          <% @course.errors.full_messages_for(:description).each do |message| %>
+          <% @lesson.errors.full_messages_for(:description).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <br>
         <div class="row">
           <div class="col-6">
-            <%= form.submit "Add",class: 'btn btn-primary'  %>
+            <%= form.submit "Update",class: 'btn btn-primary'  %>
           </div>
         </div>
       <% end %>

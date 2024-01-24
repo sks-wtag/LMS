@@ -1,10 +1,10 @@
 <div style="width: 500px; margin: 0 auto;">
   <div class="card m-3">
     <div class="card-header">
-      <h5>Add a course </h5>
+      <h5>Edit a course </h5>
     </div>
     <div class="card-body">
-      <%= form_with(model: @course, url: dashboard_add_course_path) do |form| %>
+      <%= form_with(model: @course, url: "/dashboard/edit_course/#{@course.id}") do |form| %>
         <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
         <div class="mt-4">
           <%= form.label :title %> </br>
@@ -23,7 +23,7 @@
         <br>
         <div class="row">
           <div class="col-6">
-            <%= form.submit "Add",class: 'btn btn-primary'  %>
+            <%= form.submit "Update",class: 'btn btn-primary'  %>
           </div>
         </div>
       <% end %>

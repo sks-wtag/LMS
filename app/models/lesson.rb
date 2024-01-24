@@ -4,6 +4,7 @@ class Lesson < ApplicationRecord
   before_validation :remove_trailling_and_leading_space
   belongs_to :course
   has_many :user_course_progresses
+  has_many :contents, dependent: :destroy
   validates :title, :description, :score, presence: true
 
   private

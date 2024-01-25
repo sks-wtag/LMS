@@ -1,16 +1,19 @@
 class CoursesController < ApplicationController
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   layout 'dashboard'
   before_action :authenticate_user!
 
   def new_course
     @page_title = 'Dashboard -> Add a course'
     @course = Course.new({})
+    authorize @course
   end
 
   def create_course
-    @course = Course.new(course_params)
-    if @course.save
+    @user = current_user
+    @course = @user.courses.new(course_params)
+    authorize @course
+    @enrollment = @course.enrollments.build(user: @user)
+    if @course.save && @enrollment.save
       flash[:notice] = 'This course has been added'
       redirect_to dashboard_show_course_path
     else
@@ -20,12 +23,14 @@ class CoursesController < ApplicationController
 
   def show_course
     @page_title = 'Dashboard -> Show courses'
-    @courses = Course.all
+    @courses = policy_scope(Course)
+    authorize @courses
   end
 
   def show_single_course
     @page_title = 'Dashboard -> Show a courses'
     @course = Course.includes(:lessons).find_by(id: params[:id])
+    authorize @course
     @lesson = Lesson.new({})
     @content = Content.new({})
   end
@@ -33,10 +38,12 @@ class CoursesController < ApplicationController
   def edit_course
     @page_title = 'Dashboard -> Edit a course'
     @course = Course.find_by(id: params[:id])
+    authorize @course
   end
 
   def save_course
     @course = Course.find_by(id: params[:id])
+    authorize @course
     if @course.update(course_params)
       flash[:notice] = 'Successfully updated'
       redirect_to dashboard_show_course_path

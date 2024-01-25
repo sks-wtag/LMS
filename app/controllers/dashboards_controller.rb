@@ -1,5 +1,4 @@
 class DashboardsController < ApplicationController
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   layout 'dashboard'
   before_action :authenticate_user!
 
@@ -53,10 +52,14 @@ class DashboardsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :role, :password, :confirmation_password )
-  end
-  def user_not_authorized
-    flash[:notice] = 'You are not authorized to perform this action.'
-    redirect_to dashboard_show_user_path
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :email,
+      :phone,
+      :address,
+      :role,
+      :password,
+      :confirmation_password )
   end
 end

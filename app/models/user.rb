@@ -8,7 +8,7 @@ class User < ApplicationRecord
   before_save :downcase_email
   belongs_to :organization
   has_many :enrollments
-  has_many :courses, through: :enrollments
+  has_many :courses, through: :enrollments, dependent: :destroy
   has_many :user_course_progresses
   validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true

@@ -27,6 +27,7 @@ class CoursesController < ApplicationController
     @page_title = 'Dashboard -> Show a courses'
     @course = Course.includes(:lessons).find_by(id: params[:id])
     @lesson = Lesson.new({})
+    @content = Content.new({})
   end
 
   def edit_course

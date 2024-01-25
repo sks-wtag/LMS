@@ -9,6 +9,7 @@ class ContentsController < ApplicationController
 
   def create_content
     @lesson = Lesson.find_by(id: params[:lesson_id])
+    authorize @lesson, :create_lesson? , policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
     if params[:files].present?
       @content.description = store_uploaded_file

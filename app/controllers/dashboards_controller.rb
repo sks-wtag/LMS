@@ -10,7 +10,7 @@ class DashboardsController < ApplicationController
   def new_user
     authorize :dashboard, :new_user?
     @page_title = 'Dashboard -> Add User'
-    @user = User.new({})
+    @user = User.new
   end
 
   def create_user
@@ -53,7 +53,15 @@ class DashboardsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :role, :password, :confirmation_password )
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :email,
+      :phone,
+      :address,
+      :role,
+      :password,
+      :confirmation_password)
   end
   def user_not_authorized
     flash[:notice] = 'You are not authorized to perform this action.'

@@ -57,7 +57,13 @@
         </div>
         <div>
           <%= form.label :role %> </br>
-          <%= form.select :role, [["Learner", "learner"], ["Instructor", "instructor"], ["Admin", "admin"]], selected: "learner", style: 'width:100%;' %>
+          <%= form.select :role,
+                          [
+                            ["Learner", "learner"],
+                            ["Instructor", "instructor"],
+                            ["Admin", "admin"]
+                          ],
+                          selected: "learner", style: 'width:100%;' %>
         </div>
         <br>
         <div class="row">

@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  # if a user is authenticated then it will redirect to the root path
   before_action :redirect_if_authenticated, only: %i[create new]
-  # if a user is authenticated then he/she can access edit destroy or update
-  # action otherwise it will redirect to the login path
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
   def new
     @organization = Organization.new({})
@@ -80,7 +77,18 @@ class UsersController < ApplicationController
 
   private
   def organization_params
-    params.require(:organization).permit(:name, users_attributes: [:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation])
+    params.require(:organization).permit(
+      :name,
+      users_attributes:
+        [
+          :first_name,
+          :last_name,
+          :email,
+          :phone,
+          :address,
+          :password,
+          :password_confirmation
+        ])
   end
 
   def user_params

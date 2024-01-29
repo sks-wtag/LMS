@@ -108,4 +108,16 @@ class UsersController < ApplicationController
   def get_email
     params.require(:organization).permit(users_attributes:[:email])
   end
+
+  def store_uploaded_file
+    uploaded_file = params[:files]
+    filename = Rails.root.join(
+      'public',
+      'uploads',
+      "#{Time.now.to_i}_#{uploaded_file.original_filename || uploaded_file.original_filename.force_encoding('UTF-8')}")
+    File.open(filename, 'wb') do |file|
+      file.write(uploaded_file.read)
+    end
+    filename
+  end
 end

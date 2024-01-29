@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :user_course_progresses
+  validates :pic_url, presence: true
   validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
   validates_plausible_phone :phone, presence: true

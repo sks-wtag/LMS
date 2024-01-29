@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   has_secure_password
+  has_one_attached :pic_url
   CONFIRMATION_TOKEN_EXPIRATION = 10.minutes # ENV['CONFIRMATION_TOKEN_EXPIRATION']
   PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes # ENV['PASSWORD_RESET_TOKEN_EXPIRATION']
   before_validation :remove_trailling_and_leading_space

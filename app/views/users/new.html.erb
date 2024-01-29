@@ -4,7 +4,7 @@
       <h5>Register as an administrator</h5>
     </div>
     <div class="card-body">
-      <%= form_with(model: @organization, url: sign_up_path) do |parent_form| %>
+      <%= form_with(model: @organization, url: sign_up_path, multipart: true) do |parent_form| %>
         <div class="mb-4">
           <%= parent_form.label "Organization name" %> </br>
           <%= parent_form.text_field :name, style: 'width:100%', placeholder: 'Enter your unique organization name', required: true %>
@@ -63,8 +63,11 @@
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
+          <div>
+              <%= form.label :pic_url %> <br>
+              <%= form.file_field :pic_url %>
+          </div>
         <% end %>
-
         <br>
         <div class="row">
           <div class="col-6">

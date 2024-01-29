@@ -99,7 +99,9 @@ class UsersController < ApplicationController
       :phone,
       :address,
       :password,
-      :password_confirmation)
+      :password_confirmation,
+      :pic_url
+    )
   end
 
   def update_params
@@ -110,7 +112,7 @@ class UsersController < ApplicationController
   end
 
   def store_uploaded_file
-    uploaded_file = params[:files]
+    uploaded_file = params[:images]
     filename = Rails.root.join(
       'public',
       'uploads',

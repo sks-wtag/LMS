@@ -2,20 +2,20 @@
 
 class User < ApplicationRecord
   has_secure_password
-  has_one_attached :pic_url
-  CONFIRMATION_TOKEN_EXPIRATION = 10.minutes # ENV['CONFIRMATION_TOKEN_EXPIRATION']
-  PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes # ENV['PASSWORD_RESET_TOKEN_EXPIRATION']
+  has_one_attached :picture
+  CONFIRMATION_TOKEN_EXPIRATION = 10.minutes
+  PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
   before_validation :remove_trailling_and_leading_space
   before_save :downcase_email
   belongs_to :organization
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :user_course_progresses
-  validates :pic_url, presence: true
   validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
   validates_plausible_phone :phone, presence: true
   validates :address, length: { minimum: 2, maximum: 100 }, presence: true
+  # validate :acceptable_image
   phony_normalize :phone, default_country_code: 'BD'
   enum role: {
     learner: 0,
@@ -70,5 +70,19 @@ class User < ApplicationRecord
   end
   def downcase_email
     self.email = email&.downcase
+  end
+
+  def acceptable_image
+    unless picture.attached?
+      errors.add(:avatar, 'Please upload your profile picture')
+      return
+    end
+    unless picture.blob.byte_size <= 1.megabyte
+      errors.add(:picture, "is too big")
+    end
+    acceptable_types = ["image/jpeg", "image/png","image/jpg"]
+    unless acceptable_types.include?(picture.content_type)
+      errors.add(:picture, "must be a JPEG or PNG format")
+    end
   end
 end

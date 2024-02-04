@@ -40,11 +40,7 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
-    @errors = []
-    @errors.push('first_name can not be empty') unless user_params[:first_name].present?
-    @errors.push('last_name can not be empty') unless user_params[:last_name].present?
-    @errors.push('phone can not be empty') unless user_params[:phone].present?
-    @errors.push('address can not be empty') unless user_params[:address].present?
+    @user.picture.purge if params[:user][:picture].present?
     if @user.update(update_params)
       redirect_to root_path, notice: 'Account updated'
     else
@@ -54,13 +50,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = UserViewModel.new(
-      first_name: current_user.first_name,
-      last_name: current_user.last_name,
-      email: current_user.email,
-      phone: current_user.phone,
-      address: current_user.address
-    )
+    @user = current_user
   end
 
   def create
@@ -87,7 +77,8 @@ class UsersController < ApplicationController
           :phone,
           :address,
           :password,
-          :password_confirmation
+          :password_confirmation,
+          :picture
         ])
   end
 
@@ -100,26 +91,19 @@ class UsersController < ApplicationController
       :address,
       :password,
       :password_confirmation,
-      :pic_url
     )
   end
 
   def update_params
-    params.require(:user).permit(:first_name, :last_name, :phone, :address)
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :phone,
+      :address,
+      :picture)
   end
   def get_email
     params.require(:organization).permit(users_attributes:[:email])
   end
 
-  def store_uploaded_file
-    uploaded_file = params[:images]
-    filename = Rails.root.join(
-      'public',
-      'uploads',
-      "#{Time.now.to_i}_#{uploaded_file.original_filename || uploaded_file.original_filename.force_encoding('UTF-8')}")
-    File.open(filename, 'wb') do |file|
-      file.write(uploaded_file.read)
-    end
-    filename
-  end
 end

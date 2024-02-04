@@ -111,7 +111,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_103625) do
     t.string "password_digest"
     t.bigint "organization_id"
     t.integer "status", default: 1
-    t.string "pic_url", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end

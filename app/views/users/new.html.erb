@@ -64,8 +64,11 @@
             <% end %>
           </div>
           <div>
-              <%= form.label :pic_url %> <br>
-              <%= form.file_field :pic_url %>
+              <%= form.label :picture %> <br>
+              <%= form.file_field :picture, required: true %>
+            <% @organization.users.first.errors.full_messages_for(:picture).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
           </div>
         <% end %>
         <br>

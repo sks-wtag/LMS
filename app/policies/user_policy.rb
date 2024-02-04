@@ -7,7 +7,7 @@ class UserPolicy
 
     def resolve
       if user.admin?
-        scope.all
+        scope.where(organization_id: user.organization_id)
       else
         scope.where(status: 'Active')
       end

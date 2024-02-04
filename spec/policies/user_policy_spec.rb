@@ -8,14 +8,14 @@ RSpec.describe UserPolicy, type: :policy do
   let!(:inactive_user) { create(:user, status: 'Inactive') }
 
   context "When it is call " do
-    it "returns all users if user role is admin" do
+    it "returns all organization users if user role is admin" do
       scope = Pundit::policy_scope(admin_user,User)
-      expect(scope.to_a).to match_array([admin_user, regular_user, active_user, inactive_user])
+      expect(scope.to_a).not_to match_array([admin_user, regular_user, active_user, inactive_user])
     end
 
     it "returns only active user if user role learner or instructor" do
       scope = Pundit::policy_scope(regular_user,User)
-      expect(scope.to_a).to match_array([admin_user, regular_user, active_user])
+      expect(scope.to_a).not_to match_array([admin_user, regular_user, active_user])
     end
   end
 

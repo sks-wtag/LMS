@@ -44,9 +44,9 @@ class ApplicationPolicy
 
     def resolve
       if user.admin?
-        scope.all
+        scope.where(organization_id: user.organization_id)
       else
-        scope.where(status: 'Active')
+        scope.where(organization_id: user.organization_id, status: 'Active')
       end
     end
 

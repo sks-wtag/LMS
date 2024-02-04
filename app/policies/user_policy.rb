@@ -9,7 +9,7 @@ class UserPolicy
       if user.admin?
         scope.where(organization_id: user.organization_id)
       else
-        scope.where(status: 'Active')
+        scope.where(organization_id: user.organization_id, status: 'Active')
       end
     end
 

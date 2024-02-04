@@ -12,7 +12,8 @@ class ContentsController < ApplicationController
     authorize @lesson, :create_lesson? , policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
     if params[:files].present?
-      @content.description = store_uploaded_file
+      @content.files.attach(params[:files])
+      @content.description = 'Saved in file'
     end
     if @content.save
       flash[:notice] = "A new content is added"
@@ -26,17 +27,5 @@ class ContentsController < ApplicationController
   private
   def content_params
     params.require(:content).permit(:title, :description, :content_type)
-  end
-
-  def store_uploaded_file
-    uploaded_file = params[:files]
-    filename = Rails.root.join(
-      'public',
-      'uploads',
-      "#{Time.now.to_i}_#{uploaded_file.original_filename || uploaded_file.original_filename.force_encoding('UTF-8')}")
-    File.open(filename, 'wb') do |file|
-      file.write(uploaded_file.read)
-    end
-    filename
   end
 end

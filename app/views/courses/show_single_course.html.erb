@@ -47,7 +47,7 @@
                   <% else %>
                   <div class="row mb-3">
                     <div class="row" style="font-size: medium">
-                      <%#= link_to content.title, "uploads/1706161713_instructor_user_dashboard.png" %>
+                      <%= image_tag content.files if content.files.present? %>
                     </div>
                   </div>
                 <% end %>

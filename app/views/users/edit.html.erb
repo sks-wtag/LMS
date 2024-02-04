@@ -1,46 +1,47 @@
-
-<div style="width: 350px; margin: 0 auto;">
+<div style="width: 500px; margin: 0 auto;">
   <div class="card mt-5">
     <div class="card-header">
-      <h5>Edit your informations</h5>
+      <h5>Edit Your Information</h5>
     </div>
     <div class="card-body">
-      <%= form_with( url:'update',method: 'post' ) do |form| %>
-        <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
-       <% if @errors.present? %>
+      <%= form_with(model: @user, url: 'update', method: 'post') do |form| %>
+        <% if current_user.picture.attached? %>
+          <div class="container text-center">
+            <%= image_tag current_user.picture, class: 'img-fluid rounded-circle', style: 'height: 200px; width: 200px; border: 2px solid gray;' %>
+          </div>
+        <% end %>
+        <%= form.file_field :picture %> <br><br>
+        <% if @errors.present? %>
           <% @errors.each do |message| %>
-            <div style="color: red"><%= message %></div>
+            <div style="color: red;"><%= message %></div>
           <% end %>
         <% end %>
-        <div>
-          <label for="user_first_name">First Name</label><br>
-          <%= text_field_tag 'user[first_name]', @user.first_name %>
+        <div class="mb-3">
+          <%= form.label :first_name, class: 'form-label' %>
+          <%= form.text_field :first_name, class: 'form-control' %>
         </div>
-        <div>
-          <label for="user_last_name">Last Name</label><br>
-          <%= text_field_tag 'user[last_name]', @user.last_name %>
+        <div class="mb-3">
+          <%= form.label :last_name, class: 'form-label' %>
+          <%= form.text_field :last_name, class: 'form-control' %>
         </div>
-        <div>
-          <div>
-            <label for="user_email">Email</label><br>
-            <%= text_field_tag 'user[email]', @user.email, disabled: true %>
+        <div class="mb-3">
+          <%= form.label :email, class: 'form-label' %> </br>
+          <%= form.text_field :email, class: 'form-control', disabled: true %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :phone, class: 'form-label' %>
+          <%= form.phone_field :phone, class: 'form-control' %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :address, class: 'form-label' %>
+          <%= form.text_area :address, class: 'form-control' %>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <%= form.submit "Update", class: 'btn btn-primary' %>
           </div>
-          <div>
-            <label for="user_phone">Phone</label><br>
-            <%= phone_field_tag 'user[phone]', @user.phone %>
-          </div>
-          <div>
-            <label for="user_address">Address</label><br>
-            <%= text_area_tag 'user[address]', @user.address %>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <%= form.submit "Update" %>
-            </div>
-          </div>
+        </div>
       <% end %>
-      </div>
     </div>
   </div>
-
 </div>

@@ -64,3 +64,5 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include Pundit::Matchers, type: :policy
 end
+
+include ActionDispatch::TestProcess

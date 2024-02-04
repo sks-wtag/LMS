@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  # if a user is authenticated then it will redirect to the root path
   before_action :redirect_if_authenticated, only: %i[create new]
-  # if a user is authenticated then he/she can access edit destroy or update
-  # action otherwise it will redirect to the login path
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
   def new
     @organization = Organization.new({})
@@ -43,11 +40,7 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
-    @errors = []
-    @errors.push('first_name can not be empty') unless user_params[:first_name].present?
-    @errors.push('last_name can not be empty') unless user_params[:last_name].present?
-    @errors.push('phone can not be empty') unless user_params[:phone].present?
-    @errors.push('address can not be empty') unless user_params[:address].present?
+    @user.picture.purge if params[:user][:picture].present?
     if @user.update(update_params)
       redirect_to root_path, notice: 'Account updated'
     else
@@ -57,13 +50,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = UserViewModel.new(
-      first_name: current_user.first_name,
-      last_name: current_user.last_name,
-      email: current_user.email,
-      phone: current_user.phone,
-      address: current_user.address
-    )
+    @user = current_user
   end
 
   def create
@@ -80,7 +67,19 @@ class UsersController < ApplicationController
 
   private
   def organization_params
-    params.require(:organization).permit(:name, users_attributes: [:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation])
+    params.require(:organization).permit(
+      :name,
+      users_attributes:
+        [
+          :first_name,
+          :last_name,
+          :email,
+          :phone,
+          :address,
+          :password,
+          :password_confirmation,
+          :picture
+        ])
   end
 
   def user_params
@@ -91,13 +90,20 @@ class UsersController < ApplicationController
       :phone,
       :address,
       :password,
-      :password_confirmation)
+      :password_confirmation,
+    )
   end
 
   def update_params
-    params.require(:user).permit(:first_name, :last_name, :phone, :address)
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :phone,
+      :address,
+      :picture)
   end
   def get_email
     params.require(:organization).permit(users_attributes:[:email])
   end
+
 end

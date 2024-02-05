@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
   let!(:organization) { FactoryBot.create(:organization) }
-  let!(:user) { FactoryBot.create(:user) }
+  let!(:user) { FactoryBot.create(:user, :add_picture) }
   describe 'GET /sign_up' do
     it 'return a sign_up view with status code success' do
       get '/sign_up'
@@ -13,7 +13,7 @@ RSpec.describe 'Users', type: :request do
     end
   end
   describe 'POST /sign_up' do
-    let(:valid_organization) do
+    let!(:valid_organization) do
       {
         organization: attributes_for(
           :organization,
@@ -44,15 +44,21 @@ RSpec.describe 'Users', type: :request do
       }
     end
     it 'when successfully created a new user' do
+      file_path = Rails.root.join('spec', 'fixtures', 'images.jpg')
+      valid_organization[:organization][:users_attributes]['0'][:picture] = fixture_file_upload(file_path, 'image/jpg')
       expect do
         post '/sign_up', params: valid_organization
       end.to change(User, :count).by(1)
     end
     it 'when successfully created a new user it redirect root path' do
+      file_path = Rails.root.join('spec', 'fixtures', 'images.jpg')
+      valid_organization[:organization][:users_attributes]['0'][:picture] = fixture_file_upload(file_path, 'image/jpg')
       post '/sign_up', params: valid_organization
       expect(response).to redirect_to root_path
     end
     it 'when successfully created a new user return status 201' do
+      file_path = Rails.root.join('spec', 'fixtures', 'images.jpg')
+      valid_organization[:organization][:users_attributes]['0'][:picture] = fixture_file_upload(file_path, 'image/jpg')
       post '/sign_up', params: valid_organization
       expect(response).to have_http_status(:found)
     end
@@ -115,10 +121,21 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'Post /user/update' do
-    it 'when it requested with valid params it will redirect to root path' do
+    it 'when it requested with valid params it will redirect to user updated path' do
       login
-      post user_update_path, params: { user: { first_name: 'Shuvo', last_name: 'Khan', phone: '01712198113', address: 'Whole universe is my address' } }
-      expect(response).to redirect_to(root_path)
+      file_path = Rails.root.join('spec', 'fixtures', 'images.jpg')
+      post user_update_path, params:
+        {
+          user:
+            {
+              first_name: 'Shuvo',
+              last_name: 'Khan',
+              phone: '01712198113',
+              address: 'Whole universe is my address',
+              picture: fixture_file_upload(file_path, 'image/jpg')
+            }
+        }
+      expect(response).to redirect_to(user_update_path)
       expect(flash[:notice]).to eq('Account updated')
     end
     it 'when it requested with invalid params it will redirect to root path' do

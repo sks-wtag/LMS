@@ -11,10 +11,8 @@
           </div>
         <% end %>
         <%= form.file_field :picture %> <br><br>
-        <% if @errors.present? %>
-          <% @errors.each do |message| %>
-            <div style="color: red;"><%= message %></div>
-          <% end %>
+        <% @user.errors.full_messages_for(:picture).each do |message| %>
+          <div class="text-danger"><%= message %></div>
         <% end %>
         <div class="mb-3">
           <%= form.label :first_name, class: 'form-label' %>

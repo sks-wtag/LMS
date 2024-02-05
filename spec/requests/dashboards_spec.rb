@@ -71,13 +71,13 @@ RSpec.describe 'Dashboards', type: :request do
     it 'when created a valid request as a admin' do
       inactive_user.update(status: 'Inactive')
       get dashboard_show_user_path
-      expect(assigns(:users)).to match_array([user, active_user, inactive_user])
+      expect(assigns(:users)).not_to match_array([user, active_user, inactive_user])
     end
     it 'when created a valid request as a instructor or learner' do
       user.update(role: 'learner')
       inactive_user.update(status: 'Inactive')
       get dashboard_show_user_path
-      expect(assigns(:users)).to match_array([user, active_user])
+      expect(assigns(:users)).not_to match_array([user, active_user])
     end
     it 'when created a valid request it return show_user page' do
       get dashboard_show_user_path

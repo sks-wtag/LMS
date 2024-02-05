@@ -65,4 +65,3 @@ RSpec.configure do |config|
   config.include Pundit::Matchers, type: :policy
 end
 
-include ActionDispatch::TestProcess

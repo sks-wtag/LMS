@@ -25,6 +25,7 @@ class User < ApplicationRecord
     Inactive: 0,
     Active: 1,
   }
+
   def name
     "#{first_name} #{last_name}"
   end
@@ -44,6 +45,7 @@ class User < ApplicationRecord
   def unconfirmed?
     !confirmed?
   end
+
   def send_confirmation_email!
     confirmation_token = generate_confirmation_token
     UserMailer.confirmation(self, confirmation_token).deliver_now
@@ -67,6 +69,7 @@ class User < ApplicationRecord
     self.phone = phone.strip if phone.present?
     self.address = address.strip if address.present?
   end
+
   def downcase_email
     self.email = email&.downcase
   end

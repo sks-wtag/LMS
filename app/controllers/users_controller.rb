@@ -3,6 +3,7 @@
 class UsersController < ApplicationController
   before_action :redirect_if_authenticated, only: %i[create new]
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
+
   def new
     @organization = Organization.new({})
     @user = @organization.users.build({})
@@ -40,7 +41,7 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
-    error = acceptable_image(params[:user][:picture],@user)
+    error = acceptable_image(params[:user][:picture], @user)
     if error.size == 0
       @user.picture.purge
     end
@@ -58,8 +59,8 @@ class UsersController < ApplicationController
 
   def create
     @organization = Organization.new(organization_params)
-    error = acceptable_image(params[:organization][:users_attributes]["0"][:picture],@organization.users.first)
-    if error.size ==0 && @organization.save
+    error = acceptable_image(params[:organization][:users_attributes]["0"][:picture], @organization.users.first)
+    if error.size == 0 && @organization.save
       current_email = params[:organization][:users_attributes]["0"][:email]
       @user = @organization.users.find_by(email: current_email)
       @user.send_confirmation_email!
@@ -70,6 +71,7 @@ class UsersController < ApplicationController
   end
 
   private
+
   def organization_params
     params.require(:organization).permit(
       :name,
@@ -106,11 +108,12 @@ class UsersController < ApplicationController
       :address,
       :picture)
   end
+
   def get_email
-    params.require(:organization).permit(users_attributes:[:email])
+    params.require(:organization).permit(users_attributes: [:email])
   end
 
-  def acceptable_image(picture,record)
+  def acceptable_image(picture, record)
     unless picture.present?
       record.errors.add(:picture, 'Please upload your profile picture')
       return record.errors

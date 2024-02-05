@@ -2,10 +2,12 @@
 
 class User < ApplicationRecord
   has_secure_password
-  CONFIRMATION_TOKEN_EXPIRATION = 10.minutes # ENV['CONFIRMATION_TOKEN_EXPIRATION']
-  PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes # ENV['PASSWORD_RESET_TOKEN_EXPIRATION']
+  has_one_attached :picture
+  CONFIRMATION_TOKEN_EXPIRATION = 10.minutes
+  PASSWORD_RESET_TOKEN_EXPIRATION = 10.minutes
   before_validation :remove_trailling_and_leading_space
   before_save :downcase_email
+  belongs_to :organization
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :user_course_progresses
@@ -18,6 +20,10 @@ class User < ApplicationRecord
     learner: 0,
     instructor: 1,
     admin: 2
+  }
+  enum status: {
+    Inactive: 0,
+    Active: 1,
   }
   def name
     "#{first_name} #{last_name}"

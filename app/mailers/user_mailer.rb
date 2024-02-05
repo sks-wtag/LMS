@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class UserMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -13,5 +14,12 @@ class UserMailer < ApplicationMailer
     @user = user
     @password_reset_token = password_reset_token
     mail to: @user.email, subject: 'Password reset instruction'
+  end
+
+  def send_email_to_user(user, password)
+    @user = user
+    @password = password
+    @confirmation_token = @user.generate_confirmation_token
+    mail to: @user.email, subject: 'Your account has been created'
   end
 end

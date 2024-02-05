@@ -10,7 +10,6 @@
 
 # Ignore all environment files (except templates).
 /.env*
-!/.env*.erb
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -31,6 +30,7 @@
 !/tmp/storage/.keep
 
 /public/assets
+/spec/fixtures/images.jpg
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

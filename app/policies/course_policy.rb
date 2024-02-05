@@ -35,7 +35,7 @@ class CoursePolicy < ApplicationPolicy
 
     def resolve
       if user.admin?
-        scope.all
+        scope.joins(:users).where( users: { organization_id: user.organization_id})
       else
         scope.where(id:user.id )
       end

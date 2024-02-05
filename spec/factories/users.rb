@@ -11,12 +11,14 @@ FactoryBot.define do
     role { "admin" }
     status { "Active" }
     organization
-    # after(:build) do |user|
-    #   user.picture.attach(
-    #     io: File.open(Rails.root.join('spec', 'fixtures', 'images.jpg')),
-    #     filename: 'images.jpg',
-    #     content_type: 'image/jpeg'
-    #   )
-    # end
+    trait :add_picture do
+      after(:build) do |user|
+        user.picture.attach(
+          io: File.open(Rails.root.join('spec', 'fixtures', 'images.jpg')),
+          filename: 'images.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
   end
 end

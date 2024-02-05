@@ -15,7 +15,6 @@ class User < ApplicationRecord
   validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
   validates_plausible_phone :phone, presence: true
   validates :address, length: { minimum: 2, maximum: 100 }, presence: true
-  # validate :acceptable_image
   phony_normalize :phone, default_country_code: 'BD'
   enum role: {
     learner: 0,
@@ -70,19 +69,5 @@ class User < ApplicationRecord
   end
   def downcase_email
     self.email = email&.downcase
-  end
-
-  def acceptable_image
-    unless picture.attached?
-      errors.add(:avatar, 'Please upload your profile picture')
-      return
-    end
-    unless picture.blob.byte_size <= 1.megabyte
-      errors.add(:picture, "is too big")
-    end
-    acceptable_types = ["image/jpeg", "image/png","image/jpg"]
-    unless acceptable_types.include?(picture.content_type)
-      errors.add(:picture, "must be a JPEG or PNG format")
-    end
   end
 end

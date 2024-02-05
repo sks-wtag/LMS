@@ -40,11 +40,14 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
-    @user.picture.purge if params[:user][:picture].present?
-    if @user.update(update_params)
-      redirect_to root_path, notice: 'Account updated'
+    error = acceptable_image(params[:user][:picture],@user)
+    if error.size == 0
+      @user.picture.purge
+    end
+    if error.size == 0 && @user.update(update_params)
+      redirect_to user_update_path, notice: 'Account updated'
     else
-      flash[:error] = 'Please try again'
+      flash[:notice] = 'Please try again'
       render 'edit', status: :unprocessable_entity
     end
   end
@@ -55,7 +58,8 @@ class UsersController < ApplicationController
 
   def create
     @organization = Organization.new(organization_params)
-    if @organization.save
+    error = acceptable_image(params[:organization][:users_attributes]["0"][:picture],@organization.users.first)
+    if error.size ==0 && @organization.save
       current_email = params[:organization][:users_attributes]["0"][:email]
       @user = @organization.users.find_by(email: current_email)
       @user.send_confirmation_email!
@@ -106,4 +110,18 @@ class UsersController < ApplicationController
     params.require(:organization).permit(users_attributes:[:email])
   end
 
+  def acceptable_image(picture,record)
+    unless picture.present?
+      record.errors.add(:picture, 'Please upload your profile picture')
+      return record.errors
+    end
+    unless File.size(picture) <= 1.megabyte
+      record.errors.add(:picture, "is too big")
+    end
+    acceptable_types = ["image/jpeg", "image/png", "image/jpg"]
+    unless acceptable_types.include?(picture.content_type)
+      record.errors.add(:picture, "must be a JPEG or PNG format")
+    end
+    record.errors
+  end
 end

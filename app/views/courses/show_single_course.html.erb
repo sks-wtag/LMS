@@ -49,7 +49,7 @@
                   <%= link_to content.title, url_for(content.files), target: "_blank" %>
                 <% else %>
                   <div class="row mb-3 text-left">
-                    <button type="button" class="btn btn-sm btn-light text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
+                    <button type="button" class="btn btn-sm btn-secondary text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
                       <%= content.title %>  <b>(<%= content.content_type %>)</b>
                     </button>
                     <%= render partial: 'show_image', locals: { content: content } %>

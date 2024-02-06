@@ -1,27 +1,42 @@
 require 'rails_helper'
 
 RSpec.describe LessonPolicy, type: :policy do
-  let(:user) { User.new }
-
+  let!(:admin) { create(:user, role: 'admin') }
+  let!(:learner) { create(:user, role: 'learner') }
+  let!(:course) { create(:course) }
+  let!(:lesson) { create(:lesson, course_id: course.id) }
+  let!(:enrollment) {
+    create(
+      :enrollment,
+      course_id: course.id,
+      user_id: admin.id,
+      enrollment_type: "instructor") }
   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "permission for create_lesson?" do
+    it "grant access to an admin " do
+      expect(subject.new(admin, lesson).create_lesson?).to be true
+    end
+    it "denies access to a learner" do
+      expect(subject.new(learner, lesson).create_lesson?).to be false
+    end
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "permission for destroy_lesson?" do
+    it "grant access to an admin " do
+      expect(subject.new(admin, lesson).destroy_lesson?).to be true
+    end
+    it "denies access to a learner" do
+      expect(subject.new(learner, lesson).destroy_lesson?).to be false
+    end
   end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "permission for edit_lesson?" do
+    it "grant access to an admin " do
+      expect(subject.new(admin, lesson).edit_lesson?).to be true
+    end
+    it "denies access to a learner" do
+      expect(subject.new(learner, lesson).edit_lesson?).to be false
+    end
   end
 end

@@ -9,12 +9,12 @@ RSpec.describe UserPolicy, type: :policy do
 
   context "When it is call " do
     it "returns all organization users if user role is admin" do
-      scope = Pundit::policy_scope(admin_user,User)
+      scope = Pundit::policy_scope(admin_user, User)
       expect(scope.to_a).not_to match_array([admin_user, regular_user, active_user, inactive_user])
     end
 
     it "returns only active user if user role learner or instructor" do
-      scope = Pundit::policy_scope(regular_user,User)
+      scope = Pundit::policy_scope(regular_user, User)
       expect(scope.to_a).not_to match_array([admin_user, regular_user, active_user])
     end
   end

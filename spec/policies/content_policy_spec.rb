@@ -1,27 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe ContentPolicy, type: :policy do
-  let(:user) { User.new }
+  let!(:admin) { create(:user, role: "admin") }
+  let!(:learner) { create(:user, role: 'learner') }
+  let!(:course) { create(:course) }
+  let!(:lesson) { create(:lesson, course_id: course.id) }
+  let!(:content) { create(:content, lesson_id: lesson.id) }
+  let!(:content1) { create(:content, lesson_id: lesson.id) }
+  context "When it is call " do
+    it "return all content if user role is admin" do
+      scope = Pundit::policy_scope(admin, Content)
+      expect(scope.to_a).to match_array([content, content1])
+    end
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it "returns only content of a specific user" do
+      scope = Pundit::policy_scope(learner, Content)
+      expect(scope.to_a).to match_array([])
+    end
   end
 end

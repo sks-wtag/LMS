@@ -11,8 +11,8 @@ class CoursesController < ApplicationController
   def create_course
     @user = current_user
     @course = @user.courses.new(course_params)
-    authorize @course
-    @enrollment = @course.enrollments.build(user: @user)
+    authorize @course if @course.present?
+    @enrollment = @course.enrollments.build(user: @user, enrollment_type: "instructor")
     if @course.save && @enrollment.save
       flash[:notice] = 'This course has been added'
       redirect_to dashboard_show_course_path
@@ -62,6 +62,7 @@ class CoursesController < ApplicationController
       redirect_to dashboard_show_course_path
     end
   end
+
   private
 
   def course_params

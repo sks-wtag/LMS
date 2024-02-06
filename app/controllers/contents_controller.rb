@@ -8,7 +8,7 @@ class ContentsController < ApplicationController
 
   def create_content
     @lesson = Lesson.find_by(id: params[:lesson_id])
-    authorize @lesson, :create_lesson? , policy_class: LessonPolicy
+    authorize @lesson, :create_lesson?, policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
     if @content.content_type != "text" && params[:files].present?
       @content.files.attach(params[:files])
@@ -24,6 +24,7 @@ class ContentsController < ApplicationController
   end
 
   private
+
   def content_params
     params.require(:content).permit(:title, :description, :content_type)
   end

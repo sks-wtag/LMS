@@ -1,7 +1,6 @@
 class LessonPolicy < ApplicationPolicy
-
   def create_lesson?
-    user.admin? ||(user.instructor? && record.courses.where(id: user.id).present? )
+    user.admin? || (user.instructor? && record.courses.where(id: user.id).present?)
   end
 
   def destroy_lesson?
@@ -9,8 +8,9 @@ class LessonPolicy < ApplicationPolicy
   end
 
   def edit_lesson?
-    user.admin? ||(user.instructor? && user.courses.where(id:record.course_id).present? )
+    user.admin? || (user.instructor? && user.courses.where(id: record.course_id).present?)
   end
+
   class Scope
     def initialize(user, scope)
       @user = user
@@ -21,11 +21,12 @@ class LessonPolicy < ApplicationPolicy
       if user.admin?
         scope.all
       else
-        scope.where(id:user.id )
+        scope.where(id: user.id)
       end
     end
 
     private
+
     attr :user, :scope
   end
 end

@@ -16,7 +16,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def edit_course?
-    show_single_course?
+    record.enrollments.where(user_id: user.id, enrollment_type: "instructor").present?
   end
 
   def save_course?
@@ -24,7 +24,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def destroy_course?
-    show_single_course?
+    edit_course?
   end
 
   class Scope

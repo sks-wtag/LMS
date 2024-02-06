@@ -10,7 +10,7 @@ class ContentsController < ApplicationController
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson, :create_lesson? , policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
-    if params[:files].present?
+    if @content.content_type != "text" && params[:files].present?
       @content.files.attach(params[:files])
       @content.description = 'Saved in file'
     end

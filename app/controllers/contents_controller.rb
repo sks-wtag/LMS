@@ -1,5 +1,4 @@
 class ContentsController < ApplicationController
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   layout 'dashboard'
   before_action :authenticate_user!
 

@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Lessons", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
+  describe "GET /dashboard/add_lesson/:course_id" do
+    it "when it created with valid params as an admin" do
+      
+    end
   end
 end

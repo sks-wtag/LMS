@@ -62,9 +62,4 @@ class DashboardsController < ApplicationController
       :password,
       :confirmation_password )
   end
-
-  def user_not_authorized
-    flash[:notice] = 'You are not authorized to perform this action.'
-    redirect_to dashboard_show_user_path
-  end
 end

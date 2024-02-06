@@ -19,7 +19,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson
     course_id = @lesson.course_id
-    if @lesson.destroy
+    if @lesson.present? && @lesson.destroy
       flash[:notice] = "This lesson is deleted"
       redirect_to "/dashboard/show_a_course/#{course_id}"
     else

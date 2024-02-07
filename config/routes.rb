@@ -32,8 +32,13 @@ Rails.application.routes.draw do
   delete 'dashboard/delete_lesson/:lesson_id', to: 'lessons#destroy_lesson'
   get 'dashboard/edit_lesson/:lesson_id', to: 'lessons#edit_lesson'
   patch 'dashboard/edit_lesson/:lesson_id', to: 'lessons#save_lesson'
-  #all of content related rotutes
+  #all of content related routes
   post 'dashboard/save_content/:lesson_id', to: 'contents#create_content'
+  #all of enrollment related routes
+  get 'dashboard/enroll_course/:course_id', to: 'enrollments#index'
+  post 'dashboard/enroll_course/:course_id', to: 'enrollments#enroll'
+  delete 'dashboard/dis_enroll_course/:course_id', to: 'enrollments#dis_enroll'
+  post 'dashboard/complete_lesson/:lesson_id', to: 'enrollments#complete_lesson'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

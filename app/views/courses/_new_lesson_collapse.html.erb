@@ -11,6 +11,13 @@
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
+          <div class="mt-4">
+            <%= form.label "Point" %> </br>
+            <%= form.text_field :score, style: 'width:100%', placeholder: 'Provide point for this lesson', required: true %>
+            <% @lesson.errors.full_messages_for(:score).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div> </br>
           <div>
             <%= form.label :description %> <br>
             <%= form.text_area :description, style: 'width:100%;', placeholder: 'Enter lesson content', required: true %>

@@ -24,7 +24,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def destroy_course?
-    edit_course?
+    edit_course? || user.admin?
   end
 
   class Scope
@@ -35,9 +35,15 @@ class CoursePolicy < ApplicationPolicy
 
     def resolve
       if user.admin?
-        scope.joins(:users).where( users: { organization_id: user.organization_id} )
+        scope.joins(users: :enrollments)
+             .where(
+               users: { organization_id: user.organization_id },
+               enrollments: { enrollment_type: "instructor" }).distinct
       else
-        scope.joins(:users).where( users: { id: user.id, organization_id: user.organization_id} )
+        scope.joins(users: :enrollments)
+             .where(
+               users: { organization_id: user.organization_id },
+               enrollments: { user_id: user.id }).distinct
       end
     end
 

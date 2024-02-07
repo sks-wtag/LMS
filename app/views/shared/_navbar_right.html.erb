@@ -10,7 +10,9 @@
   <div class="col-12 m-2 bg-light p-1 rounded">
     <%= link_to 'Courses', "/dashboard/show_course" %>
   </div>
-  <div class="col-12 m-2 bg-light p-1 rounded">
-    <%= link_to 'Add course', "/dashboard/add_course" %>
-  </div>
+  <% if policy(Course).new_course? %>
+    <div class="col-12 m-2 bg-light p-1 rounded">
+      <%= link_to 'Add course', "/dashboard/add_course" %>
+    </div>
+  <% end %>
 </div>

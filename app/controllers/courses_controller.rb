@@ -31,8 +31,8 @@ class CoursesController < ApplicationController
     @page_title = 'Dashboard -> Show a courses'
     @course = Course.includes(:lessons).find_by(id: params[:id])
     authorize @course
-    @lesson = Lesson.new
-    @content = Content.new
+    @lesson = Lesson.new({})
+    @content = Content.new({})
   end
 
   def edit_course
@@ -54,7 +54,6 @@ class CoursesController < ApplicationController
 
   def destroy_course
     @course = Course.find_by(id: params[:id])
-    authorize @course
     if @course.present? && @course.destroy
       flash[:notice] = "This course is deleted successfully"
       redirect_to dashboard_show_course_path

@@ -4,8 +4,8 @@ class LessonsController < ApplicationController
 
   def create_lesson
     @course = Course.find_by(id: params[:course_id])
+    authorize @course, policy_class: LessonPolicy
     @lesson = @course.lessons.build(lesson_params)
-    authorize @lesson, policy_class: LessonPolicy
     if @lesson.save
       flash[:notice] = 'A new lesson is added'
       redirect_to "/dashboard/show_a_course/#{@course.id}"
@@ -54,6 +54,6 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    params.require(:lesson).permit(:title, :description, :score)
+    params.require(:lesson).permit(:title, :description)
   end
 end

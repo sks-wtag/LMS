@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   patch 'dashboard/edit_lesson/:lesson_id', to: 'lessons#save_lesson'
   #all of content related routes
   post 'dashboard/save_content/:lesson_id', to: 'contents#create_content'
+  delete 'dashboard/delete_content/:content_id', to: 'contents#destroy_content'
   #all of enrollment related routes
   get 'dashboard/enroll_course/:course_id', to: 'enrollments#index'
   post 'dashboard/enroll_course/:course_id', to: 'enrollments#enroll'

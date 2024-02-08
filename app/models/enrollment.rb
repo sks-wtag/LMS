@@ -11,7 +11,7 @@ class Enrollment < ApplicationRecord
   }
   private
   def completion_time_cannot_less_than_today
-    if enrollment_type == "learner" && completion_time < Date.today
+    if enrollment_type == "learner" && completion_time <= Date.today
       errors.add(:completion_time, "can't be set past date")
     end
   end

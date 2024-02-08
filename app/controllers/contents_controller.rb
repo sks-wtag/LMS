@@ -23,6 +23,17 @@ class ContentsController < ApplicationController
     end
   end
 
+  def destroy_content
+    @content = Content.find_by(id: params[:content_id])
+    authorize @content if @content.present?
+    if @content.present? && @content.destroy
+      flash[:notice] = "This content has been deleted"
+    else
+      flash[:notice] = "Please try again!"
+    end
+    redirect_to "/dashboard/show_a_course/#{@content.lesson.course_id}"
+  end
+
   private
 
   def content_params

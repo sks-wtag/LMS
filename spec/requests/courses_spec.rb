@@ -5,7 +5,7 @@ RSpec.describe "Courses", type: :request do
   let!(:instructor) { create(:user, role: "instructor") }
   let!(:learner) { create(:user, role: "learner") }
   let!(:course1) { create(:course) }
-  let!(:enrollment) { create(:enrollment, user_id: admin.id, course_id: course1.id) }
+  let!(:enrollment) { create(:enrollment, enrollment_type: "instructor", user_id: admin.id, course_id: course1.id) }
   describe "GET /dashboard/add_course" do
     it 'when it created a valid request as an admin' do
       login(admin)

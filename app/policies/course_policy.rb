@@ -19,6 +19,10 @@ class CoursePolicy < ApplicationPolicy
     record.enrollments.where(user_id: user.id, enrollment_type: "instructor").present?
   end
 
+  def index?
+    edit_course? || user.admin?
+  end
+
   def save_course?
     edit_course?
   end

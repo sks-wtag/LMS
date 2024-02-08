@@ -14,7 +14,7 @@
     <tr>
       <% enrolled = user.enrollments.where(course_id: @course.id).first %>
       <% if enrolled.present? %>
-        <% incomplete_lesson = UserCourseProgress.where(user_id: user.id, enrollment_id: enrolled.id).count %>
+        <% complete_lesson = UserCourseProgress.where(user_id: user.id, enrollment_id: enrolled.id).count %>
       <% end %>
       <td><%= user.name %></td>
       <% if enrolled.present? && enrolled.enrollment_type == 'instructor' %>
@@ -23,9 +23,9 @@
         <td> Learner</td>
       <% end %>
       <td><%= enrolled.completion_time.strftime("%d-%m-%Y") if enrolled.present? && enrolled.completion_time.present? %></td>
-      <% if (enrolled.present? && enrolled.enrollment_type == 'instructor') || total_lesson == incomplete_lesson %>
+      <% if (enrolled.present? && enrolled.enrollment_type == 'instructor') || total_lesson == complete_lesson %>
         <td>Completed</td>
-      <% elsif enrolled.present? && total_lesson != incomplete_lesson %>
+      <% elsif enrolled.present? && total_lesson != complete_lesson %>
         <td>Incomplete</td>
       <% else %>
         <td>Not Assigned</td>

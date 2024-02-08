@@ -11,6 +11,10 @@ class LessonPolicy < ApplicationPolicy
     (user.enrollments.where(course_id: record.course_id, enrollment_type: "instructor" ).present?)
   end
 
+  def complete_lesson?
+    !( edit_lesson? || user.admin? )
+  end
+
   class Scope
     def initialize(user, scope)
       @user = user

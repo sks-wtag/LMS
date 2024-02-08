@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 RSpec.describe Enrollment, type: :model do
-  let(:enrollment) { FactoryBot.create(:enrollment) }
+  let(:enrollment) { FactoryBot.create(:enrollment, enrollment_type: "instructor") }
   describe 'Enrollment' do
     it 'has valid presence of' do
       expect(enrollment).to be_valid

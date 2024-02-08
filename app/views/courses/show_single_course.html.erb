@@ -3,9 +3,10 @@
     <h2 class="card-title "><%= @course.title %>
       <% if policy(@course).edit_course? %>
         <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo">Add new lesson</button>
-      <% elsif current_user.learner? %>
-        <% if @course.present? %>
-          <% enrollment = Enrollment.where(course_id: @course.id, user_id: current_user.id).first %>
+      <% end %>
+      <% enrollment = Enrollment.where(course_id: @course.id, user_id: current_user.id).first %>
+      <% if current_user.learner? || !policy(@course).edit_course? %>
+        <% if enrollment.present? %>
           <% gained_score = UserCourseProgress.joins(:lesson).where(enrollment_id: enrollment.id).pluck(:score).sum %>
           <% total_score = Lesson.where(course_id: @course.id).pluck(:score).sum %>
           <p style="font-size: 16px;color: green">Your
@@ -65,20 +66,43 @@
                 <% if content.content_type == 'text' %>
                   <div class="row mt-3 mb-3">
                     <div class="row" style="font-size: medium">
-                      <b><%= content.title %>  (<%= content.content_type %>) </b>
+                      <div class="col-10">
+                        <b><%= content.title %>  (<%= content.content_type %>) </b>
+                      </div>
+                      <div class="col-2">
+                        <%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
+                          <%= form.button "Delete", class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+                        <% end %>
+                      </div>
                     </div>
                     <div class="row" style="font-size: small">
                       <p><%= content.description %></p>
                     </div>
                   </div>
                 <% elsif content.content_type == 'pdf' %>
-                  <%= link_to content.title, url_for(content.files), target: "_blank" %>
+                  <div class="row">
+                    <div class="col-10">
+                      <%= link_to content.title, url_for(content.files), target: "_blank" %>
+                    </div>
+                    <div class="col-2">
+                      <%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
+                        <%= form.button "Delete", class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+                      <% end %>
+                    </div>
+                  </div>
                 <% else %>
                   <div class="row mb-3 text-left">
-                    <button type="button" class="btn btn-sm btn-secondary text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
-                      <%= content.title %>  <b>(<%= content.content_type %>)</b>
-                    </button>
-                    <%= render partial: 'show_image', locals: { content: content } %>
+                    <div class="col-10">
+                      <button type="button" class="btn btn-sm btn-secondary text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
+                        <%= content.title %>  <b>(<%= content.content_type %>)</b>
+                      </button>
+                      <%= render partial: 'show_image', locals: { content: content } %>
+                    </div>
+                    <div class="col-2">
+                      <%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
+                        <%= form.button "Delete", class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+                      <% end %>
+                    </div>
                   </div>
                 <% end %>
               <% end %>

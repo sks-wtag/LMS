@@ -4,16 +4,32 @@
     <th scope="col">Username</th>
     <th scope="col">Role</th>
     <th scope="col">Deadline</th>
+    <th scope="col">Status</th>
     <th scope="col">Action</th>
   </tr>
   </thead>
   <tbody>
+  <% total_lesson = Lesson.where(course_id: @course.id).count %>
   <% @users.each do |user| %>
     <tr>
       <% enrolled = user.enrollments.where(course_id: @course.id).first %>
+      <% if enrolled.present? %>
+        <% incomplete_lesson = UserCourseProgress.where(user_id: user.id, enrollment_id: enrolled.id).count %>
+      <% end %>
       <td><%= user.name %></td>
-      <td><%= user.role %></td>
+      <% if enrolled.present? && enrolled.enrollment_type == 'instructor' %>
+        <td> Instructor</td>
+      <% else %>
+        <td> Learner</td>
+      <% end %>
       <td><%= enrolled.completion_time.strftime("%d-%m-%Y") if enrolled.present? && enrolled.completion_time.present? %></td>
+      <% if (enrolled.present? && enrolled.enrollment_type == 'instructor') || total_lesson == incomplete_lesson %>
+        <td>Completed</td>
+      <% elsif enrolled.present? && total_lesson != incomplete_lesson %>
+        <td>Incomplete</td>
+      <% else %>
+        <td>Not Assigned</td>
+      <% end %>
       <td>
         <% if enrolled.present? %>
           <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">

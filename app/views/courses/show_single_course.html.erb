@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     <h2 class="card-title "><%= @course.title %>
-      <% if current_user.instructor? %>
+      <% if policy(@course).edit_course? %>
         <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo">Add new lesson</button>
       <% elsif current_user.learner? %>
         <% if @course.present? %>
@@ -30,21 +30,22 @@
                 </button>
                 <%= render partial: 'new_content_collapse', locals: { lesson: lesson } %>
               </div>
-              <% if policy(lesson).edit_lesson? %>
-                <div class="col-2">
+              <div class="col-2">
+                <% if policy(lesson).edit_lesson? %>
                   <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo<%= lesson.id %>">Add
                     new content
                   </button>
                   <%= link_to 'Edit', "/dashboard/edit_lesson/#{lesson.id}", class: "btn btn-sm btn-success" %>
+                <% end %>
+                <% if policy(lesson).destroy_lesson? %>
                   <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= lesson.id %>">
                     Delete
                   </button>
                   <%= render partial: 'delete_modal', locals: { lesson: lesson } %>
-                </div>
-              <% else %>
-                <div class="col-2">
+                <% end %>
+                <% unless policy(lesson).destroy_lesson? %>
                   <% enrollment = Enrollment.where(course_id: @course.id, user_id: current_user.id).first %>
-                  <% course_progress = UserCourseProgress.where(lesson_id: lesson.id, user_id: current_user.id, enrollment_id: enrollment.id ).first %>
+                  <% course_progress = UserCourseProgress.where(lesson_id: lesson.id, user_id: current_user.id, enrollment_id: enrollment.id).first %>
                   <% if course_progress.present? && course_progress.complete_status %>
                     <button class="btn btn-sm btn-success">Completed</button>
                   <% else %>
@@ -53,8 +54,8 @@
                       <%= form.submit "Complete!", class: "btn btn-sm btn-secondary" %>
                     <% end %>
                   <% end %>
-                </div>
-              <% end %>
+                <% end %>
+              </div>
             </div>
           </h2>
           <div id="collapse<%= lesson.id %>" class="accordion-collapse collapse" aria-labelledby="heading<%= lesson.id %>" data-bs-parent="#accordionExample">

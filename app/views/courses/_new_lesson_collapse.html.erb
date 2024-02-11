@@ -13,7 +13,7 @@
           </div>
           <div class="mt-4">
             <%= form.label "Point" %> </br>
-            <%= form.text_field :score, style: 'width:100%', placeholder: 'Provide point for this lesson', required: true %>
+            <%= form.text_field :score, style: 'width:100%', placeholder: 'Provide point for this lesson', min: 1, max: 10 , required: true %>
             <% @lesson.errors.full_messages_for(:score).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>

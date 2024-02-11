@@ -26,26 +26,31 @@ class UsersController < ApplicationController
   def change_password
     @user = current_user
     if @user.authenticate(params[:user][:current_password])
-      if @user.update(
+      if params[:user][:current_password] == params[:user][:password]
+        flash[:notice] = "Current password can't be the same as the new password"
+      elsif @user.update(
         password: params[:user][:password],
         password_confirmation: params[:user][:password_confirmation])
-        redirect_to root_path, notice: 'Password updated'
+        flash[:notice] = 'Password updated'
       else
-        redirect_to change_password, status: :unprocessable_entity
+        flash[:alert] = @user.errors.full_messages.join(", ")
       end
     else
-      flash[:error] = 'Incorrect password'
-      redirect_to change_password, status: :unprocessable_entity
+      flash[:alert] = 'Invalid credentials'
     end
+    redirect_to user_change_password_path
   end
 
   def update
     @user = current_user
     error = acceptable_image(params[:user][:picture], @user)
-    if error.size == 0
+    if params[:user][:picture].present? && error.size == 0
       @user.picture.purge
+      @user.picture.attach(params[:user][:picture])
+    elsif @user.errors[:picture].include?('Please upload your profile picture')
+      @user.errors.delete(:picture)
     end
-    if error.size == 0 && @user.update(update_params)
+    if @user.update(update_params)
       redirect_to user_update_path, notice: 'Account updated'
     else
       flash[:notice] = 'Please try again'
@@ -105,8 +110,7 @@ class UsersController < ApplicationController
       :first_name,
       :last_name,
       :phone,
-      :address,
-      :picture)
+      :address)
   end
 
   def get_email

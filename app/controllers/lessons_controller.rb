@@ -10,7 +10,11 @@ class LessonsController < ApplicationController
       flash[:notice] = 'A new lesson is added'
       redirect_to "/dashboard/show_a_course/#{@course.id}"
     else
-      flash[:notice] = "Please try again!"
+      if @lesson.errors.any?
+        flash[:alert] = @lesson.errors.full_messages.join(", ")
+      else
+        flash[:notice] = "Please try again!"
+      end
       redirect_to "/dashboard/show_a_course/#{@course.id}"
     end
   end

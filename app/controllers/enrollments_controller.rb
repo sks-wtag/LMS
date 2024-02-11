@@ -36,6 +36,7 @@ class EnrollmentsController < ApplicationController
       course_id: @course.id,
       enrollment_type: 'learner')
     if @enrollment.present? && @enrollment.save
+      SendScheduleMail.perform_at(@enrollment.completion_time-2.days,@enrollment.id)
       flash[:notice] = "Enrolled successfully"
     elsif @enrollment.errors[:completion_time].present?
       flash[:notice] = @enrollment.errors[:completion_time]

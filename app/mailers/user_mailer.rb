@@ -22,4 +22,11 @@ class UserMailer < ApplicationMailer
     @confirmation_token = @user.generate_confirmation_token
     mail to: @user.email, subject: 'Your account has been created'
   end
+
+  def send_schedule_email(user, course, enrollment)
+    @user = user
+    @course = course
+    @enrollment = enrollment
+    mail to: @user.email, subject: "Warning: #{@course.title} deadline is near to you"
+  end
 end

@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   post 'dashboard/enroll_course/:course_id', to: 'enrollments#enroll'
   delete 'dashboard/dis_enroll_course/:course_id', to: 'enrollments#dis_enroll'
   post 'dashboard/complete_lesson/:lesson_id', to: 'enrollments#complete_lesson'
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

@@ -52,7 +52,7 @@ RSpec.describe "Contents", type: :request do
     it "when it created a valid request as an admin" do
       login(admin)
       delete "/dashboard/delete_content/#{content.id}"
-      expect(flash[:notice]).to eq('You are not authorized to perform this action.')
+      expect(flash[:notice]).to eq('This content has been deleted')
     end
   end
 

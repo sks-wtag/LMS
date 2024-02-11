@@ -70,8 +70,8 @@
                         <b><%= content.title %>  (<%= content.content_type %>) </b>
                       </div>
                       <div class="col-2">
-                        <%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
-                          <%= form.button "Delete", class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+                        <% if policy(content).destroy_content? %>
+                          <%= render partial: 'delete_content_button', locals: { content: content } %>
                         <% end %>
                       </div>
                     </div>
@@ -85,8 +85,8 @@
                       <%= link_to content.title, url_for(content.files), target: "_blank" %>
                     </div>
                     <div class="col-2">
-                      <%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
-                        <%= form.button "Delete", class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+                      <% if policy(content).destroy_content? %>
+                        <%= render partial: 'delete_content_button', locals: { content: content } %>
                       <% end %>
                     </div>
                   </div>
@@ -99,8 +99,8 @@
                       <%= render partial: 'show_image', locals: { content: content } %>
                     </div>
                     <div class="col-2">
-                      <%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
-                        <%= form.button "Delete", class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+                      <% if policy(content).destroy_content? %>
+                        <%= render partial: 'delete_content_button', locals: { content: content } %>
                       <% end %>
                     </div>
                   </div>
@@ -114,25 +114,3 @@
   </div>
 </div>
 
-<script>
-    document.addEventListener('click', function () {
-        var contentTypeSelect = document.getElementById('content_content_type');
-        var textTypeDiv = document.getElementById('text_type');
-        var fileTypeDiv = document.getElementById('file_type');
-        toggleDivVisibility();
-        if (textTypeDiv.value === '')
-            textTypeDiv.value = 'Enter your descriptions'
-        contentTypeSelect.addEventListener('change', toggleDivVisibility);
-
-        function toggleDivVisibility() {
-            var selectedValue = contentTypeSelect.value;
-            if (selectedValue === 'text') {
-                textTypeDiv.style.display = 'block';
-                fileTypeDiv.style.display = 'none';
-            } else {
-                textTypeDiv.style.display = 'none';
-                fileTypeDiv.style.display = 'block';
-            }
-        }
-    });
-</script>

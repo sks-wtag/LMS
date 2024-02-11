@@ -9,6 +9,7 @@ class EnrollmentsController < ApplicationController
     unless @course.present?
       flash[:notice] = "Invalid params"
       redirect_to dashboard_show_course_path
+      return
     end
     @users = policy_scope(User)
   end
@@ -20,11 +21,13 @@ class EnrollmentsController < ApplicationController
     unless @course.present? || @user.present?
       flash[:notice] = "Invalid params"
       redirect_to dashboard_show_course_path
+      return
     end
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     if @enrollment.present?
       flash[:notice] = "This course has already been enrolled"
       redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
+      return
     end
 
     @enrollment = Enrollment.new(
@@ -49,11 +52,13 @@ class EnrollmentsController < ApplicationController
     unless @course.present? || @user.present?
       flash[:notice] = "Invalid params"
       redirect_to dashboard_show_course_path
+      return
     end
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     unless @enrollment.present?
       flash[:notice] = "This course has not already been enrolled in by this user."
       redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
+      return
     end
     total_lesson = Lesson.where(course_id: @course.id).count
     complete_lesson = UserCourseProgress.where(user_id: @user.id, enrollment_id: @enrollment.id).count
@@ -75,7 +80,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find_by(id: params[:enrollment_id])
     unless @lesson.present? || @enrollment.present?
       flash[:notice] = "Invalid request!"
-      redirect_to "/dashboard/show_a_course/#{@enrollment.course_id}"
+      redirect_to dashboard_show_course_path
+      return
     end
     @course_progress = UserCourseProgress.new(
       user_id: current_user.id,

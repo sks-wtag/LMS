@@ -14,11 +14,11 @@ class User < ApplicationRecord
   validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
   validates :password, format: { with: /\A(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}\z/,
-                                 message: "must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long" },
+                                 message: I18n.t('activerecord.user.password')},
             allow_nil: true
   validates_plausible_phone :phone, presence: true
   validates :address, length: { minimum: 2, maximum: 100 }, presence: true
-  phony_normalize :phone, default_country_code: 'BD'
+  phony_normalize :phone, default_country_code: I18n.t('activerecord.user.country')
   enum role: {
     learner: 0,
     instructor: 1,

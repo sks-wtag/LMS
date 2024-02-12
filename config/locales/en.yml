@@ -1,31 +1,111 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  activerecord:
+    enrollment:
+      completion_time: can't be set past the date or can't be set within 3 days.
+    lesson:
+      score: Score must be between 1 and 10
+    user:
+      password: Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long
+      country: BD
+  controller:
+    application:
+      authorized_alert: You are not authorized to perform this action.
+    confirmations:
+      create:
+        email_confirmation_notice: Please check your email for confirmation instructions
+        invalid_credentials: Invalid credentials.
+      edit:
+        account_confirmed: Your account has been confirmed
+        invalid_token: Invalid token
+    content:
+      create_content:
+        description: Saved in file
+        content_added: A new content is added
+        image_formats:
+          - image/jpeg
+          - image/png
+          - image/jpg
+        pdf_formats:
+          - application/pdf
+        video_formats:
+          - video/mp4
+          - video/mpeg
+      destroy_content:
+        content_deleted: This content has been deleted
+    courses:
+      new_course:
+        add_new_course: Dashboard -> Add a course
+      create_course:
+        course_added: This course has been added
+      show_course:
+        show_courses: Dashboard -> Show courses
+      show_single_course:
+        show_course: Dashboard -> Show a course
+      edit_course:
+        edit_a_course: Dashboard -> Edit a course
+      save_course:
+        success_notice: Successfully updated
+      delete_course:
+        success_notice: This course is deleted successfully
+    dashboards:
+      index:
+        dashboard_title: Dashboard
+      new_user:
+        add_user_title: Dashboard -> Add User
+      create_user:
+        success_notice: Added a user successfully
+      change_status:
+        success_notice: Status successfully updated.
+      show_user:
+        users_title: Dashboard -> Users
+    enrollments:
+      index:
+        title: Dashboard -> Enrollment
+      enroll:
+        enrolled_notice: This course has already been enrolled
+        enroll_success_notice: Enrolled successfully
+      dis_enroll:
+        already_dis_enroll_notice: This course has not already been enrolled in by this user.
+        owner_notice: He/She is the owner of this course.
+        completed_notice: This course has already been completed.
+        success_notice: Successfully dis-enroll.
+      complete_lesson:
+        success_notice: Thanks for completing this lesson!
+    lessons:
+      create_lesson:
+        success_notice: A new lesson is added
+      destroy_lesson:
+        success_notice: This lesson is deleted
+      edit_lesson:
+        title: Dashboard -> Edit a lesson
+      save_lesson:
+        success_notice: This lesson is updated
+    passwords:
+      create:
+        reset_notice: Reset instruction is sent to user emails
+        email_confirmation_notice: Please confirm email first.
+    sessions:
+      create:
+        success_notice: Successfully logged in
+      destroy:
+        logged_out_notice: Logged out
+    users:
+      change_password:
+        change_password_notice: Current password can't be the same as the new password
+        success_notice: Password updated
+      create:
+        check_email_instruction_notice: Please check your email confirmation instructions
+      destroy:
+        success_notice: This user account has been deleted
+      update:
+        picture_upload_error: Please upload your profile picture
+        success_notice: Account updated
+        picture_format_mismatch: Picture must be a JPEG or PNG format
+        picture_size_error: Picture size is too big
+  errors:
+    messages:
+      try_again: Please try again!
+      invalid_params: Invalid params
+      invalid_token: Invalid token
+      invalid_credentials: Invalid Credentials
+      does_not_match_file_format: Does not match file format

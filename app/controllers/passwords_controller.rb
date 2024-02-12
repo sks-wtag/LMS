@@ -6,12 +6,12 @@ class PasswordsController < ApplicationController
     if @user.present?
       if @user.confirmed?
         @user.send_password_reset_email!
-        redirect_to root_path, notice: 'Reset instruction is sent to user emails'
+        redirect_to root_path, notice: I18n.t('controller.passwords.create.reset_notice')
       else
-        redirect_to root_path, notice: 'Please confirm email first.'
+        redirect_to root_path, notice: I18n.t('controller.passwords.create.email_confirmation_notice')
       end
     else
-      redirect_to root_path, notice: 'Invalid Email or Password!'
+      redirect_to root_path, notice: I18n.t('errors.messages.invalid_credentials')
     end
   end
   
@@ -20,9 +20,9 @@ class PasswordsController < ApplicationController
   def edit
     @user = User.find_signed(params[:password_reset_token], purpose: :reset_password)
     if @user.present? && @user.unconfirmed?
-      redirect_to new_confirmation_path, notice: 'You must have confirm email before sign in'
+      redirect_to new_confirmation_path, notice: I18n.t('controller.passwords.create.email_confirmation_notice')
     elsif @user.nil?
-      redirect_to new_password_path, notice: 'Invalid or expired token'
+      redirect_to new_password_path, notice: I18n.t('errors.messages.invalid_token')
     end
   end
 
@@ -30,15 +30,15 @@ class PasswordsController < ApplicationController
     @user = User.find_signed(params[:password_reset_token], purpose: :reset_password)
     if @user.present?
       if @user.unconfirmed?
-        redirect_to new_confirmation_path, notice: 'You must have confirm email before login'
+        redirect_to new_confirmation_path, notice: I18n.t('controller.passwords.create.email_confirmation_notice')
       elsif @user.update(password_params)
-        redirect_to login_path, notice: 'Sign in'
+        redirect_to login_path
       else
         flash[:notice] = @user.errors.full_messages.to_sentence
         render edit, status: :unprocessable_entity
       end
     else
-      flash[:notice] = 'Invalid or expired token'
+      flash[:notice] = I18n.t('errors.messages.invalid_token')
       render :new, status: :unprocessable_entity
     end
   end

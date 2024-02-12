@@ -7,13 +7,13 @@ class LessonsController < ApplicationController
     @lesson = @course.lessons.build(lesson_params)
     authorize @lesson, policy_class: LessonPolicy
     if @lesson.save
-      flash[:notice] = 'A new lesson is added'
+      flash[:notice] = I18n.t('controller.lessons.create_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{@course.id}"
     else
       if @lesson.errors.any?
-        flash[:alert] = @lesson.errors.full_messages.join(", ")
+        flash[:error] = @lesson.errors.full_messages.join(", ")
       else
-        flash[:notice] = "Please try again!"
+        flash[:alert] = I18n.t('errors.messages.try_again')
       end
       redirect_to "/dashboard/show_a_course/#{@course.id}"
     end
@@ -24,16 +24,16 @@ class LessonsController < ApplicationController
     authorize @lesson
     course_id = @lesson.course_id
     if @lesson.present? && @lesson.destroy
-      flash[:notice] = "This lesson is deleted"
+      flash[:notice] = I18n.t('controller.lessons.destroy_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{course_id}"
     else
-      flash[:notice] = "Please try again"
+      flash[:alert] = I18n.t('errors.messages.try_again')
       redirect_to "/dashboard/show_a_course/#{course_id}"
     end
   end
 
   def edit_lesson
-    @page_title = 'Dashboard -> Edit a lesson'
+    @page_title = I18n.t('controller.lessons.edit_lesson.title')
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson
   end
@@ -42,10 +42,10 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson, :edit_lesson?
     if @lesson.update(lesson_params)
-      flash[:notice] = "This lesson is updated"
+      flash[:notice] = I18n.t('controller.lessons.save_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     else
-      flash[:notice] = "Please try again"
+      flash[:notice] = I18n.t('errors.messages.try_again')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     end
   end

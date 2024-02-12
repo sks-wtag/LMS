@@ -3,11 +3,11 @@ class EnrollmentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @page_title = 'Dashboard -> Enrollment'
+    @page_title = I18n.t('controller.enrollments.index.title')
     @course = Course.find_by(id: params[:course_id])
     authorize @course if @course.present?
     unless @course.present?
-      flash[:notice] = "Invalid params"
+      flash[:notice] = I18n.t('errors.messages.invalid_params')
       redirect_to dashboard_show_course_path
       return
     end
@@ -19,13 +19,13 @@ class EnrollmentsController < ApplicationController
     authorize @course, :index? if @course.present?
     @user = User.find_by(id: params[:user_id])
     unless @course.present? || @user.present?
-      flash[:notice] = "Invalid params"
+      flash[:alert] = I18n.t('errors.messages.invalid_params')
       redirect_to dashboard_show_course_path
       return
     end
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     if @enrollment.present?
-      flash[:notice] = "This course has already been enrolled"
+      flash[:notice] = I18n.t('controller.enrollments.enroll.enrolled_notice')
       redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
       return
     end
@@ -37,11 +37,11 @@ class EnrollmentsController < ApplicationController
       enrollment_type: 'learner')
     if @enrollment.present? && @enrollment.save
       SendScheduleMail.perform_at(@enrollment.completion_time-2.days,@enrollment.id)
-      flash[:notice] = "Enrolled successfully"
+      flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
     elsif @enrollment.errors[:completion_time].present?
-      flash[:notice] = @enrollment.errors[:completion_time]
+      flash[:error] = @enrollment.errors[:completion_time]
     else
-      flash[:notice] = "Please try again!"
+      flash[:alert] = I18n.t('errors.messages.try_again')
     end
     redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
   end
@@ -51,26 +51,26 @@ class EnrollmentsController < ApplicationController
     authorize @course, :index? if @course.present?
     @user = User.find_by(id: params[:user_id])
     unless @course.present? || @user.present?
-      flash[:notice] = "Invalid params"
+      flash[:notice] = I18n.t('errors.messages.invalid_params')
       redirect_to dashboard_show_course_path
       return
     end
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     unless @enrollment.present?
-      flash[:notice] = "This course has not already been enrolled in by this user."
+      flash[:notice] = I18n.t('controller.enrollments.dis_enroll.already_dis_enroll_notice')
       redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
       return
     end
     total_lesson = Lesson.where(course_id: @course.id).count
     complete_lesson = UserCourseProgress.where(user_id: @user.id, enrollment_id: @enrollment.id).count
-    if @enrollment.enrollment_type == "instructor"
-      flash[:notice] = "He/She is the owner of this course."
+    if @enrollment.enrollment_type == 'instructor'
+      flash[:message] = I18n.t('controller.enrollments.dis_enroll.owner_notice')
     elsif total_lesson == complete_lesson && total_lesson != 0
-      flash[:notice] = "This course has already been completed."
+      flash[:message] = I18n.t('controller.enrollments.dis_enroll.completed_notice')
     elsif @enrollment.present? && @enrollment.destroy
-      flash[:notice] = "Successfully dis-enroll."
+      flash[:notice] = I18n.t('controller.enrollments.dis_enroll.success_notice')
     else
-      flash[:notice] = "Please try again!"
+      flash[:alert] = I18n.t('errors.messages.try_again')
     end
     redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
   end
@@ -80,7 +80,7 @@ class EnrollmentsController < ApplicationController
     authorize @lesson, :complete_lesson? if @lesson.present?
     @enrollment = Enrollment.find_by(id: params[:enrollment_id])
     unless @lesson.present? || @enrollment.present?
-      flash[:notice] = "Invalid request!"
+      flash[:notice] = I18n.t('errors.messages.invalid_params')
       redirect_to dashboard_show_course_path
       return
     end
@@ -92,9 +92,9 @@ class EnrollmentsController < ApplicationController
       complete_time: DateTime.now
     )
     if @course_progress.save
-      flash[:notice] = "Thanks for completing this lesson!"
+      flash[:notice] = I18n.t('controller.enrollments.complete_lesson.success_notice')
     else
-      flash[:notice] = "Please try again!"
+      flash[:alert] = I18n.t('errors.messages.try_again')
     end
     redirect_to "/dashboard/show_a_course/#{@enrollment.course_id}"
   end

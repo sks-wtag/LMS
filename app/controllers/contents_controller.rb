@@ -10,10 +10,10 @@ class ContentsController < ApplicationController
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson, :create_lesson?, policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
-    if @content.content_type != "text" && params[:files].present?
+    if @content.content_type != 'text' && params[:files].present?
       error = acceptable_file(params[:files], @content)
       if error.size ==0 && @content.files.attach(params[:files])
-        @content.description = 'Saved in file'
+        @content.description = I18n.t('controller.content.create_content.description')
       else
         flash[:message] = error[:files]
         redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
@@ -21,10 +21,10 @@ class ContentsController < ApplicationController
       end
     end
     if @content.save
-      flash[:notice] = "A new content is added"
+      flash[:notice] = I18n.t('controller.content.create_content.content_added')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     else
-      flash[:notice] = "Please try again"
+      flash[:alert] = I18n.t('errors.messages.try_again')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     end
   end
@@ -33,9 +33,9 @@ class ContentsController < ApplicationController
     @content = Content.find_by(id: params[:content_id])
     authorize @content if @content.present?
     if @content.present? && @content.destroy
-      flash[:notice] = "This content has been deleted"
+      flash[:notice] = I18n.t('controller.content.destroy_content.content_deleted')
     else
-      flash[:notice] = "Please try again!"
+      flash[:alert] = I18n.t('errors.messages.try_again')
     end
     redirect_to "/dashboard/show_a_course/#{@content.lesson.course_id}"
   end
@@ -47,13 +47,13 @@ class ContentsController < ApplicationController
   end
 
   def acceptable_file(files, record)
-    acceptable_image = ["image/jpeg", "image/png", "image/jpg"]
-    acceptable_pdf = ["application/pdf"]
-    acceptable_video = ["video/mp4", "video/mpeg"]
-    unless (record.content_type == "pdf" && acceptable_pdf.include?(files.content_type))  ||
-      (record.content_type == "image" && acceptable_image.include?(files.content_type)) ||
-      (record.content_type == "video" && acceptable_video.include?(files.content_type))
-      record.errors.add(:files, "Does not match file format")
+    acceptable_image = I18n.t('controller.content.create_content.image_formats')
+    acceptable_pdf = I18n.t('controller.content.create_content.pdf_formats')
+    acceptable_video = I18n.t('controller.content.create_content.video_formats')
+    unless (record.content_type == 'pdf' && acceptable_pdf.include?(files.content_type))  ||
+      (record.content_type == 'image' && acceptable_image.include?(files.content_type)) ||
+      (record.content_type == 'video' && acceptable_video.include?(files.content_type))
+      record.errors.add(:files, I18n.t('errors.messages.does_not_match_file_format'))
     end
     record.errors
   end

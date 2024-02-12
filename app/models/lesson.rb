@@ -9,7 +9,7 @@ class Lesson < ApplicationRecord
   validates :score, presence: true, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 1,
-    message: "Score must be between 1 and 10",
+    message: I18n.t('activerecord.lesson.score'),
     less_than_or_equal_to: 10 }
 
   private

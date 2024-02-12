@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_action :authenticate_user!
 
   def new_course
-    @page_title = 'Dashboard -> Add a course'
+    @page_title = I18n.t('controller.courses.new_course.add_new_course')
     @course = Course.new({})
     authorize @course
   end
@@ -12,9 +12,9 @@ class CoursesController < ApplicationController
     @user = current_user
     @course = @user.courses.new(course_params)
     authorize @course if @course.present?
-    @enrollment = @course.enrollments.build(user: @user, enrollment_type: "instructor")
+    @enrollment = @course.enrollments.build(user: @user, enrollment_type: 'instructor')
     if @course.save && @enrollment.save
-      flash[:notice] = 'This course has been added'
+      flash[:notice] = I18n.t('controller.courses.create_course.course_added')
       redirect_to dashboard_show_course_path
     else
       render :new_course, status: :unprocessable_entity
@@ -22,13 +22,13 @@ class CoursesController < ApplicationController
   end
 
   def show_course
-    @page_title = 'Dashboard -> Show courses'
+    @page_title = I18n.t('controller.courses.show_course.show_courses')
     @courses = policy_scope(Course)
     authorize @courses
   end
 
   def show_single_course
-    @page_title = 'Dashboard -> Show a courses'
+    @page_title = I18n.t('controller.courses.show_single_course.show_course')
     @course = Course.includes(:lessons).find_by(id: params[:id])
     authorize @course
     @lesson = Lesson.new
@@ -36,7 +36,7 @@ class CoursesController < ApplicationController
   end
 
   def edit_course
-    @page_title = 'Dashboard -> Edit a course'
+    @page_title = I18n.t('controller.courses.edit_course.edit_a_course')
     @course = Course.find_by(id: params[:id])
     authorize @course
   end
@@ -45,7 +45,7 @@ class CoursesController < ApplicationController
     @course = Course.find_by(id: params[:id])
     authorize @course
     if @course.update(course_params)
-      flash[:notice] = 'Successfully updated'
+      flash[:notice] = I18n.t('controller.courses.save_course.success_notice')
       redirect_to dashboard_show_course_path
     else
       render :new_course, status: :unprocessable_entity
@@ -56,10 +56,10 @@ class CoursesController < ApplicationController
     @course = Course.find_by(id: params[:id])
     authorize @course if @course.present?
     if @course.present? && @course.destroy
-      flash[:notice] = "This course is deleted successfully"
+      flash[:notice] = I18n.t('controller.courses.delete_course.success_notice')
       redirect_to dashboard_show_course_path
     else
-      flash[:notice] = "Please try again!"
+      flash[:notice] = I18n.t('errors.messages.try_again')
       redirect_to dashboard_show_course_path
     end
   end

@@ -17,6 +17,8 @@ module Lms
     config.autoload_lib(ignore: %w(assets tasks))
     config.active_job.queue_adapter = :sidekiq
     config.middleware.use Rack::Attack
+    I18n.available_locales = [:en]
+    I18n.default_locale = :en
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

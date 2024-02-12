@@ -6,9 +6,9 @@ class ConfirmationsController < ApplicationController
     @user = User.find_by(email: params[:user][:email].downcase)
     if @user.present? && @user.unconfirmed?
       @user.send_confirmation_email!
-      redirect_to root_path, notice: 'Please check your email for confirmation instructions'
+      redirect_to root_path, notice: I18n.t('controller.confirmations.create.email_confirmation_notice')
     else
-      redirect_to new_confirmation_path, notice: 'Invalid Email or Password!'
+      redirect_to new_confirmation_path, alert: I18n.t('controller.confirmations.create.invalid_credentials')
     end
   end
 
@@ -17,9 +17,9 @@ class ConfirmationsController < ApplicationController
     if @user.present?
       if @user.confirm!
         login(@user)
-        redirect_to root_path, notice: 'Your account has been confirmed'
+        redirect_to root_path, notice: I18n.t('controller.confirmations.edit.account_confirmed')
       else
-        redirect_to new_confirmation_path, notice: 'Invalid token'
+        redirect_to new_confirmation_path, notice: I18n.t('controller.confirmations.edit.invalid_token')
       end
     end
   end

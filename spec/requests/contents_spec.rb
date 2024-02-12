@@ -13,7 +13,7 @@ RSpec.describe "Contents", type: :request do
     it "when it created a valid request as an instructor" do
       login(instructor)
       post "/dashboard/save_content/#{lesson.id}", params: { content: content }, as: :json
-      expect(flash[:notice]).to eq("A new content is added")
+      expect(flash[:notice]).to eq(I18n.t('controller.content.create_content.content_added'))
     end
 
     it "when it created a valid request as an admin with file" do
@@ -31,13 +31,13 @@ RSpec.describe "Contents", type: :request do
                  },
                files: fixture_file_upload(file_path, 'image/jpg')
              }
-      expect(flash[:notice]).to eq("A new content is added")
+      expect(flash[:notice]).to eq(I18n.t('controller.content.create_content.content_added'))
     end
 
     it "when it created a valid request as an learner" do
       login(learner)
       post "/dashboard/save_content/#{lesson.id}", params: { content: content }, as: :json
-      expect(flash[:notice]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
 
@@ -46,13 +46,13 @@ RSpec.describe "Contents", type: :request do
     it "when it created a valid request as an instructor" do
       login(instructor)
       delete "/dashboard/delete_content/#{content.id}"
-      expect(flash[:notice]).to eq("This content has been deleted")
+      expect(flash[:notice]).to eq(I18n.t('controller.content.destroy_content.content_deleted'))
     end
 
     it "when it created a valid request as an admin" do
       login(admin)
       delete "/dashboard/delete_content/#{content.id}"
-      expect(flash[:notice]).to eq('This content has been deleted')
+      expect(flash[:notice]).to eq(I18n.t('controller.content.destroy_content.content_deleted'))
     end
   end
 

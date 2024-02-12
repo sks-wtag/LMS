@@ -8,12 +8,9 @@ en:
       password: Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long
       country: BD
   controller:
-    application:
-      authorized_alert: You are not authorized to perform this action.
     confirmations:
       create:
         email_confirmation_notice: Please check your email for confirmation instructions
-        invalid_credentials: Invalid credentials.
       edit:
         account_confirmed: Your account has been confirmed
         invalid_token: Invalid token
@@ -109,3 +106,4 @@ en:
       invalid_token: Invalid token
       invalid_credentials: Invalid Credentials
       does_not_match_file_format: Does not match file format
+      authorized_alert: You are not authorized to perform this action.

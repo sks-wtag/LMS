@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   private
   def user_not_authorized
-    flash[:alert] = I18n.t('controller.application.authorized_alert')
+    flash[:alert] = I18n.t('errors.messages.authorized_alert')
     redirect_to dashboard_show_user_path
   end
 end

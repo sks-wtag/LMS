@@ -8,7 +8,7 @@ class ConfirmationsController < ApplicationController
       @user.send_confirmation_email!
       redirect_to root_path, notice: I18n.t('controller.confirmations.create.email_confirmation_notice')
     else
-      redirect_to new_confirmation_path, alert: I18n.t('controller.confirmations.create.invalid_credentials')
+      redirect_to new_confirmation_path, alert: I18n.t('errors.messages.invalid_credentials')
     end
   end
 

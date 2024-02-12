@@ -22,7 +22,7 @@ RSpec.describe "Enrollments", type: :request do
     it "when it created a invalid params as an admin" do
       login(admin)
       get "/dashboard/enroll_course/#{234234}"
-      expect(flash[:notice]).to eq("Invalid params")
+      expect(flash[:notice]).to eq( I18n.t('errors.messages.invalid_params'))
       expect(response).to redirect_to "/dashboard/show_course"
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe "Enrollments", type: :request do
             user_id: admin.id
           }
       end.to change(Enrollment, :count).by(1)
-      expect(flash[:notice]).to eq("Enrolled successfully")
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.enroll.enroll_success_notice'))
     end
 
     it "When it crated a valid request as an admin but completion time is less then the current date" do
@@ -47,7 +47,7 @@ RSpec.describe "Enrollments", type: :request do
           completion_time: DateTime.now - 7.day,
           user_id: admin.id
         }
-      expect(flash[:notice]).to eq(["can't be set past date"])
+      expect(flash[:error]).to eq([I18n.t('activerecord.enrollment.completion_time')])
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe "Enrollments", type: :request do
                    user_id: instructor.id
                  }
       end.to change(Enrollment, :count).by(0)
-      expect(flash[:notice]).to eq("He/She is the owner of this course.")
+      expect(flash[:message]).to eq(I18n.t('controller.enrollments.dis_enroll.owner_notice'))
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
 
@@ -75,7 +75,7 @@ RSpec.describe "Enrollments", type: :request do
                    user_id: learner.id
                  }
       end.to change(Enrollment, :count).by(-1)
-      expect(flash[:notice]).to eq("Successfully dis-enroll.")
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.dis_enroll.success_notice'))
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
 
@@ -89,7 +89,7 @@ RSpec.describe "Enrollments", type: :request do
                    user_id: learner.id
                  }
       end.to change(Enrollment, :count).by(0)
-      expect(flash[:notice]).to eq("This course has already been completed.")
+      expect(flash[:message]).to eq(I18n.t('controller.enrollments.dis_enroll.completed_notice'))
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
 
@@ -116,7 +116,7 @@ RSpec.describe "Enrollments", type: :request do
                  enrollment_id: enroll_as_learner.id
                }
       end.to change(UserCourseProgress, :count).by(1)
-      expect(flash[:notice]).to eq("Thanks for completing this lesson!")
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.complete_lesson.success_notice'))
       expect(response).to redirect_to "/dashboard/show_a_course/#{lesson.course_id}"
     end
   end

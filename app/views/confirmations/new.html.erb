@@ -6,7 +6,7 @@
     <div class="card-body">
       <%= form_with model: @user, url: confirmations_path do |form| %>
         <%= form.email_field :email, placeholder: 'Enter your confirmation email', required: true %>
-        <%= form.submit "Confirm Email" %>
+        <%= form.submit "Send Email" %>
       <% end %>
     </div>
   </div>

@@ -7,8 +7,7 @@ class EnrollmentsController < ApplicationController
     @course = Course.find_by(id: params[:course_id])
     authorize @course if @course.present?
     unless @course.present?
-      flash[:notice] = I18n.t('errors.messages.invalid_params')
-      redirect_to dashboard_show_course_path
+      invalid_params
       return
     end
     @users = policy_scope(User)
@@ -18,9 +17,8 @@ class EnrollmentsController < ApplicationController
     @course = Course.find_by(id: params[:course_id])
     authorize @course, :index? if @course.present?
     @user = User.find_by(id: params[:user_id])
-    unless @course.present? || @user.present?
-      flash[:alert] = I18n.t('errors.messages.invalid_params')
-      redirect_to dashboard_show_course_path
+    unless @course.present? && @user.present?
+      invalid_params
       return
     end
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
@@ -51,8 +49,7 @@ class EnrollmentsController < ApplicationController
     authorize @course, :index? if @course.present?
     @user = User.find_by(id: params[:user_id])
     unless @course.present? || @user.present?
-      flash[:notice] = I18n.t('errors.messages.invalid_params')
-      redirect_to dashboard_show_course_path
+      invalid_params
       return
     end
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
@@ -77,13 +74,12 @@ class EnrollmentsController < ApplicationController
 
   def complete_lesson
     @lesson = Lesson.find_by(id: params[:lesson_id])
-    authorize @lesson, :complete_lesson? if @lesson.present?
     @enrollment = Enrollment.find_by(id: params[:enrollment_id])
-    unless @lesson.present? || @enrollment.present?
-      flash[:notice] = I18n.t('errors.messages.invalid_params')
-      redirect_to dashboard_show_course_path
+    unless @lesson.present? && @enrollment.present?
+      invalid_params
       return
     end
+    authorize @lesson, :complete_lesson?
     @course_progress = UserCourseProgress.new(
       user_id: current_user.id,
       lesson_id: @lesson.id,

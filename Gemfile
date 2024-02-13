@@ -16,7 +16,6 @@ gem 'importmap-rails'
 gem "image_processing", ">= 1.2"
 # Hotwire's SPA-lke page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
-gem 'tzinfo-data'
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]

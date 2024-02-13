@@ -8,6 +8,7 @@ class PasswordsController < ApplicationController
         @user.send_password_reset_email!
         redirect_to root_path, notice: I18n.t('controller.passwords.create.reset_notice')
       else
+        @user.send_confirmation_email!
         redirect_to root_path, notice: I18n.t('controller.passwords.create.email_confirmation_notice')
       end
     else
@@ -31,11 +32,15 @@ class PasswordsController < ApplicationController
     if @user.present?
       if @user.unconfirmed?
         redirect_to new_confirmation_path, notice: I18n.t('controller.passwords.create.email_confirmation_notice')
+      elsif @user.authenticate(params[:user][:password])
+        flash[:alert] = I18n.t('controller.users.change_password.change_password_notice')
+        render :edit, status: :unprocessable_entity
       elsif @user.update(password_params)
+        flash[:notice] = I18n.t('controller.passwords.update.success_notice')
         redirect_to login_path
       else
         flash[:notice] = @user.errors.full_messages.to_sentence
-        render edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_entity
       end
     else
       flash[:notice] = I18n.t('errors.messages.invalid_token')

@@ -42,12 +42,8 @@ Rails.application.routes.draw do
   post 'dashboard/complete_lesson/:lesson_id', to: 'enrollments#complete_lesson'
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check
   resources :confirmations, only: %i[create edit new], param: :confirmation_token
   resources :passwords, only: %i[create edit new update], param: :password_reset_token
-  # Defines the root path route ("/")
-  # root "posts#index"
+  match "*path", to: "application#not_found", via: :all, constraints: ->(req) { !req.path.start_with?('/rails/active_storage') }
 end

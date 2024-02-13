@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:user][:email]&.downcase)
     if @user.present?
       if @user.unconfirmed?
-        redirect_to new_confirmation_path, alert: I18n.t('errors.messages.invalid_credentials')
+        redirect_to new_confirmation_path, alert: I18n.t('controller.sessions.create.confirm_notice')
       elsif @user.authenticate(params[:user][:password])
         login(@user)
         redirect_to root_path, notice: I18n.t('controller.sessions.create.success_notice')

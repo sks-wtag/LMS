@@ -30,7 +30,11 @@ class CoursesController < ApplicationController
   def show_single_course
     @page_title = I18n.t('controller.courses.show_single_course.show_course')
     @course = Course.includes(:lessons).find_by(id: params[:id])
-    authorize @course
+    unless @course.present?
+      invalid_params
+      return
+    end
+    authorize @course if @course.present?
     @lesson = Lesson.new
     @content = Content.new
   end
@@ -38,12 +42,20 @@ class CoursesController < ApplicationController
   def edit_course
     @page_title = I18n.t('controller.courses.edit_course.edit_a_course')
     @course = Course.find_by(id: params[:id])
+    unless @course.present?
+      invalid_params
+      return
+    end
     authorize @course
   end
 
   def save_course
     @course = Course.find_by(id: params[:id])
-    authorize @course
+    unless @course.present?
+      invalid_params
+      return
+    end
+    authorize @course if @course.present?
     if @course.update(course_params)
       flash[:notice] = I18n.t('controller.courses.save_course.success_notice')
       redirect_to dashboard_show_course_path
@@ -54,6 +66,10 @@ class CoursesController < ApplicationController
 
   def destroy_course
     @course = Course.find_by(id: params[:id])
+    unless @course.present?
+      invalid_params
+      return
+    end
     authorize @course if @course.present?
     if @course.present? && @course.destroy
       flash[:notice] = I18n.t('controller.courses.delete_course.success_notice')

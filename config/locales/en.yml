@@ -3,7 +3,7 @@ en:
     enrollment:
       completion_time: can't be set past the date or can't be set within 3 days.
     lesson:
-      score: Score must be between 1 and 10
+      score: must be between 1 and 10
     user:
       password: Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long
       country: BD
@@ -13,7 +13,6 @@ en:
         email_confirmation_notice: Please check your email for confirmation instructions
       edit:
         account_confirmed: Your account has been confirmed
-        invalid_token: Invalid token
     content:
       create_content:
         description: Saved in file
@@ -80,10 +79,13 @@ en:
     passwords:
       create:
         reset_notice: Reset instruction is sent to user emails
-        email_confirmation_notice: Please confirm email first.
+        email_confirmation_notice: Please confirm the email first, and your confirmation instructions will be sent to your email.
+      update:
+        success_notice: Password updated successfully
     sessions:
       create:
         success_notice: Successfully logged in
+        confirm_notice: Please confirm the email first
       destroy:
         logged_out_notice: Logged out
     users:

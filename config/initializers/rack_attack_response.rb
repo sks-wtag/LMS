@@ -1,4 +1,4 @@
-Rack::Attack.throttled_response = ->(env) {
+Rack::Attack.throttled_responder = ->(env) {
   [
     403,
     { 'Content-Type' => 'application/json' },

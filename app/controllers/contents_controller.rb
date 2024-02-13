@@ -8,6 +8,10 @@ class ContentsController < ApplicationController
 
   def create_content
     @lesson = Lesson.find_by(id: params[:lesson_id])
+    unless @lesson.present?
+      invalid_params
+      return
+    end
     authorize @lesson, :create_lesson?, policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
     if @content.content_type != 'text' && params[:files].present?
@@ -22,16 +26,19 @@ class ContentsController < ApplicationController
     end
     if @content.save
       flash[:notice] = I18n.t('controller.content.create_content.content_added')
-      redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     else
       flash[:alert] = I18n.t('errors.messages.try_again')
-      redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     end
+    redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
   end
 
   def destroy_content
     @content = Content.find_by(id: params[:content_id])
-    authorize @content if @content.present?
+    unless @content.present?
+      invalid_params
+      return
+    end
+    authorize @content
     if @content.present? && @content.destroy
       flash[:notice] = I18n.t('controller.content.destroy_content.content_deleted')
     else

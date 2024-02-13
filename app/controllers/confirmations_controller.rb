@@ -19,7 +19,7 @@ class ConfirmationsController < ApplicationController
         login(@user)
         redirect_to root_path, notice: I18n.t('controller.confirmations.edit.account_confirmed')
       else
-        redirect_to new_confirmation_path, notice: I18n.t('controller.confirmations.edit.invalid_token')
+        redirect_to new_confirmation_path, notice: I18n.t('errors.messages.invalid_token')
       end
     end
   end

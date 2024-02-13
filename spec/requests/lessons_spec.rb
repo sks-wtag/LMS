@@ -7,6 +7,7 @@ RSpec.describe "Lessons", type: :request do
   let!(:course) { create(:course) }
   let!(:enrollment) { create(:enrollment, enrollment_type: "instructor", user_id: instructor.id, course_id: course.id) }
   let!(:lesson) { create(:lesson, course_id: course.id) }
+  let!(:invalid_lesson) { create(:lesson, title: '', description: '', course_id: course.id)}
   describe "POST /dashboard/add_lesson/:course_id" do
     it "when it created with valid params as an instructor" do
       login(instructor)
@@ -21,7 +22,7 @@ RSpec.describe "Lessons", type: :request do
     it "when it created with invalid params as an instructor" do
       login(instructor)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: { title: '', description: '' } }, as: :json
-      expect(flash[:notice]).to eq("Please try again!")
+      expect(flash[:alert]).to eq("Please try again!")
       expect(response).to redirect_to("/dashboard/show_a_course/#{course.id}")
     end
 

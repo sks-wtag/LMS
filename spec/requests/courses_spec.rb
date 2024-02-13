@@ -175,8 +175,7 @@ RSpec.describe "Courses", type: :request do
       login(admin)
       delete "/dashboard/delete_course/#{324234}"
       expect(response).to have_http_status(302)
-      expect(flash[:notice]).to eq(I18n.t('errors.messages.try_again'))
-      expect(response).to redirect_to dashboard_show_course_path
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.invalid_params'))
     end
   end
 

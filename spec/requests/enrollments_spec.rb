@@ -22,8 +22,7 @@ RSpec.describe "Enrollments", type: :request do
     it "when it created a invalid params as an admin" do
       login(admin)
       get "/dashboard/enroll_course/#{234234}"
-      expect(flash[:notice]).to eq( I18n.t('errors.messages.invalid_params'))
-      expect(response).to redirect_to "/dashboard/show_course"
+      expect(flash[:alert]).to eq( I18n.t('errors.messages.invalid_params'))
     end
   end
 

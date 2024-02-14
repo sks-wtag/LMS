@@ -7,9 +7,9 @@ class UserPolicy
 
     def resolve
       if user.admin?
-        scope.where(organization_id: user.organization_id)
+        scope.where(organization_id: user.organization_id).order(:id)
       else
-        scope.where(organization_id: user.organization_id, status: 'Active')
+        scope.where(organization_id: user.organization_id, status: 'Active').order(:id)
       end
     end
 

@@ -25,7 +25,9 @@
       <td><%= user.role %></td>
       <% if policy(:dashboard).admin? %>
         <td>
-          <%= link_to user.status, "/dashboard/change_status/#{user.id}", class: 'btn btn-sm btn-warning' %> |
+          <%= link_to user.status, "/dashboard/change_status/#{user.id}",data: {
+            turbo_method: :get,
+          }, class: 'btn btn-sm btn-warning' %> |
           <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
             Delete
           </button>

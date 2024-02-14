@@ -53,7 +53,9 @@ class UsersController < ApplicationController
     if @user.update(update_params)
       redirect_to user_update_path, notice: I18n.t('controller.users.update.success_notice')
     else
-      flash[:alert] = I18n.t('errors.messages.try_again')
+      unless @user.errors.size
+        flash[:alert] = I18n.t('errors.messages.try_again')
+      end
       render 'edit', status: :unprocessable_entity
     end
   end

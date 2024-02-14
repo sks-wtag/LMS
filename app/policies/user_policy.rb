@@ -9,7 +9,7 @@ class UserPolicy
       if user.admin?
         scope.where(organization_id: user.organization_id).order(:id)
       else
-        scope.where(organization_id: user.organization_id, status: 'Active').order(:id)
+        scope.where(organization_id: user.organization_id, status: 'Active', role: %w[instructor learner]).order(:id)
       end
     end
 

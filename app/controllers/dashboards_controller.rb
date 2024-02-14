@@ -7,13 +7,13 @@ class DashboardsController < ApplicationController
   end
 
   def new_user
-    authorize :dashboard, :new_user?
+    authorize current_user, :new_user?, policy_class: DashboardPolicy
     @page_title = I18n.t('controller.dashboards.new_user.add_user_title')
     @user = User.new
   end
 
   def create_user
-    authorize :dashboard, :create_user?
+    authorize current_user, :create_user?, policy_class: DashboardPolicy
     @user = User.new(user_params)
     @organization = Organization.find(current_user.organization_id)
     @user.organization = @organization
@@ -27,8 +27,12 @@ class DashboardsController < ApplicationController
   end
 
   def change_status
-    authorize :dashboard, :change_status?
     @user = User.find_by(id: params[:id])
+    unless @user.present?
+      invalid_params(redirect_path: dashboard_show_course_path)
+      return
+    end
+    authorize @user, :change_status?, policy_class: DashboardPolicy
     if @user.present? && @user.update(status: (@user.status == 'Active' ? 'Inactive' : 'Active'))
       redirect_to dashboard_show_user_path, notice: I18n.t('controller.dashboards.change_status.success_notice')
     else
@@ -37,14 +41,18 @@ class DashboardsController < ApplicationController
   end
 
   def show_user
-    authorize :dashboard, :show_user?
+    authorize current_user, :show_user?, policy_class: DashboardPolicy
     @users = policy_scope(User)
     @page_title = I18n.t('controller.dashboards.show_user.users_title')
   end
 
   def delete_user
-    authorize :dashboard, :delete_user?
     @user = User.find_by(id: params[:id])
+    unless @user.present?
+      invalid_params(redirect_path: dashboard_show_user_path)
+      return
+    end
+    authorize @user, :delete_user?, policy_class: DashboardPolicy
     @user.destroy
     redirect_to dashboard_show_user_path
   end

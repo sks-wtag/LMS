@@ -67,6 +67,8 @@ en:
         success_notice: Successfully dis-enroll.
       complete_lesson:
         success_notice: Thanks for completing this lesson!
+      assign_all_user:
+        fail_attempted: Attempted failed of {number_of_user} user
     lessons:
       create_lesson:
         success_notice: A new lesson is added

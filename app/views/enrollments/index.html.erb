@@ -1,3 +1,14 @@
+<div class="row">
+  <div class="col-8">
+    <p>Do you want to assign this course to all users?</p>
+  </div>
+  <div class="col-3">
+    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModalcourse">
+      <b style="font-size: 20px;">Assign to all</b>
+    </button>
+    <%= render partial: "all_enrollment_modal", locals: { course: @course } %>
+  </div>
+</div>
 <table class="table table-striped w-100">
   <thead>
   <tr>
@@ -19,19 +30,23 @@
       <td><%= user.name %></td>
       <% if enrolled.present? && enrolled.enrollment_type == 'instructor' %>
         <td> Instructor</td>
+      <% elsif user.admin? %>
+        <td> Admin</td>
       <% else %>
         <td> Learner</td>
       <% end %>
       <td><%= enrolled.completion_time.strftime("%d-%m-%Y") if enrolled.present? && enrolled.completion_time.present? %></td>
       <% if (enrolled.present? && enrolled.enrollment_type == 'instructor') || total_lesson == complete_lesson %>
         <td>Completed</td>
+      <% elsif user.admin? %>
+        <td>----</td>
       <% elsif enrolled.present? && total_lesson != complete_lesson %>
         <td>Incomplete</td>
       <% else %>
         <td>Not Assigned</td>
       <% end %>
       <td>
-        <% if enrolled.present? %>
+        <% if enrolled.present?  %>
           <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
             <b style="font-size: 20px;">-</b>
           </button>

@@ -1,12 +1,13 @@
 class DashboardPolicy
-  attr_reader :user
+  attr_reader :user, :record
 
-  def initialize(user, _record)
+  def initialize(user, record)
     @user = user
+    @record = record
   end
 
   def change_status?
-    user.admin?
+    user.admin? && !record.admin?
   end
 
   def create_user?
@@ -14,7 +15,7 @@ class DashboardPolicy
   end
 
   def delete_user?
-    user.admin?
+    user.admin? && !record.admin?
   end
 
   def new_user?

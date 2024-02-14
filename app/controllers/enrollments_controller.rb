@@ -33,8 +33,8 @@ class EnrollmentsController < ApplicationController
       user_id: @user.id,
       course_id: @course.id,
       enrollment_type: 'learner')
-    if @enrollment.present? && @enrollment.save
-      SendScheduleMail.perform_at(@enrollment.completion_time-2.days,@enrollment.id)
+    if !@user.admin? && @enrollment.present? && @enrollment.save
+      SendScheduleMail.perform_at(@enrollment.completion_time - 2.days, @enrollment.id)
       flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
     elsif @enrollment.errors[:completion_time].present?
       flash[:error] = @enrollment.errors[:completion_time]
@@ -70,6 +70,40 @@ class EnrollmentsController < ApplicationController
       flash[:alert] = I18n.t('errors.messages.try_again')
     end
     redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
+  end
+
+  def assign_all_user
+    @course = Course.find_by(id: params[:course_id])
+    unless @course.present?
+      invalid_params
+      return
+    end
+    authorize @course, :index? if @course.present?
+    @users = User.where(organization_id: current_user.organization_id, status: 'Active', role: %w[instructor learner]).order(:id)
+    failed_attempted = []
+
+    @users.each do |user|
+      @enrollment = Enrollment.find_by(user_id: user.id, course_id: @course.id)
+      unless @enrollment.present? && user.id == @enrollment.user_id
+        @enrollment = Enrollment.new(
+          completion_time: params[:completion_time],
+          user_id: @user.id,
+          course_id: @course.id,
+          enrollment_type: 'learner')
+        begin
+          @enrollment.save!
+        rescue => e
+          failed_attempted.push(user)
+        end
+      end
+    end
+
+    if failed_attempted.size
+      flash[:alert] = failed_attempted.size #I18n.t('controller.enrollments.assign_all_user.fail_attempted', number_of_user: failed_attempted.size)
+    else
+      flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
+    end
+    redirect_to "/dashboard/enroll/#{@course.id}"
   end
 
   def complete_lesson

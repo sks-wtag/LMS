@@ -15,7 +15,7 @@
             <%= link_to 'Edit', "/dashboard/edit_course/#{course.id}", class: "btn btn-sm btn-success" %>
           <% end %>
           <% if policy(course).destroy_course? %>
-            <%= link_to 'Enroll', "/dashboard/enroll_course/#{course.id}", class: "btn btn-sm btn-info" %>
+            <%= link_to 'Assign', "/dashboard/enroll_course/#{course.id}", class: "btn btn-sm btn-info" %>
           <% end %>
           <% if policy(course).destroy_course? %>
             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= course.id %>">

@@ -61,7 +61,7 @@ class LessonsController < ApplicationController
       flash[:notice] = I18n.t('controller.lessons.save_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     elsif  @lesson.errors.any?
-      render :edit_lesson, status: :unprocessable_entity
+      render 'edit_lesson', status: :unprocessable_entity
     else
       flash[:notice] = I18n.t('errors.messages.try_again')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"

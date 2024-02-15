@@ -5,11 +5,11 @@ class EnrollmentsController < ApplicationController
   def index
     @page_title = I18n.t('controller.enrollments.index.title')
     @course = Course.find_by(id: params[:course_id])
-    authorize @course if @course.present?
     unless @course.present?
       invalid_params
       return
     end
+    authorize @course if @course.present?
     @users = policy_scope(User)
   end
 
@@ -79,7 +79,7 @@ class EnrollmentsController < ApplicationController
       return
     end
     authorize @course, :index? if @course.present?
-    if params[:completion_time] <= DateTime.now + 3.days
+    if !params[:completion_time].present? || params[:completion_time] <= DateTime.now + 3.days
       flash[:notice] = I18n.t('activerecord.enrollment.completion_time')
     else
       is_job_running = { value: true }

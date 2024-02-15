@@ -16,7 +16,7 @@ RSpec.describe UserPolicy, type: :policy do
 
     it "returns only active user if user role learner or instructor" do
       scope = Pundit::policy_scope(regular_user, User)
-      expect(scope.to_a).to match_array([admin_user, regular_user, active_user])
+      expect(scope.to_a).to match_array([regular_user])
     end
   end
 

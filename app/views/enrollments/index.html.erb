@@ -4,17 +4,18 @@
   </div>
   <div class="col-2">
     <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModalcourse">
-      <b style="font-size: 20px;">Assign to all</b>
+      <b>Assign to all</b>
     </button>
     <%= render partial: "all_enrollment_modal", locals: { course: @course } %>
   </div>
   <div class="col-2">
     <%= link_to 'Dispose all user',
-               "/dashboard/unassign_to_all/#{@course.id}",
-               data: {
-                 turbo_method: :delete,
-                 turbo_confirm: "If you dispose, then it will dispose all user from the course"
-               } %>
+                "/dashboard/unassign_to_all/#{@course.id}",
+                class: "btn btn-sm btn-danger",
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "If you dispose, then it will dispose all user from the course"
+                } %>
   </div>
 </div>
 <table class="table table-striped w-100">

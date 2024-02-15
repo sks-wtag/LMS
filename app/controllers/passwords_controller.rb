@@ -35,6 +35,7 @@ class PasswordsController < ApplicationController
       elsif @user.authenticate(params[:user][:password])
         flash[:alert] = I18n.t('controller.users.change_password.change_password_notice')
         render :edit, status: :unprocessable_entity
+        return
       elsif @user.update(password_params)
         flash[:notice] = I18n.t('controller.passwords.update.success_notice')
         redirect_to login_path

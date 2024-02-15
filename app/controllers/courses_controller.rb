@@ -71,7 +71,9 @@ class CoursesController < ApplicationController
       return
     end
     authorize @course if @course.present?
-    if @course.present? && @course.destroy
+    instructor = Enrollment.find_by(course_id:  @course.id, enrollment_type: 'instructor')
+    if @course.destroy
+      UserMailer.send_mail_for_delete_course(instructor.user, @course).deliver_now
       flash[:notice] = I18n.t('controller.courses.delete_course.success_notice')
       redirect_to dashboard_show_course_path
     else

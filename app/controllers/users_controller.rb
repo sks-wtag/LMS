@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     else
       flash[:alert] = I18n.t('errors.messages.invalid_credentials')
     end
-    redirect_to user_change_password_path
+    redirect_to user_change_password_path, method: :get
   end
 
   def update

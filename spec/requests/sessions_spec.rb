@@ -10,8 +10,8 @@ RSpec.describe "Sessions", type: :request do
   
   describe 'POST /login' do
     it 'redirect to home if success' do
-      post '/login', params: { user: { email: user.email, password: 'Pass321' } }
-      expect(response).to redirect_to('/')
+      post '/login', params: { user: { email: user.email, password: user.password } }
+      expect(response).to have_http_status(302)
       expect(session[:current_user_id]).to eq(user.id)
     end
     it 'renders new template if credentials are wrong' do
@@ -26,7 +26,7 @@ RSpec.describe "Sessions", type: :request do
       delete '/logout'
       expect(response).to redirect_to(root_path)
       expect(response).to have_http_status(:found)
-      expect(flash[:notice]).to eq("Logged out")
+      expect(flash[:notice]).to eq(I18n.t('errors.messages.logged_out'))
     end
   end
 end

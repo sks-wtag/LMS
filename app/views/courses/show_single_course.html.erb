@@ -9,8 +9,13 @@
         <% if enrollment.present? %>
           <% gained_score = UserCourseProgress.joins(:lesson).where(enrollment_id: enrollment.id).pluck(:score).sum %>
           <% total_score = Lesson.where(course_id: @course.id).pluck(:score).sum %>
-          <p style="font-size: 16px;color: green">Your
-            Score: <%= gained_score %> / <%= total_score %></p>
+          <p style="font-size: 16px;color: green">
+            <% if gained_score == total_score && total_score != 0 %>
+              Completed
+            <% else %>
+              Your Score: <%= gained_score %> / <%= total_score %></p>
+            <% end %>
+
         <% end %>
       <% end %>
     </h2>

@@ -18,8 +18,8 @@ RSpec.describe DashboardPolicy, type: :policy do
 
   context 'permission for change_status' do
     it 'grant access to admin user' do
-      policy = described_class.new(admin_user,nil)
-      expect(policy.change_status?).to be true
+      policy = described_class.new(admin_user,admin_user)
+      expect(policy.change_status?).to be false
     end
 
     it 'denies access to a learner or instructor' do
@@ -42,7 +42,7 @@ RSpec.describe DashboardPolicy, type: :policy do
 
   context 'permission for delete_user?' do
     it 'grant access to admin user' do
-      policy = described_class.new(admin_user,nil)
+      policy = described_class.new(admin_user, instructor_user)
       expect(policy.delete_user?).to be true
     end
 

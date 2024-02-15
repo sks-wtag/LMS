@@ -29,4 +29,10 @@ class UserMailer < ApplicationMailer
     @enrollment = enrollment
     mail to: @user.email, subject: "Warning: #{@course.title} deadline is near to you"
   end
+
+  def send_mail_for_delete_course(user, course)
+    @user = user
+    @course = course
+    mail to: @user.email, subject: "Warning: This #{@course.title} course is removed"
+  end
 end

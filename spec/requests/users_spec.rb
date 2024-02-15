@@ -97,10 +97,15 @@ RSpec.describe 'Users', type: :request do
       allow_any_instance_of(AuthenticationHelper).to receive(:user_signed_in?).and_return(user.present?)
       allow_any_instance_of(AuthenticationHelper).to receive(:current_user).and_return(user)
     end
-    it 'when valid request is created' do
-      post '/user/change_password', params: { user: { email: user.email, current_password: user.password, password: 'Pass123', password_confirmation: 'Pass123' } }
-      expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to eq('Password updated')
+    it 'when valid request is created with same password' do
+      post '/user/change_password', params: { user: { email: user.email, current_password: user.password, password: user.password, password_confirmation: user.password, } }
+      expect(response).to have_http_status(302)
+    end
+
+    it 'when valid request is created with new valid password' do
+      post '/user/change_password', params: { user: { email: user.email, current_password: user.password, password: 'YBa@#1990', password_confirmation: 'YBa@#1990' } }
+      expect(response).to have_http_status(302)
+      expect(flash[:notice]).to eq(I18n.t('controller.users.change_password.success_notice'))
     end
   end
 

@@ -12,39 +12,39 @@ RSpec.describe "Enrollments", type: :request do
   let!(:enroll_as_learner) { create(:enrollment, enrollment_type: "learner", user_id: learner.id, course_id: course.id) }
   let!(:lesson) { create(:lesson, course_id: course.id) }
 
-  describe "GET /Dashboard/enroll_course/:course_id" do
-    it "when it created a valid params as an instructor" do
+  describe 'GET /Dashboard/enroll_course/:course_id' do
+    it 'when it created a valid params as an instructor' do
       login(instructor)
       get "/dashboard/enroll_course/#{course.id}"
-      expect(assigns(:users)).to match_array([admin, instructor, learner,learner_1])
+      expect(assigns(:users)).to match_array([instructor, learner,learner_1])
     end
 
-    it "when it created a invalid params as an admin" do
+    it 'when it created a invalid params as an admin' do
       login(admin)
       get "/dashboard/enroll_course/#{234234}"
       expect(flash[:alert]).to eq( I18n.t('errors.messages.invalid_params'))
     end
   end
 
-  describe "POST /dashboard/enroll_course/:course_id" do
-    it "When it crated a valid request as an admin" do
+  describe 'POST /dashboard/enroll_course/:course_id' do
+    it 'When it crated a valid request as an admin' do
       login(admin)
       expect do
         post "/dashboard/enroll_course/#{course.id}", params:
           {
             completion_time: DateTime.now + 7.day,
-            user_id: admin.id
+            user_id: learner_1.id
           }
       end.to change(Enrollment, :count).by(1)
       expect(flash[:notice]).to eq(I18n.t('controller.enrollments.enroll.enroll_success_notice'))
     end
 
-    it "When it crated a valid request as an admin but completion time is less then the current date" do
+    it 'When it crated a valid request as an admin but completion time is less then the current date' do
       login(admin)
       post "/dashboard/enroll_course/#{course.id}", params:
         {
           completion_time: DateTime.now - 7.day,
-          user_id: admin.id
+          user_id: learner_1.id
         }
       expect(flash[:error]).to eq([I18n.t('activerecord.enrollment.completion_time')])
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
@@ -52,7 +52,7 @@ RSpec.describe "Enrollments", type: :request do
   end
 
   describe "DELETE /dashboard/dis_enroll_course/:course_id" do
-    it "When it creates a valid request as an admin to dis_enroll an instructor" do
+    it 'When it creates a valid request as an admin to dis_enroll an instructor' do
       login(admin)
       expect do
         delete "/dashboard/dis_enroll_course/#{course.id}",
@@ -65,7 +65,7 @@ RSpec.describe "Enrollments", type: :request do
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
 
-    it "When it creates a valid request as an instructor to dis_enroll an incomplete learner" do
+    it 'When it creates a valid request as an instructor to dis_enroll an incomplete learner' do
       login(instructor)
       expect do
         delete "/dashboard/dis_enroll_course/#{course.id}",
@@ -78,7 +78,7 @@ RSpec.describe "Enrollments", type: :request do
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
 
-    it "When it creates a valid request as an instructor to dis_enroll a completed course" do
+    it 'When it creates a valid request as an instructor to dis_enroll a completed course' do
       login(instructor)
       FactoryBot.create(:user_course_progress, user_id: learner.id, lesson_id: lesson.id, enrollment_id:enroll_as_learner.id)
       expect do
@@ -92,7 +92,7 @@ RSpec.describe "Enrollments", type: :request do
       expect(response).to redirect_to "/dashboard/enroll_course/#{course.id}"
     end
 
-    it "When it creates a valid request for an instructor to disenroll a user who has not enrolled yet" do
+    it 'When it creates a valid request for an instructor to dis_enroll a user who has not enrolled yet' do
       login(instructor)
       expect do
         delete "/dashboard/dis_enroll_course/#{course.id}",
@@ -101,7 +101,7 @@ RSpec.describe "Enrollments", type: :request do
                    user_id: learner_1.id
                  }
       end.to change(Enrollment, :count).by(0)
-      expect(flash[:notice]).to eq("This course has not already been enrolled in by this user.")
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.dis_enroll.already_dis_enroll_notice'))
     end
   end
 
@@ -117,6 +117,63 @@ RSpec.describe "Enrollments", type: :request do
       end.to change(UserCourseProgress, :count).by(1)
       expect(flash[:notice]).to eq(I18n.t('controller.enrollments.complete_lesson.success_notice'))
       expect(response).to redirect_to "/dashboard/show_a_course/#{lesson.course_id}"
+    end
+  end
+
+  describe 'POST /dashboard/assign_to_all' do
+    it 'when it creates a valid request as an admin' do
+      login(admin)
+      post "/dashboard/assign_to_all/#{course_1.id}", params: { completion_time: DateTime.now + 7.days }
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.enroll.enroll_success_notice'))
+      expect(response).to have_http_status(302)
+    end
+
+    it 'when it creates a valid request as an instructor' do
+      login(instructor)
+      FactoryBot.create(:enrollment, user_id: instructor.id, course_id: course_1.id, enrollment_type: 'instructor')
+      post "/dashboard/assign_to_all/#{course_1.id}", params: { completion_time: DateTime.now + 7.days }
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.enroll.enroll_success_notice'))
+      expect(response).to have_http_status(302)
+    end
+
+    it 'when it creates a valid request as an instructor with other person course' do
+      login(instructor)
+      post "/dashboard/assign_to_all/#{course_1.id}", params: { completion_time: DateTime.now + 7.days }
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
+    end
+
+    it 'when it creates a valid request as an instructor' do
+      login(learner)
+      post "/dashboard/assign_to_all/#{course_1.id}", params: { completion_time: DateTime.now + 7.days }
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
+    end
+  end
+
+  describe 'DELETE /dashboard/dis_enroll_to_all' do
+    it 'when it creates a valid request as an admin' do
+      login(admin)
+      delete "/dashboard/unassign_to_all/#{course_1.id}", params: { completion_time: DateTime.now + 7.days }
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.dispose_all_user.success_notice'))
+      expect(response).to have_http_status(302)
+    end
+
+    it 'when it creates a valid request as an instructor' do
+      login(instructor)
+      delete "/dashboard/unassign_to_all/#{course.id}"
+      expect(flash[:notice]).to eq(I18n.t('controller.enrollments.dispose_all_user.success_notice'))
+      expect(response).to have_http_status(302)
+    end
+
+    it 'when it creates a valid request as an instructor with other person course' do
+      login(instructor)
+      delete "/dashboard/unassign_to_all/#{course_1.id}"
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
+    end
+
+    it 'when it creates a valid request as an instructor' do
+      login(learner)
+      delete "/dashboard/unassign_to_all/#{course_1.id}"
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
   def login(user)

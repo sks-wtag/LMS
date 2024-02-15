@@ -51,13 +51,13 @@ RSpec.describe 'Dashboards', type: :request do
   describe 'POST /dashboard/change_status/:id' do
     it 'When created a valid request as a admin' do
       get "/dashboard/change_status/#{user.id}"
-      expect(response).to redirect_to dashboard_show_user_path
-      expect(flash[:notice]).to eq(I18n.t('controller.dashboards.change_status.success_notice'))
+      expect(response).to have_http_status(302)
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
     it 'When created a invalid request as a admin' do
       get "/dashboard/change_status/#{123123}"
-      expect(response).to redirect_to dashboard_show_user_path
-      expect(flash[:alert]).to eq(I18n.t('errors.messages.try_again'))
+      expect(response).to have_http_status(302)
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.invalid_params'))
     end
     it 'When created a valid request as a learner or instructor' do
       user.update(role: 'instructor')

@@ -1,12 +1,20 @@
 <div class="row">
-  <div class="col-8">
+  <div class="col-7">
     <p>Do you want to assign this course to all users?</p>
   </div>
-  <div class="col-3">
+  <div class="col-2">
     <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModalcourse">
       <b style="font-size: 20px;">Assign to all</b>
     </button>
     <%= render partial: "all_enrollment_modal", locals: { course: @course } %>
+  </div>
+  <div class="col-2">
+    <%= link_to 'Dispose all user',
+               "/dashboard/unassign_to_all/#{@course.id}",
+               data: {
+                 turbo_method: :delete,
+                 turbo_confirm: "If you dispose, then it will dispose all user from the course"
+               } %>
   </div>
 </div>
 <table class="table table-striped w-100">
@@ -46,7 +54,7 @@
         <td>Not Assigned</td>
       <% end %>
       <td>
-        <% if enrolled.present?  %>
+        <% if enrolled.present? %>
           <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
             <b style="font-size: 20px;">-</b>
           </button>

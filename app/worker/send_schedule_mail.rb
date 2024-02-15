@@ -2,6 +2,7 @@ require 'sidekiq'
 
 class SendScheduleMail
   include Sidekiq::Job
+
   def perform(enrollment_id)
     enrollment = Enrollment.find_by(id: enrollment_id)
     if enrollment.present?

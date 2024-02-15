@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   get 'dashboard/enroll_course/:course_id', to: 'enrollments#index'
   post 'dashboard/enroll_course/:course_id', to: 'enrollments#enroll'
   post 'dashboard/assign_to_all/:course_id', to: 'enrollments#assign_all_user'
+  delete 'dashboard/unassign_to_all/:course_id', to: 'enrollments#unassign_all_user'
   delete 'dashboard/dis_enroll_course/:course_id', to: 'enrollments#dis_enroll'
   post 'dashboard/complete_lesson/:lesson_id', to: 'enrollments#complete_lesson'
   require 'sidekiq/web'

@@ -5,7 +5,7 @@ en:
     lesson:
       score: must be between 1 and 10
     user:
-      password: Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long
+      password: must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long
       country: BD
   controller:
     confirmations:
@@ -68,7 +68,9 @@ en:
       complete_lesson:
         success_notice: Thanks for completing this lesson!
       assign_all_user:
-        fail_attempted: Attempted failed of {number_of_user} user
+        processing_notice: Assignments are processing
+      dispose_all_user:
+        success_notice: Disposed successfully
     lessons:
       create_lesson:
         success_notice: A new lesson is added

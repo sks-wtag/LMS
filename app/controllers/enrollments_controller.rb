@@ -79,31 +79,35 @@ class EnrollmentsController < ApplicationController
       return
     end
     authorize @course, :index? if @course.present?
-    @users = User.where(organization_id: current_user.organization_id, status: 'Active', role: %w[instructor learner]).order(:id)
-    failed_attempted = []
+    if params[:completion_time] <= DateTime.now + 3.days
+      flash[:notice] = I18n.t('activerecord.enrollment.completion_time')
+    else
+      is_job_running = { value: true }
+      EnrollmentCreationJob.perform_now(
+        current_user.organization_id,
+        @course.id,
+        params[:completion_time],
+        is_job_running)
 
-    @users.each do |user|
-      @enrollment = Enrollment.find_by(user_id: user.id, course_id: @course.id)
-      unless @enrollment.present? && user.id == @enrollment.user_id
-        @enrollment = Enrollment.new(
-          completion_time: params[:completion_time],
-          user_id: @user.id,
-          course_id: @course.id,
-          enrollment_type: 'learner')
-        begin
-          @enrollment.save!
-        rescue => e
-          failed_attempted.push(user)
-        end
+      if is_job_running[:value]
+        flash[:notice] = I18n.t('controller.enrollments.assign_all_user.processing_notice')
+      else
+        flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
       end
     end
+    redirect_to "/dashboard/enroll_course/#{@course.id}"
+  end
 
-    if failed_attempted.size
-      flash[:alert] = failed_attempted.size #I18n.t('controller.enrollments.assign_all_user.fail_attempted', number_of_user: failed_attempted.size)
-    else
-      flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
+  def unassign_all_user
+    @course = Course.find_by(id: params[:course_id])
+    unless @course.present?
+      invalid_params
+      return
     end
-    redirect_to "/dashboard/enroll/#{@course.id}"
+    authorize @course, :index? if @course.present?
+    Enrollment.where(course_id: @course.id, enrollment_type: 'learner').destroy_all
+    flash[:notice] = I18n.t('controller.enrollments.dispose_all_user.success_notice')
+    redirect_to "/dashboard/enroll_course/#{@course.id}"
   end
 
   def complete_lesson

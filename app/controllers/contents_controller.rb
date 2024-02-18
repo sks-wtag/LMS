@@ -3,7 +3,7 @@ class ContentsController < ApplicationController
   before_action :authenticate_user!
 
   def add_content
-    @content = Content.new
+    @content = Content.new({})
   end
 
   def create_content

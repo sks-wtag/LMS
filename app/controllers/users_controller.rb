@@ -5,8 +5,8 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
 
   def new
-    @organization = Organization.new
-    @user = @organization.users.build
+    @organization = Organization.new({})
+    @user = @organization.users.build({})
   end
 
   def destroy

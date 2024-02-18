@@ -1,10 +1,10 @@
 
 Dear <%= @user.name %>
-<p>Your course deadline is near. Please complete your course.</p>
-<b>Here is your course details: </b>
+<p><%= I18n.t('user_mailer.deadline_notice') %></p>
+<b><%= I18n.t('user_mailer.course_details') %>: </b>
 <p><b>Course Name: </b> <%=@course.title %></p>
-<p><b>Deadline: </b> <%= @enrollment.completion_time %></p>
+<p><b><%= I18n.t('activerecord.attributes.completion_time') %>: </b> <%= @enrollment.completion_time %></p>
 <br>
 <br>
-<h5>Here is your line </h5>
+<h5><%= I18n.t('user_mailer.course_link') %> </h5>
 <%= link_to @course.title,  "#{ENV["WEBSITE_NAME"]}/dashboard/show_a_course/#{@course.id}" %>

@@ -3,6 +3,7 @@ en:
     attributes:
       active_status: Status
       address: Address
+      completion_time: Deadline
       first_name: First name
       last_name: Last name
       email: Email
@@ -12,6 +13,10 @@ en:
       deadline: Deadline
       password: Password
       password_confirmation: Confirm Password
+      picture: Picture
+      title: Title
+      description: Description
+      score: Score
     details:
       content: content
       course: course
@@ -219,6 +224,10 @@ en:
     password_reset_instruction: Password Reset Instructions
     email_send_message: Your LMS account has been created with temporary password. After getting this email please change your password using this temporary password
     confirmation_inner_text: Please confirm your account
+    deadline_notice: Your course deadline is near. Please complete your course.
+    course_details: Here is your course details
+    course_link: Here is your link
+    delete_notice: A course has been deleted from your
 
 
 

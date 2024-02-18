@@ -9,7 +9,7 @@
       <div class="modal-body">
         <%= form_with(url: "/dashboard/assign_to_all/#{course.id}", method: 'post') do |form| %>
           <div>
-            <label for="completion_time">Deadline</label><br>
+            <label for="completion_time"><%= I18n.t('activerecord.attributes.completion_time') %></label><br>
             <%= form.datetime_local_field :completion_time, required: true %>
           </div>
           <div class="row mt-3">

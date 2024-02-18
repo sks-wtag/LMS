@@ -15,56 +15,56 @@
         <div style="width: 100%; height: 2px; border-bottom: 2px solid #666666;"></div>
         <%= parent_form.fields_for :users do |form| %>
           <div class="mt-4">
-            <%= form.label :first_name %> </br>
+            <%= form.label I18n.t('activerecord.attributes.first_name') %> </br>
             <%= form.text_field :first_name, style: 'width:100%', placeholder: I18n.t('views.placeholder.first_name'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:first_name).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-            <%= form.label :last_name %> </br>
+            <%= form.label I18n.t('activerecord.attributes.last_name') %> </br>
             <%= form.text_field :last_name, style: 'width:100%', placeholder: I18n.t('views.placeholder.last_name'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:last_name).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-            <%= form.label :email %> </br>
+            <%= form.label I18n.t('activerecord.attributes.email') %> </br>
             <%= form.email_field :email, style: 'width:100%', placeholder: I18n.t('views.placeholder.email'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:email).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-            <%= form.label :phone %> </br>
+            <%= form.label I18n.t('activerecord.attributes.phone') %> </br>
             <%= form.phone_field :phone, style: 'width:100%', placeholder: I18n.t('views.placeholder.phone'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:phone).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-            <%= form.label :address %> </br>
+            <%= form.label I18n.t('activerecord.attributes.address') %> </br>
             <%= form.text_area :address, style: 'width:100%', placeholder: I18n.t('views.placeholder.address'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:address).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-            <%= form.label :password %> </br>
+            <%= form.label I18n.t('activerecord.attributes.password')%> </br>
             <%= form.password_field :password, style: 'width:100%',placeholder: I18n.t('views.placeholder.password'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:password).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-            <%= form.label :password_confirmation %> </br>
+            <%= form.label I18n.t('activerecord.attributes.password_confirmation') %> </br>
             <%= form.password_field :password_confirmation, style: 'width:100%',placeholder: I18n.t('views.placeholder.password_confirmation'), required: true %>
             <% @organization.users.first.errors.full_messages_for(:password_confirmation).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
           <div>
-              <%= form.label :picture %> <br>
+              <%= form.label I18n.t('activerecord.attributes.picture') %> <br>
               <%= form.file_field :picture, required: true %>
             <% @organization.users.first.errors.full_messages_for(:picture).each do |message| %>
               <div class="text-danger"><%= message %></div>

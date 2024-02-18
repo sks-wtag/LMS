@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <%= form_with model: @user, url: confirmations_path do |form| %>
-        <%= form.email_field :email, placeholder: I18n.t('views.placeholder.email'), required: true %>
+        <%= form.email_field I18n.t('activerecord.attributes.email'), placeholder: I18n.t('views.placeholder.email'), required: true %>
         <%= form.submit I18n.t('views.button.send_mail') %>
       <% end %>
     </div>

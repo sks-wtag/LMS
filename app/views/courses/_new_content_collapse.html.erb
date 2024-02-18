@@ -4,7 +4,7 @@
       <div class="card-body">
         <%= form_with(model: @content, url: "/dashboard/save_content/#{lesson.id}", multipart: true) do |form| %>
           <div class="mt-4">
-            <%= form.label :title %> </br>
+            <%= form.label I18n.t('activerecord.attributes.title') %> </br>
             <%= form.text_field :title, style: 'width:100%', placeholder: I18n.t('views.placeholder.title', field_name: I18n.t('activerecord.details.content')), required: true %>
           </div>
           <br>
@@ -19,7 +19,7 @@
           </div>
           <br>
           <div id="text_type<%=lesson.id%>">
-            <%= form.label :description %> <br>
+            <%= form.label I18n.t('activerecord.attributes.description') %> <br>
             <%= form.text_area :description, style: 'width:100%;', placeholder: I18n.t('views.placeholder.description', field_name: I18n.t('activerecord.details.content')) %>
           </div>
           <div id="file_type<%=lesson.id%>" style="display: none;">

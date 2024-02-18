@@ -5,23 +5,22 @@
     </div>
     <div class="card-body">
       <%= form_with(model: @lesson, url: "/dashboard/edit_lesson/#{@lesson.id}", method: :patch) do |form| %>
-        <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
         <div class="mt-4">
-          <%= form.label :title %> </br>
+          <%= form.label I18n.t('activerecord.attributes.title') %> </br>
           <%= form.text_field :title, style: 'width:100%', placeholder: I18n.t('views.placeholder.title',field_name: I18n.t('activerecord.details.course')), required: true %>
           <% @lesson.errors.full_messages_for(:title).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div class="mt-4">
-          <%= form.label :score %> </br>
+          <%= form.label I18n.t('activerecord.attributes.score') %> </br>
           <%= form.text_field :score, style: 'width:100%', placeholder: I18n.t('views.placeholder.score'), required: true %>
           <% @lesson.errors.full_messages_for(:score).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div>
-          <%= form.label :description %> <br>
+          <%= form.label I18n.t('activerecord.attributes.description') %> <br>
           <%= form.text_area :description, style: 'width:100%;', placeholder: I18n.t('views.placeholder.description',field_name: I18n.t('activerecord.details.course')), required: true %>
           <% @lesson.errors.full_messages_for(:description).each do |message| %>
             <div class="text-danger"><%= message %></div>

@@ -10,37 +10,37 @@
             <%= image_tag current_user.picture, class: 'img-fluid rounded-circle', style: 'height: 200px; width: 200px; border: 2px solid gray;' %>
           </div>
         <% end %>
-        <%= form.file_field :picture %> <br><br>
+        <%= form.file_field I18n.t('activerecord.attributes.picture') %> <br><br>
         <% @user.errors.full_messages_for(:picture).each do |message| %>
           <div class="text-danger"><%= message %></div>
         <% end %>
         <div class="mb-3">
-          <%= form.label :first_name, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.first_name'), class: 'form-label' %>
           <%= form.text_field :first_name, class: 'form-control' %>
           <% @user.errors.full_messages_for(:first_name).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div class="mb-3">
-          <%= form.label :last_name, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.last_name'), class: 'form-label' %>
           <%= form.text_field :last_name, class: 'form-control' %>
           <% @user.errors.full_messages_for(:last_name).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div class="mb-3">
-          <%= form.label :email, class: 'form-label' %> </br>
+          <%= form.label I18n.t('activerecord.attributes.email'), class: 'form-label' %> </br>
           <%= form.text_field :email, class: 'form-control', disabled: true %>
         </div>
         <div class="mb-3">
-          <%= form.label :phone, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.phone'), class: 'form-label' %>
           <%= form.phone_field :phone, class: 'form-control' %>
           <% @user.errors.full_messages_for(:phone).each do |message| %>
             <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
         <div class="mb-3">
-          <%= form.label :address, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.address'), class: 'form-label' %>
           <%= form.text_area :address, class: 'form-control' %>
           <% @user.errors.full_messages_for(:address).each do |message| %>
             <div class="text-danger"><%= message %></div>

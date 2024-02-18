@@ -7,11 +7,11 @@
       <%= form_with url: login_path, scope: :user do |form| %>
         <div style="text-align: center;">
           <div style="text-align: left;">
-            <label for="email"><%= I18n.t('activerecord.attributes.email') %></label><br>
+            <label for= <%= I18n.t('activerecord.attributes.email') %> ><%= I18n.t('activerecord.attributes.email') %></label><br>
             <%= form.email_field :email, placeholder: I18n.t('views.placeholder.email'), required: true %>
           </div>
           <div style="text-align: left;">
-            <label for="password"><%= I18n.t('activerecord.attributes.password') %></label><br>
+            <label for=<%= I18n.t('activerecord.attributes.password') %>><%= I18n.t('activerecord.attributes.password') %></label><br>
             <%= form.password_field :password, placeholder: I18n.t('views.placeholder.password'), required: true %>
           </div>
         </div>

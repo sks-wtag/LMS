@@ -136,7 +136,6 @@ en:
       does_not_match_file_format: Does not match file format
       authorized_alert: You are not authorized to perform this action.
       logged_out: Logged out
-
   user_role:
     admin: Admin
     instructor: Instructor
@@ -228,11 +227,6 @@ en:
     course_details: Here is your course details
     course_link: Here is your link
     delete_notice: A course has been deleted from your
-
-
-
-
-
-
-
-
+    account_create: Your account has been created
+    schedule_mail_warning: Warning %{title} deadline is near to you
+    delete_course_warning: Warning This %{title} course is removed

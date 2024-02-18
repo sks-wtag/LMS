@@ -1,4 +1,3 @@
-
 namespace :schedule_mail do
   task :send, [:enrollment_id] => :environment do |task, args|
     puts "I am from rake"

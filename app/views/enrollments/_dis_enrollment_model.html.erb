@@ -3,18 +3,18 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h4 class="modal-title">Dis-Enrollment</h4>
+        <h4 class="modal-title"><%= I18n.t('views.inner_text.enrollments.dis_enroll') %></h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        Are you want to dis-enroll this course from this user?
+        <%= I18n.t('views.inner_text.enrollments.dispose_confirmation_message') %>
       </div>
       <div class="modal-footer"><%= form_with(url: "/dashboard/dis_enroll_course/#{course.id}", method: 'delete') do |form| %>
           <%= form.hidden_field :user_id, value: user.id %>
           <div class="row mt-3">
             <div class="col-4"></div>
             <div class="col-4">
-              <%= form.submit "Yes", class: "btn btn-sm btn-danger"%>
+              <%= form.submit I18n.t('views.button.submit'), class: "btn btn-sm btn-danger"%>
             </div>
           </div>
         <% end %>

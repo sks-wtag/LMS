@@ -3,14 +3,13 @@
     <div class="card m-3" style="font-size: medium;">
       <div class="card-body">
         <%= form_with(model: @content, url: "/dashboard/save_content/#{lesson.id}", multipart: true) do |form| %>
-          <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
           <div class="mt-4">
             <%= form.label :title %> </br>
-            <%= form.text_field :title, style: 'width:100%', placeholder: 'Enter your title', required: true %>
+            <%= form.text_field :title, style: 'width:100%', placeholder: I18n.t('views.placeholder.title', field_name: I18n.t('activerecord.details.content')), required: true %>
           </div>
           <br>
           <div class="full-width-select">
-            <label for="content_content_type">Content type</label>
+            <label for="content_content_type"><%= I18n.t('views.label.content_type') %></label>
             <select name="content[content_type]" onclick="select_option('<%= lesson.id %>')" id="content_type<%= lesson.id %>">
               <option selected="selected" value="text">Text</option>
               <option value="pdf">Pdf</option>
@@ -21,16 +20,16 @@
           <br>
           <div id="text_type<%=lesson.id%>">
             <%= form.label :description %> <br>
-            <%= form.text_area :description, style: 'width:100%;', placeholder: 'Enter your descriptions' %>
+            <%= form.text_area :description, style: 'width:100%;', placeholder: I18n.t('views.placeholder.description', field_name: I18n.t('activerecord.details.content')) %>
           </div>
           <div id="file_type<%=lesson.id%>" style="display: none;">
-            <%= form.label "Upload file" %> <br>
+            <%= form.label I18n.t('views.label.upload_file') %> <br>
             <%= file_field_tag :files %>
           </div>
           <br>
           <div class="row">
             <div class="col-6">
-              <%= form.submit "Add", class: 'btn btn-primary' %>
+              <%= form.submit I18n.t('views.button.add'), class: 'btn btn-primary' %>
             </div>
           </div>
         <% end %>

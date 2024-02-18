@@ -1,5 +1,22 @@
 en:
   activerecord:
+    attributes:
+      active_status: Status
+      address: Address
+      first_name: First name
+      last_name: Last name
+      email: Email
+      phone: Phone
+      username: Username
+      role: Role
+      deadline: Deadline
+      password: Password
+      password_confirmation: Confirm Password
+    details:
+      content: content
+      course: course
+      lesson: lesson
+      user: user
     enrollment:
       completion_time: can't be set past the date or can't be set within 3 days.
     lesson:
@@ -114,3 +131,99 @@ en:
       does_not_match_file_format: Does not match file format
       authorized_alert: You are not authorized to perform this action.
       logged_out: Logged out
+
+  user_role:
+    admin: Admin
+    instructor: Instructor
+    learner: Learner
+  views:
+    button:
+      add: Add
+      add_course: Add course
+      add_user: Add User
+      add_lesson: Add a lesson
+      add_content: Add a content
+      assign: Assign
+      close: Close
+      complete: Complete
+      courses: Courses
+      change_password: Change password
+      delete: Delete
+      dashboard: Dashboard
+      details: Details
+      enroll: Enroll
+      edit: Edit
+      edit_lesson: Edit a lesson
+      forgot_password: Forgot password
+      mailer:
+        reset_password: Click here to reset your password.
+        confirm_email: Click here to confirm your email.
+      login: Login
+      login_here: Login here
+      logout: Logout
+      update: Update
+      update_profile: Update profile
+      submit: Submit
+      send_mail: Send email
+      sign_up_here: Signup here
+      sign_up: Signup
+      users: Users
+      yes: Yes
+    label:
+      content_type: Content Type
+      upload_file: Upload file
+      current_password: Current_password
+      organization_name: Organization name
+    placeholder:
+      address: Enter your address...
+      description: Enter your %{field_name} descriptions
+      email: Enter your email
+      first_name: Enter your first name
+      last_name: Enter your last name
+      organization_name: Enter your unique organization name
+      phone: Enter your phone number
+      password: Enter your password
+      password_confirmation: Enter your confirmation password
+      score: Gives point for this lesson
+      search: Search
+      title: Enter your %{field_name} title
+    inner_text:
+      confirmations:
+        form_title: Confirmation email
+      courses:
+        add_course: Add a course
+        content_type: Content type
+        course_content: All of the content of this course
+        delete_course: Delete a course
+        edit_course: Edit a course
+        delete_confirmation_message: If you delete this course, it will automatically delete all of the content. Do you want to delete this?
+      lessons:
+        completed: Completed
+      dashboards:
+        add_user: Add a user
+        action: Action
+        delete_user: Delete an user
+        delete_confirmation_message: Do you want to delete this user?
+        serial_no: Serial No
+        role: Role
+      enrollments:
+        enroll_here: Enroll here
+        dis_enroll: Dispose here
+        dispose_confirmation_message:  Are you want to dispose this course from this user?
+        assign_to_all: Assign to all
+      users:
+        edit_information_title: Edit Your Information
+        registration_title: Register as an administrator
+  user_mailer:
+    confirmation_instruction: Confirmation Instructions
+    password_reset_instruction: Password Reset Instructions
+    email_send_message: Your LMS account has been created with temporary password. After getting this email please change your password using this temporary password
+    confirmation_inner_text: Please confirm your account
+
+
+
+
+
+
+
+

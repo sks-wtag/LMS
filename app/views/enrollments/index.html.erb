@@ -1,10 +1,9 @@
 <div class="row">
   <div class="col-7">
-    <p>Do you want to assign this course to all users?</p>
   </div>
   <div class="col-2">
     <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModalcourse">
-      <b>Assign to all</b>
+      <b><%= I18n.t('views.inner_text.enrollments.assign_to_all') %></b>
     </button>
     <%= render partial: "all_enrollment_modal", locals: { course: @course } %>
   </div>
@@ -14,18 +13,18 @@
                 class: "btn btn-sm btn-danger",
                 data: {
                   turbo_method: :delete,
-                  turbo_confirm: "If you dispose, then it will dispose all user from the course"
+                  turbo_confirm: I18n.t('views.inner_text.enrollments.dispose_confirmation_message')
                 } %>
   </div>
 </div>
 <table class="table table-striped w-100">
   <thead>
   <tr>
-    <th scope="col">Username</th>
-    <th scope="col">Role</th>
-    <th scope="col">Deadline</th>
-    <th scope="col">Status</th>
-    <th scope="col">Action</th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.username') %></th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.role') %></th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.deadline') %></th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.active_status') %></th>
+    <th scope="col"><%= I18n.t('views.inner_text.dashboards.action') %></th>
   </tr>
   </thead>
   <tbody>
@@ -38,11 +37,11 @@
       <% end %>
       <td><%= user.name %></td>
       <% if enrolled.present? && enrolled.enrollment_type == 'instructor' %>
-        <td> Instructor</td>
+        <td> <%= I18n.t('user_role.instructor') %></td>
       <% elsif user.admin? %>
-        <td> Admin</td>
+        <td> <%=I18n.t('user_role.admin') %></td>
       <% else %>
-        <td> Learner</td>
+        <td><%= I18n.t('user_role.learner') %></td>
       <% end %>
       <td><%= enrolled.completion_time.strftime("%d-%m-%Y") if enrolled.present? && enrolled.completion_time.present? %></td>
       <% if (enrolled.present? && enrolled.enrollment_type == 'instructor') || total_lesson == complete_lesson %>

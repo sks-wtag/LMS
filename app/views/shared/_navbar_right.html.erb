@@ -1,18 +1,18 @@
 <div class="row" style="border-left: 2px solid gray">
   <div class="col-12 m-2 bg-light p-1 rounded">
-    <%= link_to 'Users', dashboard_show_user_path %>
+    <%= link_to I18n.t('views.button.users'), dashboard_show_user_path %>
   </div>
   <% if policy(:dashboard).new_user? %>
     <div class="col-12 m-2 bg-light p-1 rounded">
-      <%= link_to 'Add User', dashboard_add_user_path %>
+      <%= link_to I18n.t('views.button.add_user'), dashboard_add_user_path %>
     </div>
   <% end %>
   <div class="col-12 m-2 bg-light p-1 rounded">
-    <%= link_to 'Courses', "/dashboard/show_course" %>
+    <%= link_to I18n.t('views.button.courses'), "/dashboard/show_course" %>
   </div>
   <% if policy(Course).new_course? %>
     <div class="col-12 m-2 bg-light p-1 rounded">
-      <%= link_to 'Add course', "/dashboard/add_course" %>
+      <%= link_to I18n.t('views.button.add_course'), "/dashboard/add_course" %>
     </div>
   <% end %>
 </div>

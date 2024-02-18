@@ -1,15 +1,15 @@
 <table class="table">
   <thead>
   <tr>
-    <th>No</th>
-    <th>Firstname</th>
-    <th>Lastname</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>Address</th>
-    <th>Role</th>
+    <th><%= I18n.t('views.inner_text.dashboards.serial_no') %></th>
+    <th><%=I18n.t('activerecord.attributes.first_name') %></th>
+    <th><%=I18n.t('activerecord.attributes.last_name') %></th>
+    <th><%=I18n.t('activerecord.attributes.email') %></th>
+    <th><%=I18n.t('activerecord.attributes.phone') %></th>
+    <th><%=I18n.t('activerecord.attributes.address') %></th>
+    <th><%= I18n.t('views.inner_text.dashboards.role') %></th>
     <% if policy(:dashboard).admin? %>
-      <th style="width: 180px">Action</th>
+      <th style="width: 180px"><%= I18n.t('views.inner_text.dashboards.action') %></th>
     <% end %>
   </tr>
   </thead>
@@ -29,23 +29,23 @@
             turbo_method: :get,
           }, class: 'btn btn-sm btn-warning' %> |
           <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
-            Delete
+            <%= I18n.t('views.button.delete') %>
           </button>
           <div class="modal" id="myModal<%= user.id %>">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title">Delete a user</h4>
+                  <h4 class="modal-title"><%= I18n.t('views.inner_text.dashboards.delete_user') %></h4>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                  Are you want to delete this user?
+                  <%= I18n.t('views.inner_text.dashboards.delete_confirmation_message') %>
                 </div>
                 <div class="modal-footer">
                   <%= form_with url: "/dashboard/delete_user/#{user.id}", method: :delete do |form| %>
-                    <%= form.button "Delete", class: 'nav-link btn-danger' %>
+                    <%= form.button I18n.t('views.button.delete'), class: 'nav-link btn-danger' %>
                   <% end %>
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%= I18n.t('views.button.close') %></button>
                 </div>
               </div>
             </div>

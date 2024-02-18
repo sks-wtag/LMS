@@ -3,7 +3,7 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h4 class="modal-title">Enroll Here</h4>
+        <h4 class="modal-title"><%= I18n.t('views.inner_text.enrollments.enroll_here') %></h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -14,7 +14,7 @@
           </div>
           <div class="row mt-3">
             <div class="col-4">
-              <%= form.submit "Enroll", class: "btn btn-sm btn-info"%>
+              <%= form.submit I18n.t('views.button.enroll'), class: "btn btn-sm btn-info"%>
             </div>
           </div>
         <% end %>

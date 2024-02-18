@@ -1,12 +1,12 @@
 <div style="width: 500px; margin: 0 auto;">
   <div class="card mt-5">
     <div class="card-header">
-      <h5>Confirmation email</h5>
+      <h5><%= I18n.t('views.inner_text.confirmations.form_title') %></h5>
     </div>
     <div class="card-body">
       <%= form_with model: @user, url: confirmations_path do |form| %>
-        <%= form.email_field :email, placeholder: 'Enter your confirmation email', required: true %>
-        <%= form.submit "Send Email" %>
+        <%= form.email_field :email, placeholder: I18n.t('views.placeholder.email'), required: true %>
+        <%= form.submit I18n.t('views.button.send_mail') %>
       <% end %>
     </div>
   </div>

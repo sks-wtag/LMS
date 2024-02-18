@@ -10,7 +10,7 @@
             <%= image_tag current_user.picture, class: 'img-fluid rounded-circle', style: 'height: 200px; width: 200px; border: 2px solid gray;' %>
           </div>
         <% end %>
-        <%= form.file_field I18n.t('activerecord.attributes.picture') %> <br><br>
+        <%= form.file_field :picture %> <br><br>
         <% @user.errors.full_messages_for(:picture).each do |message| %>
           <div class="text-danger"><%= message %></div>
         <% end %>

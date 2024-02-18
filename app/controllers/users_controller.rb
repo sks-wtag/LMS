@@ -5,8 +5,8 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
 
   def new
-    @organization = Organization.new({})
-    @user = @organization.users.build({})
+    @organization = Organization.new
+    @user = @organization.users.build
   end
 
   def destroy
@@ -47,8 +47,6 @@ class UsersController < ApplicationController
     if params[:user][:picture].present? && error.size == 0
       @user.picture.purge
       @user.picture.attach(params[:user][:picture])
-    elsif @user.errors[:picture].include?(I18n.t('controller.users.update.picture_upload_error'))
-      @user.errors.delete(:picture)
     end
     if @user.update(update_params)
       redirect_to user_update_path, notice: I18n.t('controller.users.update.success_notice')
@@ -121,7 +119,6 @@ class UsersController < ApplicationController
 
   def acceptable_image(picture, record)
     unless picture.present?
-      record.errors.add(:picture, I18n.t('controller.users.update.picture_upload_error'))
       return record.errors
     end
     unless File.size(picture) <= 1.megabyte

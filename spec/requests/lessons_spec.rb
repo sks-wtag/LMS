@@ -15,7 +15,7 @@ RSpec.describe "Lessons", type: :request do
       expect do
         post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
       end.to change(Lesson, :count).by(1)
-      expect(flash[:notice]).to eq('A new lesson is added')
+      expect(flash[:notice]).to eq(I18n.t('controller.lessons.create_lesson.success_notice'))
       expect(response).to have_http_status(302)
     end
 
@@ -33,13 +33,13 @@ RSpec.describe "Lessons", type: :request do
     it "when it created with valid params as an learner" do
       login(learner)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
 
     it "when it created with valid params as an admin" do
       login(admin)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
 
@@ -47,22 +47,22 @@ RSpec.describe "Lessons", type: :request do
     it 'when it created a valid request as an instructor' do
       login(instructor)
       get "/dashboard/edit_lesson/#{lesson.id}"
-      expect(assigns(:page_title)).to eq('Dashboard -> Edit a lesson')
+      expect(assigns(:page_title)).to eq(I18n.t('controller.lessons.edit_lesson.title'))
       expect(response).to render_template(:edit_lesson)
     end
 
     it 'when it created a valid request as an learner' do
       login(learner)
       get "/dashboard/edit_lesson/#{lesson.id}"
-      expect(assigns(:page_title)).to eq('Dashboard -> Edit a lesson')
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(assigns(:page_title)).to eq(I18n.t('controller.lessons.edit_lesson.title'))
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
 
     it 'when it created a valid request as an admin' do
       login(admin)
       get "/dashboard/edit_lesson/#{lesson.id}"
-      expect(assigns(:page_title)).to eq('Dashboard -> Edit a lesson')
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(assigns(:page_title)).to eq(I18n.t('controller.lessons.edit_lesson.title'))
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
 
   end
@@ -81,14 +81,14 @@ RSpec.describe "Lessons", type: :request do
       login(learner)
       patch "/dashboard/edit_lesson/#{lesson.id}", params: { lesson: lesson }, as: :json
       expect(response).to have_http_status(302)
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
 
     it "when it created a valid request as an admin" do
       login(admin)
       patch "/dashboard/edit_lesson/#{lesson.id}", params: { lesson: lesson }, as: :json
       expect(response).to have_http_status(302)
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe "Lessons", type: :request do
         delete "/dashboard/delete_lesson/#{lesson.id}"
       end.to change(Lesson, :count).by(-1)
       expect(response).to have_http_status(302)
-      expect(flash[:notice]).to eq("This lesson is deleted")
+      expect(flash[:notice]).to eq(I18n.t('controller.lessons.destroy_lesson.success_notice'))
     end
     it "when it crated a valid request as an instructor" do
       login(instructor)
@@ -107,7 +107,7 @@ RSpec.describe "Lessons", type: :request do
         delete "/dashboard/delete_lesson/#{lesson.id}"
       end.to change(Lesson, :count).by(-1)
       expect(response).to have_http_status(302)
-      expect(flash[:notice]).to eq("This lesson is deleted")
+      expect(flash[:notice]).to eq(I18n.t('controller.lessons.destroy_lesson.success_notice'))
     end
     it "when it crated a valid request as an learner" do
       login(learner)
@@ -115,7 +115,7 @@ RSpec.describe "Lessons", type: :request do
         delete "/dashboard/delete_lesson/#{lesson.id}"
       end.to change(Lesson, :count).by(0)
       expect(response).to have_http_status(302)
-      expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
 

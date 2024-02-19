@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
 
   def new_course
     @page_title = I18n.t('controller.courses.new_course.add_new_course')
-    @course = Course.new({})
+    @course = Course.new
     authorize @course
   end
 

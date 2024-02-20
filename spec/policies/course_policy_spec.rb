@@ -37,52 +37,52 @@ RSpec.describe CoursePolicy, type: :policy do
     end
   end
 
-  context "permission for create_course?" do
-    it "grant access to an admin and instructor" do
+  context 'permission for create_course?' do
+    it 'grant access to an admin and instructor' do
       expect(subject.new(admin, course).create_course?).to be true
       expect(subject.new(instructor, course).create_course?).to be true
     end
 
-    it "denies access to a learner" do
+    it 'denies access to a learner' do
       expect(subject.new(learner, course).create_course?).to be false
     end
   end
 
-  context "permission for show_single_course?" do
-    it "grant access to an admin " do
+  context 'permission for show_single_course?' do
+    it 'grant access to an admin' do
       expect(subject.new(admin, course).show_single_course?).to be true
     end
 
-    it "denies access to a learner" do
+    it 'denies access to a learner' do
       expect(subject.new(learner, course).show_single_course?).to be false
     end
   end
 
-  context "permission for edit_course?" do
-    it "grant access to an admin " do
+  context 'permission for edit_course?' do
+    it 'grant access to an admin' do
       expect(subject.new(admin, course).edit_course?).to be true
     end
 
-    it "denies access to a learner" do
+    it 'denies access to a learner' do
       expect(subject.new(learner, course).edit_course?).to be false
     end
   end
-  context "permission for save_course?" do
-    it "grant access to an admin " do
+  context 'permission for save_course?' do
+    it 'grant access to an admin' do
       expect(subject.new(admin, course).save_course?).to be true
     end
 
-    it "denies access to a learner" do
+    it 'denies access to a learner' do
       expect(subject.new(learner, course).save_course?).to be false
     end
   end
 
-  context "permission for destroy_course?" do
-    it "grant access to an admin " do
+  context 'permission for destroy_course?' do
+    it 'grant access to an admin' do
       expect(subject.new(admin, course).destroy_course?).to be true
     end
 
-    it "denies access to a learner" do
+    it 'denies access to a learner' do
       expect(subject.new(learner, course).destroy_course?).to be false
     end
   end

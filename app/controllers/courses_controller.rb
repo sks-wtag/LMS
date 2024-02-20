@@ -55,10 +55,10 @@ class CoursesController < ApplicationController
   def destroy_course
     @course = Course.find_by(id: params[:id])
     if @course.present? && @course.destroy
-      flash[:notice] = "This course is deleted successfully"
+      flash[:notice] = 'This course is deleted successfully'
       redirect_to dashboard_show_course_path
     else
-      flash[:notice] = "Please try again!"
+      flash[:notice] = 'Please try again!'
       redirect_to dashboard_show_course_path
     end
   end

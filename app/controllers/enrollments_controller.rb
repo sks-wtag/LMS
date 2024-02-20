@@ -5,10 +5,7 @@ class EnrollmentsController < ApplicationController
   def index
     @page_title = I18n.t('controller.enrollments.index.title')
     @course = Course.find_by(id: params[:course_id])
-    unless @course.present?
-      invalid_params
-      return
-    end
+    return invalid_params unless @course.present?
     authorize @course if @course.present?
     @users = policy_scope(User)
   end
@@ -17,10 +14,7 @@ class EnrollmentsController < ApplicationController
     @course = Course.find_by(id: params[:course_id])
     authorize @course, :index? if @course.present?
     @user = User.find_by(id: params[:user_id])
-    unless @course.present? && @user.present?
-      invalid_params
-      return
-    end
+    return invalid_params unless @user.present?
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     if @enrollment.present?
       flash[:notice] = I18n.t('controller.enrollments.enroll.enrolled_notice')
@@ -48,10 +42,7 @@ class EnrollmentsController < ApplicationController
     @course = Course.find_by(id: params[:course_id])
     authorize @course, :index? if @course.present?
     @user = User.find_by(id: params[:user_id])
-    unless @course.present? || @user.present?
-      invalid_params
-      return
-    end
+    return invalid_params unless @course.present? || @user.present?
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     unless @enrollment.present?
       flash[:notice] = I18n.t('controller.enrollments.dis_enroll.already_dis_enroll_notice')
@@ -74,10 +65,7 @@ class EnrollmentsController < ApplicationController
 
   def assign_all_user
     @course = Course.find_by(id: params[:course_id])
-    unless @course.present?
-      invalid_params
-      return
-    end
+    return invalid_params unless @course.present?
     authorize @course, :index? if @course.present?
     if !params[:completion_time].present? || params[:completion_time] <= DateTime.now + 3.days
       flash[:notice] = I18n.t('activerecord.enrollment.completion_time')
@@ -100,10 +88,7 @@ class EnrollmentsController < ApplicationController
 
   def unassign_all_user
     @course = Course.find_by(id: params[:course_id])
-    unless @course.present?
-      invalid_params
-      return
-    end
+    return invalid_params unless @course.present?
     authorize @course, :index? if @course.present?
     Enrollment.where(course_id: @course.id, enrollment_type: 'learner').destroy_all
     flash[:notice] = I18n.t('controller.enrollments.dispose_all_user.success_notice')
@@ -113,10 +98,7 @@ class EnrollmentsController < ApplicationController
   def complete_lesson
     @lesson = Lesson.find_by(id: params[:lesson_id])
     @enrollment = Enrollment.find_by(id: params[:enrollment_id])
-    unless @lesson.present? && @enrollment.present?
-      invalid_params
-      return
-    end
+    return invalid_params unless @lesson.present? || @enrollment.present?
     authorize @lesson, :complete_lesson?
     @course_progress = UserCourseProgress.new(
       user_id: current_user.id,

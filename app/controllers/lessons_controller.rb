@@ -4,10 +4,7 @@ class LessonsController < ApplicationController
 
   def create_lesson
     @course = Course.find_by(id: params[:course_id])
-    unless @course.present?
-      invalid_params(dashboard_show_course_path)
-      return
-    end
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @course.present?
     @lesson = @course.lessons.build(lesson_params)
     authorize @lesson, policy_class: LessonPolicy
     if @lesson.save
@@ -25,10 +22,7 @@ class LessonsController < ApplicationController
 
   def destroy_lesson
     @lesson = Lesson.find_by(id: params[:lesson_id])
-    unless @lesson.present?
-      invalid_params(dashboard_show_course_path)
-      return
-    end
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @lesson.present?
     authorize @lesson
     course_id = @lesson.course_id
     if @lesson.present? && @lesson.destroy
@@ -43,19 +37,13 @@ class LessonsController < ApplicationController
   def edit_lesson
     @page_title = I18n.t('controller.lessons.edit_lesson.title')
     @lesson = Lesson.find_by(id: params[:lesson_id])
-    unless @lesson.present?
-      invalid_params(dashboard_show_course_path)
-      return
-    end
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @lesson.present?
     authorize @lesson
   end
 
   def save_lesson
     @lesson = Lesson.find_by(id: params[:lesson_id])
-    unless @lesson.present?
-      invalid_params(dashboard_show_course_path)
-      return
-    end
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @lesson.present?
     authorize @lesson, :edit_lesson?
     if @lesson.update(lesson_params)
       flash[:notice] = I18n.t('controller.lessons.save_lesson.success_notice')
@@ -77,10 +65,5 @@ class LessonsController < ApplicationController
 
   def lesson_params
     params.require(:lesson).permit(:title, :description, :score)
-  end
-
-  def invalid_params(redirect_path)
-    flash[:error] = I18n.t('errors.messages.invalid_params')
-    redirect_to redirect_path
   end
 end

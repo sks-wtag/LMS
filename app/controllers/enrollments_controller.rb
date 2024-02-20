@@ -21,7 +21,7 @@ class EnrollmentsController < ApplicationController
       redirect_to "/dashboard/enroll_course/#{params[:course_id]}"
       return
     end
-
+    params[:completion_time ] = DateTime.now unless params[:completion_time].present?
     @enrollment = Enrollment.new(
       completion_time: params[:completion_time],
       user_id: @user.id,

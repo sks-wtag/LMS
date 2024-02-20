@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_103625) do
   create_table "contents", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
-    t.string "content_type", default: "text"
+    t.bigint "content_type", default: 0
     t.bigint "lesson_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_103625) do
     t.bigint "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "enrollment_type", default: 0
     t.index ["course_id"], name: "index_enrollments_on_course_id"
     t.index ["user_id"], name: "index_enrollments_on_user_id"
   end

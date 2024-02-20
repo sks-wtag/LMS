@@ -1,0 +1,88 @@
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title "><%= @course.title %>
+      <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo">Add new lesson</button>
+    </h2>
+    <p class="card-text"><%= @course.description %></p>
+    <%= render 'new_lesson_collapse' %>
+    <br>
+    <br>
+    <h5>Course content</h5>
+    <br>
+    <div class="accordion" id="accordionExample">
+      <% @course.lessons.each do |lesson| %>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="heading<%= lesson.id %>">
+            <div class="row">
+              <div class="col-10">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= lesson.id %>" aria-expanded="false" aria-controls="collapse<%= lesson.id %>">
+                  <h6><%= lesson.title %></h6>
+                </button>
+                <%= render partial: 'new_content_collapse', locals: { lesson: lesson } %>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo<%= lesson.id %>">Add
+                  new content
+                </button>
+                <%= link_to 'Edit', "/dashboard/edit_lesson/#{lesson.id}", class: "btn btn-sm btn-success" %>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= lesson.id %>">
+                  Delete
+                </button>
+                <%= render partial: 'delete_modal', locals: { lesson: lesson } %>
+              </div>
+            </div>
+          </h2>
+          <div id="collapse<%= lesson.id %>" class="accordion-collapse collapse" aria-labelledby="heading<%= lesson.id %>" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <%= lesson.description %>
+              <% lesson.contents.each do |content| %>
+                <% if content.content_type == 'text' %>
+                  <div class="row mt-3 mb-3">
+                    <div class="row" style="font-size: medium">
+                      <b><%= content.title %>  (<%= content.content_type %>) </b>
+                    </div>
+                    <div class="row" style="font-size: small">
+                      <p><%= content.description %></p>
+                    </div>
+                  </div>
+                <% elsif content.content_type == 'pdf' %>
+                  <%= link_to content.title, url_for(content.files), target: "_blank" %>
+                <% else %>
+                  <div class="row mb-3 text-left">
+                    <button type="button" class="btn btn-sm btn-secondary text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
+                      <%= content.title %>  <b>(<%= content.content_type %>)</b>
+                    </button>
+                    <%= render partial: 'show_image', locals: { content: content } %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('click', function () {
+        var contentTypeSelect = document.getElementById('content_content_type');
+        var textTypeDiv = document.getElementById('text_type');
+        var fileTypeDiv = document.getElementById('file_type');
+        toggleDivVisibility();
+        if (textTypeDiv.value === '')
+            textTypeDiv.value = 'Enter your descriptions'
+        contentTypeSelect.addEventListener('change', toggleDivVisibility);
+
+        function toggleDivVisibility() {
+            var selectedValue = contentTypeSelect.value;
+            if (selectedValue === 'text') {
+                textTypeDiv.style.display = 'block';
+                fileTypeDiv.style.display = 'none';
+            } else {
+                textTypeDiv.style.display = 'none';
+                fileTypeDiv.style.display = 'block';
+            }
+        }
+    });
+</script>

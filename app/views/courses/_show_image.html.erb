@@ -1,0 +1,22 @@
+<div class="modal" id="myModal<%= content.id %>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><%= content.title %></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="font-size: medium">
+          <% if content.content_type == "image" %>
+            <%= image_tag content.files if content.files.present? %>
+          <% elsif content.content_type == "video" %>
+            <%= video_tag url_for(content.files), controls: true, preload: 'none' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

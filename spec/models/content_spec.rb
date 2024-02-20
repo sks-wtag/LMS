@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 RSpec.describe Content, type: :model do
-  let(:content) { FactoryBot.create(:content)}
+  let!(:content) { FactoryBot.create(:content)}
 
   describe 'When adding a content ' do
     it 'it has valid factory' do

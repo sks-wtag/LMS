@@ -1,0 +1,35 @@
+<div id="demo<%=lesson.id %>" class="collapse">
+  <div style="width: 600px;">
+    <div class="card m-3" style="font-size: medium;">
+      <div class="card-body">
+        <%= form_with(model: @content, url: "/dashboard/save_content/#{lesson.id}", multipart: true) do |form| %>
+          <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
+          <div class="mt-4">
+            <%= form.label :title %> </br>
+            <%= form.text_field :title, style: 'width:100%', placeholder: 'Enter your title', required: true %>
+          </div>
+          <br>
+          <div class="full-width-select">
+            <%= form.label :content_type %> </br>
+            <%= form.select :content_type, [["Text", "text"], ["Pdf", "pdf"], ["Image", "image"], ["Video", 'video']], selected: "text", class: 'full-width-select' %>
+          </div>
+          <br>
+          <div id='text_type'>
+            <%= form.label :description %> <br>
+            <%= form.text_area :description, style: 'width:100%;', placeholder: 'Enter your descriptions' %>
+          </div>
+          <div id='file_type' style="display: none;">
+            <%= form.label "Upload file" %> <br>
+            <%= file_field_tag :files %>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-6">
+              <%= form.submit "Add", class: 'btn btn-primary' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

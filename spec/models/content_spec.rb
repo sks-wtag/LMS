@@ -31,7 +31,7 @@ RSpec.describe Content, type: :model do
       expect(content.errors[:description]).to eq(["can't be blank"])
     end
     it 'check the default content_type is text' do
-      expect(content.content_type).to eq("text")
+      expect(content.content_type).to eq('text')
     end
   end
 end

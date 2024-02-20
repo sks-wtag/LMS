@@ -20,10 +20,10 @@ class LessonsController < ApplicationController
     authorize @lesson
     course_id = @lesson.course_id
     if @lesson.present? && @lesson.destroy
-      flash[:notice] = "This lesson is deleted"
+      flash[:notice] = 'This lesson is deleted'
       redirect_to "/dashboard/show_a_course/#{course_id}"
     else
-      flash[:notice] = "Please try again"
+      flash[:notice] = 'Please try again'
       redirect_to "/dashboard/show_a_course/#{course_id}"
     end
   end
@@ -38,10 +38,10 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson, :edit_lesson?
     if @lesson.update(lesson_params)
-      flash[:notice] = "This lesson is updated"
+      flash[:notice] = 'This lesson is updated'
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     else
-      flash[:notice] = "Please try again"
+      flash[:notice] = 'Please try again'
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     end
   end

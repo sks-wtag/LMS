@@ -121,9 +121,9 @@ class UsersController < ApplicationController
     unless File.size(picture) <= 1.megabyte
       record.errors.add(:picture, "is too big")
     end
-    acceptable_types = ["image/jpeg", "image/png", "image/jpg"]
+    acceptable_types = ['image/jpeg', 'image/png', 'image/jpg']
     unless acceptable_types.include?(picture.content_type)
-      record.errors.add(:picture, "must be a JPEG or PNG format")
+      record.errors.add(:picture, 'must be a JPEG or PNG format')
     end
     record.errors
   end

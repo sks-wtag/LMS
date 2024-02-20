@@ -1,16 +1,16 @@
 class ContentsController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_user!
-
+  TEXT_CONTENT_TYPE = 'text'
   def add_content
-    @content = Content.new({})
+    @content = Content.new
   end
 
   def create_content
     @lesson = Lesson.find_by(id: params[:lesson_id])
     authorize @lesson, :create_lesson?, policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
-    if @content.content_type != "text" && params[:files].present?
+    if @content.content_type != TEXT_CONTENT_TYPE && params[:files].present?
       @content.files.attach(params[:files])
       @content.description = 'Saved in file'
     end

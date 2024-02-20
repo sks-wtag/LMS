@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
 
   def new_course
     @page_title = 'Dashboard -> Add a course'
-    @course = Course.new({})
+    @course = Course.new
     authorize @course
   end
 
@@ -31,8 +31,8 @@ class CoursesController < ApplicationController
     @page_title = 'Dashboard -> Show a courses'
     @course = Course.includes(:lessons).find_by(id: params[:id])
     authorize @course
-    @lesson = Lesson.new({})
-    @content = Content.new({})
+    @lesson = Lesson.new
+    @content = Content.new
   end
 
   def edit_course

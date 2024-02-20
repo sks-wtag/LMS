@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "Lessons", type: :request do
-  let!(:admin) { create(:user, role: "admin") }
-  let!(:learner) { create(:user, role: "learner") }
+RSpec.describe 'Lessons', type: :request do
+  let!(:admin) { create(:user, role: 'admin') }
+  let!(:learner) { create(:user, role: 'learner') }
   let!(:course) { create(:course) }
   let!(:enrollment) { create(:enrollment, user_id: admin.id, course_id: course.id) }
   let!(:lesson) { create(:lesson, course_id: course.id) }
-  describe "POST /dashboard/add_lesson/:course_id" do
-    it "when it created with valid params as an admin" do
+  describe 'POST /dashboard/add_lesson/:course_id' do
+    it 'when it created with valid params as an admin' do
       login(admin)
       expect do
         post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
@@ -17,14 +17,14 @@ RSpec.describe "Lessons", type: :request do
       expect(response).to redirect_to("/dashboard/show_a_course/#{course.id}")
     end
 
-    it "when it created with invalid params as an admin" do
+    it 'when it created with invalid params as an admin' do
       login(admin)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: { title: '', description: '' } }, as: :json
-      expect(flash[:notice]).to eq("Please try again!")
+      expect(flash[:notice]).to eq('Please try again!')
       expect(response).to redirect_to("/dashboard/show_a_course/#{course.id}")
     end
 
-    it "when it created with valid params as an learner" do
+    it 'when it created with valid params as an learner' do
       login(learner)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
       expect(flash[:notice]).to eq('You are not authorized to perform this action.')
@@ -32,7 +32,7 @@ RSpec.describe "Lessons", type: :request do
 
   end
 
-  describe "GET /dashboard/edit_lesson/:lesson_id" do
+  describe 'GET /dashboard/edit_lesson/:lesson_id' do
     it 'when it created a valid request as an admin' do
       login(admin)
       get "/dashboard/edit_lesson/#{lesson.id}"
@@ -75,18 +75,18 @@ RSpec.describe "Lessons", type: :request do
     end
   end
 
-  describe "DELETE /dashboard/delete_lesson/:lesson_id" do
-    it "when it crated a valid request as an admin" do
+  describe 'DELETE /dashboard/delete_lesson/:lesson_id' do
+    it 'when it crated a valid request as an admin' do
       login(admin)
       expect do
         delete "/dashboard/delete_lesson/#{lesson.id}"
       end.to change(Lesson, :count).by(-1)
       expect(response).to have_http_status(302)
-      expect(flash[:notice]).to eq("This lesson is deleted")
+      expect(flash[:notice]).to eq('This lesson is deleted')
       expect(response).to redirect_to("/dashboard/show_a_course/#{course.id}")
     end
 
-    it "when it crated a valid request as an learner" do
+    it 'when it crated a valid request as an learner' do
       login(learner)
       expect do
         delete "/dashboard/delete_lesson/#{lesson.id}"

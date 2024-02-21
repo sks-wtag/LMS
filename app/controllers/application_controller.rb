@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     if redirect_path.present?
       redirect_to redirect_path
     else
-      redirect_back(fallback_location: root_path)
+      redirect_back_or_to(root_path)
     end
   end
 

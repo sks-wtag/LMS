@@ -2,7 +2,6 @@
 class ApplicationController < ActionController::Base
   include Authentication
   include Pundit::Authorization
-  before_action :store_user_location!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def not_found
@@ -15,19 +14,13 @@ class ApplicationController < ActionController::Base
     flash[message_type] = message
     if redirect_path.present?
       redirect_to redirect_path
-    elsif session[:user_return_to].present?
-      redirect_to session[:user_return_to]
     else
-      redirect_to root_path
+      redirect_back(fallback_location: root_path)
     end
   end
 
   def user_not_authorized
     flash[:alert] = I18n.t('errors.messages.authorized_alert')
     redirect_to dashboard_show_user_path
-  end
-
-  def store_user_location!
-    session[:user_return_to] = request.referrer
   end
 end

@@ -23,12 +23,12 @@ class UserMailer < ApplicationMailer
     @user = user
     @course = course
     @enrollment = enrollment
-    mail to: @user.email, subject: I18n.t('user_mailer.schedule_mail_warning',title: @course.title)
+    mail to: @user.email, subject: I18n.t('user_mailer.schedule_mail_warning', title: @course.title)
   end
 
   def send_mail_for_delete_course(user, course)
     @user = user
     @course = course
-    mail to: @user.email, subject: I18n.t('user_mailer.delete_course_warning',title: @course.title)
+    mail to: @user.email, subject: I18n.t('user_mailer.delete_course_warning', title: @course.title)
   end
 end

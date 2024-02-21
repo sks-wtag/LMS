@@ -138,6 +138,7 @@ en:
       logged_in_notice: You are already logged in.
       logged_in_alert: You need to login before access that page
       logged_out: Logged out
+      blocking_email_notice: You've reached the maximum login attempts. Please try again later.
   user_role:
     admin: Admin
     instructor: Instructor

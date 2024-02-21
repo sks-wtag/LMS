@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe "Enrollments", type: :request do
-  let!(:organization) { create(:organization, name: "Welldev") }
-  let!(:admin) { create(:user, organization: organization, role: "admin") }
-  let!(:instructor) { create(:user, organization: organization, role: "instructor") }
-  let!(:learner) { create(:user, organization: organization, role: "learner") }
-  let!(:learner_1) { create(:user, organization: organization, role: "learner") }
+RSpec.describe 'Enrollments', type: :request do
+  let!(:organization) { create(:organization, name: 'Welldev') }
+  let!(:admin) { create(:user, organization: organization, role: 'admin') }
+  let!(:instructor) { create(:user, organization: organization, role: 'instructor') }
+  let!(:learner) { create(:user, organization: organization, role: 'learner') }
+  let!(:learner_1) { create(:user, organization: organization, role: 'learner') }
   let!(:course) { create(:course) }
   let!(:course_1) { create(:course) }
-  let!(:enrollment) { create(:enrollment, enrollment_type: "instructor", user_id: instructor.id, course_id: course.id) }
-  let!(:enroll_as_learner) { create(:enrollment, enrollment_type: "learner", user_id: learner.id, course_id: course.id) }
+  let!(:enrollment) { create(:enrollment, enrollment_type: 'instructor', user_id: instructor.id, course_id: course.id) }
+  let!(:enroll_as_learner) { create(:enrollment, enrollment_type: 'learner', user_id: learner.id, course_id: course.id) }
   let!(:lesson) { create(:lesson, course_id: course.id) }
 
   describe 'GET /Dashboard/enroll_course/:course_id' do
@@ -105,8 +105,8 @@ RSpec.describe "Enrollments", type: :request do
     end
   end
 
-  describe "POST /dashboard/complete_lesson/:lesson_id" do
-    it "When it creates a valid request as an learner to complete a lesson" do
+  describe 'POST /dashboard/complete_lesson/:lesson_id' do
+    it 'When it creates a valid request as an learner to complete a lesson' do
       login(learner)
       expect do
         post "/dashboard/complete_lesson/#{lesson.id}",

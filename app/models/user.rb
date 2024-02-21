@@ -18,7 +18,7 @@ class User < ApplicationRecord
       message: I18n.t('activerecord.user.password')}, allow_nil: true
   validates_plausible_phone :phone, presence: true
   validates :address, length: { minimum: 2, maximum: 100 }, presence: true
-  phony_normalize :phone, default_country_code: ENV['COUNTRY_CODE']
+  phony_normalize :phone, default_country_code: 'BD'
   enum role: {
     learner: 0,
     instructor: 1,

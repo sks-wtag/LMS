@@ -10,7 +10,8 @@ class Lesson < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 1,
     message: I18n.t('activerecord.lesson.score'),
-    less_than_or_equal_to: 10 }
+    less_than_or_equal_to: 10
+  }
 
   private
   def remove_trailling_and_leading_space

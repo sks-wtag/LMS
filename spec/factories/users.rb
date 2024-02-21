@@ -8,8 +8,8 @@ FactoryBot.define do
     password { 'Yab@#1234' }
     password_confirmation { 'Yab@#1234' }
     confirmed_at { Time.now }
-    role { "admin" }
-    status { "Active" }
+    role { 'admin' }
+    status { 'Active' }
     organization
     trait :add_picture do
       after(:build) do |user|

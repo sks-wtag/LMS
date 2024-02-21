@@ -28,7 +28,8 @@ class DashboardsController < ApplicationController
 
   def change_status
     @user = User.find_by(id: params[:id])
-    return invalid_params(redirect_path: dashboard_show_course_path) unless  @user.present?
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @user.present?
+
     authorize @user, :change_status?, policy_class: DashboardPolicy
     if @user.present? && @user.update(status: (@user.status == 'Active' ? 'Inactive' : 'Active'))
       redirect_to dashboard_show_user_path, notice: I18n.t('controller.dashboards.change_status.success_notice')
@@ -45,7 +46,8 @@ class DashboardsController < ApplicationController
 
   def delete_user
     @user = User.find_by(id: params[:id])
-    return invalid_params(redirect_path: dashboard_show_user_path) unless  @user.present?
+    return invalid_params(redirect_path: dashboard_show_user_path) unless @user.present?
+
     authorize @user, :delete_user?, policy_class: DashboardPolicy
     @user.destroy
     redirect_to dashboard_show_user_path

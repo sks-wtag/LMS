@@ -30,7 +30,8 @@ class CoursesController < ApplicationController
   def show_single_course
     @page_title = I18n.t('controller.courses.show_single_course.show_course')
     @course = Course.includes(:lessons).find_by(id: params[:id])
-    return invalid_params unless  @course.present?
+    return invalid_params unless @course.present?
+
     authorize @course if @course.present?
     @lesson = Lesson.new
     @content = Content.new
@@ -39,13 +40,15 @@ class CoursesController < ApplicationController
   def edit_course
     @page_title = I18n.t('controller.courses.edit_course.edit_a_course')
     @course = Course.find_by(id: params[:id])
-    return invalid_params unless  @course.present?
+    return invalid_params unless @course.present?
+
     authorize @course
   end
 
   def save_course
     @course = Course.find_by(id: params[:id])
-    return invalid_params unless  @course.present?
+    return invalid_params unless @course.present?
+
     authorize @course if @course.present?
     if @course.update(course_params)
       flash[:notice] = I18n.t('controller.courses.save_course.success_notice')
@@ -57,9 +60,10 @@ class CoursesController < ApplicationController
 
   def destroy_course
     @course = Course.find_by(id: params[:id])
-    return invalid_params unless  @course.present?
+    return invalid_params unless @course.present?
+
     authorize @course if @course.present?
-    instructor = Enrollment.find_by(course_id:  @course.id, enrollment_type: 'instructor')
+    instructor = Enrollment.find_by(course_id: @course.id, enrollment_type: 'instructor')
     if @course.destroy
       UserMailer.send_mail_for_delete_course(instructor.user, @course).deliver_now
       flash[:notice] = I18n.t('controller.courses.delete_course.success_notice')

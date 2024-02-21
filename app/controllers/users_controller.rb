@@ -118,16 +118,11 @@ class UsersController < ApplicationController
   end
 
   def acceptable_image(picture, record)
-    unless picture.present?
-      return record.errors
-    end
-    unless File.size(picture) <= 1.megabyte
-      record.errors.add(:picture, I18n.t('controller.users.update.picture_size_error'))
-    end
+    return record.errors unless picture.present?
+
+    record.errors.add(:picture, I18n.t('controller.users.update.picture_size_error')) unless File.size(picture) <= 1.megabyte
     acceptable_types = I18n.t('controller.content.create_content.image_formats')
-    unless acceptable_types.include?(picture.content_type)
-      record.errors.add(:picture, I18n.t('controller.users.update.picture_format_mismatch'))
-    end
+    record.errors.add(:picture, I18n.t('controller.users.update.picture_format_mismatch')) unless acceptable_types.include?(picture.content_type)
     record.errors
   end
 end

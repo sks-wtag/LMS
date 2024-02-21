@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "Lessons", type: :request do
+RSpec.describe 'Lessons', type: :request do
   let!(:organization) { create(:organization)}
-  let!(:admin) { create(:user, organization:organization, role: "admin") }
-  let!(:instructor) { create(:user, organization:organization, role: "instructor") }
-  let!(:learner) { create(:user, organization:organization, role: "learner") }
+  let!(:admin) { create(:user, organization:organization, role: 'admin') }
+  let!(:instructor) { create(:user, organization:organization, role: 'instructor') }
+  let!(:learner) { create(:user, organization:organization, role: 'learner') }
   let!(:course) { create(:course) }
-  let!(:enrollment) { create(:enrollment, enrollment_type: "instructor", user_id: instructor.id, course_id: course.id) }
+  let!(:enrollment) { create(:enrollment, enrollment_type: 'instructor', user_id: instructor.id, course_id: course.id) }
   let!(:lesson) { create(:lesson, course_id: course.id) }
   let!(:invalid_lesson) { create(:lesson, course_id: course.id)}
-  describe "POST /dashboard/add_lesson/:course_id" do
-    it "when it created with valid params as an instructor" do
+  describe 'POST /dashboard/add_lesson/:course_id' do
+    it 'when it created with valid params as an instructor' do
       login(instructor)
       expect do
         post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
@@ -19,7 +19,7 @@ RSpec.describe "Lessons", type: :request do
       expect(response).to have_http_status(302)
     end
 
-    it "when it created with invalid params as an instructor" do
+    it 'when it created with invalid params as an instructor' do
       login(instructor)
       invalid_lesson.title = ''
       invalid_lesson.description = ''
@@ -30,20 +30,20 @@ RSpec.describe "Lessons", type: :request do
       expect(response).to have_http_status(302)
     end
 
-    it "when it created with valid params as an learner" do
+    it 'when it created with valid params as an learner' do
       login(learner)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
       expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
 
-    it "when it created with valid params as an admin" do
+    it 'when it created with valid params as an admin' do
       login(admin)
       post "/dashboard/add_lesson/#{course.id}", params: { lesson: lesson }, as: :json
       expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
 
-  describe "GET /dashboard/edit_lesson/:lesson_id" do
+  describe 'GET /dashboard/edit_lesson/:lesson_id' do
     it 'when it created a valid request as an instructor' do
       login(instructor)
       get "/dashboard/edit_lesson/#{lesson.id}"
@@ -67,24 +67,24 @@ RSpec.describe "Lessons", type: :request do
 
   end
 
-  describe "PATCH /dashboard/edit_lesson/:lesson_id" do
-    it "when it created a valid request as an instructor" do
+  describe 'PATCH /dashboard/edit_lesson/:lesson_id' do
+    it 'when it created a valid request as an instructor' do
       login(instructor)
       expect do
         patch "/dashboard/edit_lesson/#{lesson.id}", params: { lesson: lesson }, as: :json
       end.to change(Lesson, :count).by(0)
       expect(response).to have_http_status(302)
-      expect(flash[:notice]).to eq("This lesson is updated")
+      expect(flash[:notice]).to eq('This lesson is updated')
     end
 
-    it "when it created a valid request as a learner" do
+    it 'when it created a valid request as a learner' do
       login(learner)
       patch "/dashboard/edit_lesson/#{lesson.id}", params: { lesson: lesson }, as: :json
       expect(response).to have_http_status(302)
       expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
 
-    it "when it created a valid request as an admin" do
+    it 'when it created a valid request as an admin' do
       login(admin)
       patch "/dashboard/edit_lesson/#{lesson.id}", params: { lesson: lesson }, as: :json
       expect(response).to have_http_status(302)
@@ -92,8 +92,8 @@ RSpec.describe "Lessons", type: :request do
     end
   end
 
-  describe "DELETE /dashboard/delete_lesson/:lesson_id" do
-    it "when it crated a valid request as an admin" do
+  describe 'DELETE /dashboard/delete_lesson/:lesson_id' do
+    it 'when it crated a valid request as an admin' do
       login(admin)
       expect do
         delete "/dashboard/delete_lesson/#{lesson.id}"
@@ -101,7 +101,7 @@ RSpec.describe "Lessons", type: :request do
       expect(response).to have_http_status(302)
       expect(flash[:notice]).to eq(I18n.t('controller.lessons.destroy_lesson.success_notice'))
     end
-    it "when it crated a valid request as an instructor" do
+    it 'when it crated a valid request as an instructor' do
       login(instructor)
       expect do
         delete "/dashboard/delete_lesson/#{lesson.id}"
@@ -109,7 +109,7 @@ RSpec.describe "Lessons", type: :request do
       expect(response).to have_http_status(302)
       expect(flash[:notice]).to eq(I18n.t('controller.lessons.destroy_lesson.success_notice'))
     end
-    it "when it crated a valid request as an learner" do
+    it 'when it crated a valid request as an learner' do
       login(learner)
       expect do
         delete "/dashboard/delete_lesson/#{lesson.id}"

@@ -4,13 +4,13 @@ RSpec.describe DashboardPolicy, type: :policy do
   let(:admin_user) { build_stubbed(:user, role: 'admin') }
   let(:instructor_user) { build_stubbed(:user, role: 'instructor') }
 
-  context "permissions for show_user?" do
-    it "grants access to admin users" do
+  context 'permissions for show_user?' do
+    it 'grants access to admin users' do
       policy = described_class.new(admin_user, nil)
       expect(policy.show_user?).to be_truthy
     end
 
-    it "denies access to instructor or learner users" do
+    it 'denies access to instructor or learner users' do
       policy = described_class.new(instructor_user, nil)
       expect(policy.show_user?).to be true
     end

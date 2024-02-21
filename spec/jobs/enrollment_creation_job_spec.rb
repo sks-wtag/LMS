@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe EnrollmentCreationJob, type: :job do
   let!(:organization) { create(:organization) }
-  let!(:user) { create(:user, organization:organization, role: "learner") }
-  let!(:admin) { create(:user, organization:organization, role: "admin") }
+  let!(:user) { create(:user, organization:organization, role: 'learner') }
+  let!(:admin) { create(:user, organization:organization, role: 'admin') }
   let!(:course) { create(:course) }
   let(:is_job_running) { { value: true } }
 

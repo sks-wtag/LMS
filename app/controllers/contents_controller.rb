@@ -8,7 +8,8 @@ class ContentsController < ApplicationController
 
   def create_content
     @lesson = Lesson.find_by(id: params[:lesson_id])
-    return invalid_params unless  @lesson.present?
+    return invalid_params unless @lesson.present?
+
     authorize @lesson, :create_lesson?, policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
     if @content.content_type != 'text' && params[:files].present?
@@ -32,6 +33,7 @@ class ContentsController < ApplicationController
   def destroy_content
     @content = Content.find_by(id: params[:content_id])
     return invalid_params unless @content.present?
+
     authorize @content
     if @content.present? && @content.destroy
       flash[:notice] = I18n.t('controller.content.destroy_content.content_deleted')

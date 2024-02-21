@@ -16,7 +16,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def edit_course?
-    record.enrollments.where(user_id: user.id, enrollment_type: "instructor").present?
+    record.enrollments.where(user_id: user.id, enrollment_type: 'instructor').present?
   end
 
   def index?
@@ -42,7 +42,7 @@ class CoursePolicy < ApplicationPolicy
         scope.joins(users: :enrollments)
              .where(
                users: { organization_id: user.organization_id },
-               enrollments: { enrollment_type: "instructor" }).distinct
+               enrollments: { enrollment_type: 'instructor' }).distinct
       else
         scope.joins(users: :enrollments)
              .where(

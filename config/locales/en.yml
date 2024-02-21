@@ -135,6 +135,8 @@ en:
       invalid_credentials: Invalid Credentials
       does_not_match_file_format: Does not match file format
       authorized_alert: You are not authorized to perform this action.
+      logged_in_notice: You are already logged in.
+      logged_in_alert: You need to login before access that page
       logged_out: Logged out
   user_role:
     admin: Admin

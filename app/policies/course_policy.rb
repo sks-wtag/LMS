@@ -23,6 +23,10 @@ class CoursePolicy < ApplicationPolicy
     edit_course? || user.admin?
   end
 
+  def enroll?
+    !record.admin?
+  end
+
   def save_course?
     edit_course?
   end

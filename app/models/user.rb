@@ -8,7 +8,7 @@ class User < ApplicationRecord
   before_validation :remove_trailling_and_leading_space
   before_save :downcase_email
   belongs_to :organization
-  has_many :enrollments
+  has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments, dependent: :destroy
   has_many :user_course_progresses
   validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, format: { with: /\A[A-Za-z]+\z/ }, presence: true

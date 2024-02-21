@@ -17,6 +17,7 @@ class EnrollmentsController < ApplicationController
     return invalid_params unless @user.present? && @course.present?
 
     authorize @course, :index? if @course.present?
+    authorize @user ,:enroll?, policy_class: CoursePolicy
     @enrollment = Enrollment.find_by(user_id: @user.id, course_id: @course.id)
     if @enrollment.present?
       flash[:notice] = I18n.t('controller.enrollments.enroll.enrolled_notice')
@@ -30,7 +31,7 @@ class EnrollmentsController < ApplicationController
       user_id: @user.id,
       course_id: @course.id,
       enrollment_type: 'learner')
-    if !@user.admin? && @enrollment.present? && @enrollment.save
+    if @enrollment.present? && @enrollment.save
       SendScheduleMail.perform_at(@enrollment.completion_time - 2.days, @enrollment.id)
       flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
     elsif @enrollment.errors[:completion_time].present?

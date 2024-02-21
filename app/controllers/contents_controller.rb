@@ -1,6 +1,10 @@
 class ContentsController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_user!
+  CONTENT_TYPE_TEXT = 'text'
+  CONTENT_TYPE_PDF = 'pdf'
+  CONTENT_TYPE_IMAGE = 'image'
+  CONTENT_TYPE_VIDEO = 'video'
 
   def add_content
     @content = Content.new
@@ -12,7 +16,7 @@ class ContentsController < ApplicationController
 
     authorize @lesson, :create_lesson?, policy_class: LessonPolicy
     @content = @lesson.contents.build(content_params)
-    if @content.content_type != 'text' && params[:files].present?
+    if @content.content_type != CONTENT_TYPE_TEXT && params[:files].present?
       error = acceptable_file(params[:files], @content)
       if error.size == 0 && @content.files.attach(params[:files])
         @content.description = I18n.t('controller.content.create_content.description')
@@ -53,9 +57,9 @@ class ContentsController < ApplicationController
     acceptable_image = I18n.t('controller.content.create_content.image_formats')
     acceptable_pdf = I18n.t('controller.content.create_content.pdf_formats')
     acceptable_video = I18n.t('controller.content.create_content.video_formats')
-    unless (record.content_type == 'pdf' && acceptable_pdf.include?(files.content_type))  ||
-      (record.content_type == 'image' && acceptable_image.include?(files.content_type)) ||
-      (record.content_type == 'video' && acceptable_video.include?(files.content_type))
+    if !(record.content_type == CONTENT_TYPE_PDF && acceptable_pdf.include?(files.content_type))  &&
+      !(record.content_type == CONTENT_TYPE_IMAGE && acceptable_image.include?(files.content_type)) &&
+      !(record.content_type == CONTENT_TYPE_VIDEO && acceptable_video.include?(files.content_type))
       record.errors.add(:files, I18n.t('errors.messages.does_not_match_file_format'))
     end
     record.errors

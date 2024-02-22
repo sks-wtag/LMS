@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class UserViewModel
   attr_accessor \
     :first_name,\

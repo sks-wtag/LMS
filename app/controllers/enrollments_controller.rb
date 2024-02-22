@@ -4,7 +4,6 @@ class EnrollmentsController < ApplicationController
   before_action :search_and_assign_from_params_info
   before_action :redirect_if_have_invalid_params, only: [:index, :assign_all_user, :unassign_all_user]
 
-
   def index
     @page_title = I18n.t('controller.enrollments.index.title')
     authorize @course if @course.present?
@@ -28,7 +27,7 @@ class EnrollmentsController < ApplicationController
       completion_time: params[:completion_time],
       user_id: @user.id,
       course_id: @course.id,
-      enrollment_type: 'learner')
+      enrollment_type: USER_TYPE_LEARNER)
     if @enrollment.present? && @enrollment.save
       SendScheduleMail.perform_at(@enrollment.completion_time - 2.days, @enrollment.id)
       flash[:notice] = I18n.t('controller.enrollments.enroll.enroll_success_notice')
@@ -53,7 +52,7 @@ class EnrollmentsController < ApplicationController
 
     total_lesson = Lesson.where(course_id: @course.id).count
     complete_lesson = UserCourseProgress.where(user_id: @user.id, enrollment_id: @enrollment.id).count
-    if @enrollment.enrollment_type == 'instructor'
+    if @enrollment.enrollment_type == USER_TYPE_INSTRUCTOR
       flash[:message] = I18n.t('controller.enrollments.dis_enroll.owner_notice')
     elsif total_lesson == complete_lesson && total_lesson != 0
       flash[:message] = I18n.t('controller.enrollments.dis_enroll.completed_notice')
@@ -87,7 +86,7 @@ class EnrollmentsController < ApplicationController
 
   def unassign_all_user
     authorize @course, :index? if @course.present?
-    Enrollment.where(course_id: @course.id, enrollment_type: 'learner').destroy_all
+    Enrollment.where(course_id: @course.id, enrollment_type: USER_TYPE_LEARNER).destroy_all
     flash[:notice] = I18n.t('controller.enrollments.dispose_all_user.success_notice')
     redirect_to_enroll_course(@course.id)
   end

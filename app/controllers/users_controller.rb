@@ -64,9 +64,9 @@ class UsersController < ApplicationController
 
   def create
     @organization = Organization.new(organization_params)
-    error = acceptable_image(params[:organization][:users_attributes]["0"][:picture], @organization.users.first)
+    error = acceptable_image(params[:organization][:users_attributes]['0'][:picture], @organization.users.first)
     if error.size == 0 && @organization.save
-      current_email = params[:organization][:users_attributes]["0"][:email]
+      current_email = params[:organization][:users_attributes]['0'][:email]
       @user = @organization.users.find_by(email: current_email)
       @user.send_confirmation_email!
       redirect_to root_path, notice: I18n.t('controller.users.create.check_email_instruction_notice')

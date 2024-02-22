@@ -41,7 +41,6 @@ RSpec.describe 'Contents', type: :request do
     end
   end
 
-
   describe 'DELETE /dashboard/delete_content/:content_id' do
     it "when it created a valid request as an instructor" do
       login(instructor)

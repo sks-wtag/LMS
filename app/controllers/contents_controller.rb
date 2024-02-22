@@ -1,10 +1,10 @@
 class ContentsController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_user!
-  CONTENT_TYPE_TEXT = 'text'
-  CONTENT_TYPE_PDF = 'pdf'
-  CONTENT_TYPE_IMAGE = 'image'
-  CONTENT_TYPE_VIDEO = 'video'
+  CONTENT_TYPE_TEXT = 'text'.freeze
+  CONTENT_TYPE_PDF = 'pdf'.freeze
+  CONTENT_TYPE_IMAGE = 'image'.freeze
+  CONTENT_TYPE_VIDEO = 'video'.freeze
 
   def add_content
     @content = Content.new

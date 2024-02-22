@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   include Authentication
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  USER_TYPE_ADMIN = 'admin'.freeze
+  USER_TYPE_INSTRUCTOR = 'instructor'.freeze
+  USER_TYPE_LEARNER = 'learner'.freeze
 
   def not_found
     render file: Rails.public_path.join('404.html'), status: :not_found, layout: false

@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
     @user = current_user
     @course = @user.courses.new(course_params)
     authorize @course if @course.present?
-    @enrollment = @course.enrollments.build(user: @user, enrollment_type: 'instructor')
+    @enrollment = @course.enrollments.build(user: @user, enrollment_type: USER_TYPE_INSTRUCTOR)
     if @course.save && @enrollment.save
       flash[:notice] = I18n.t('controller.courses.create_course.course_added')
       redirect_to dashboard_show_course_path
@@ -63,7 +63,7 @@ class CoursesController < ApplicationController
     return invalid_params unless @course.present?
 
     authorize @course if @course.present?
-    instructor = Enrollment.find_by(course_id: @course.id, enrollment_type: 'instructor')
+    instructor = Enrollment.find_by(course_id: @course.id, enrollment_type: USER_TYPE_INSTRUCTOR)
     if @course.destroy
       UserMailer.send_mail_for_delete_course(instructor.user, @course).deliver_now
       flash[:notice] = I18n.t('controller.courses.delete_course.success_notice')

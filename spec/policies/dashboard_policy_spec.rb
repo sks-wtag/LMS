@@ -18,7 +18,7 @@ RSpec.describe DashboardPolicy, type: :policy do
 
   context 'permission for change_status' do
     it 'grant access to admin user' do
-      policy = described_class.new(admin_user,admin_user)
+      policy = described_class.new(admin_user, admin_user)
       expect(policy.change_status?).to be false
     end
 

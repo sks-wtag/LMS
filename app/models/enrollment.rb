@@ -11,7 +11,7 @@ class Enrollment < ApplicationRecord
   }
   private
   def completion_time_cannot_less_than_today
-    if enrollment_type == 'learner' && completion_time <= Date.today + 2.day
+    if enrollment_type == USER_TYPE_LEARNER && completion_time <= Date.today + 2.day
       errors.add(:completion_time, I18n.t('activerecord.enrollment.completion_time'))
     end
   end

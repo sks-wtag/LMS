@@ -8,7 +8,6 @@ class Course < ApplicationRecord
   validates :title, :description, presence: true
 
   private
-
   def remove_trailling_and_leading_space
     self.title = title.strip if title.present?
     self.description = description.strip if description.present?

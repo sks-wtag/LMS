@@ -1,19 +1,23 @@
-<div style="width: 350px; margin: 0 auto;">
+<div style="width: 500px; margin: 0 auto;">
   <div class="card mt-5">
     <div class="card-header">
-      <h5>Change password </h5>
+      <h5><%= I18n.t('views.button.change_password') %></h5>
     </div>
     <div class="card-body">
       <%= form_with url: password_path(params[:password_reset_token]), scope: :user, method: :put do |form| %>
-        <div>
-          <label for="password">Password</label><br>
-          <%= form.password_field :confirmation, placeholder: "Password", required: true %>
+        <div class="form-group">
+          <%= form.label I18n.t('activerecord.attributes.password'), "Password" %><br>
+          <%= form.password_field :password, class: "form-control", placeholder: I18n.t('views.placeholder.password'), required: true %>
+          <% @user.errors.full_messages_for(:password).each do |message| %>
+            <div class="text-danger"><%= message %></div>
+          <% end %>
         </div>
-        <div>
-          <label for="password_confirmation">Confirmation password</label><br>
-          <%= form.password_field :confirmation, placeholder: "Confirmation Password", required: true %>
+        <div class="form-group">
+          <%= form.label I18n.t('activerecord.attributes.password_confirmation'), "Confirmation password" %><br>
+          <%= form.password_field :password_confirmation, class: "form-control", placeholder: I18n.t('views.placeholder.password_confirmation'), required: true %>
         </div>
-        <%= form.submit "Update Password" %>
+        <br>
+        <%= form.submit I18n.t('views.button.update'), class: "btn btn-primary" %>
       <% end %>
     </div>
   </div>

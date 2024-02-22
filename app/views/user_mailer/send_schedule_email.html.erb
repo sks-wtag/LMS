@@ -1,0 +1,9 @@
+Dear <%= @user.name %>
+<p><%= I18n.t('user_mailer.deadline_notice') %></p>
+<b><%= I18n.t('user_mailer.course_details') %>: </b>
+<p><b>Course Name: </b> <%=@course.title %></p>
+<p><b><%= I18n.t('activerecord.attributes.completion_time') %>: </b> <%= @enrollment.completion_time %></p>
+<br>
+<br>
+<h5><%= I18n.t('user_mailer.course_link') %> </h5>
+<%= link_to @course.title,  "#{ENV["WEBSITE_NAME"]}/dashboard/show_a_course/#{@course.id}" %>

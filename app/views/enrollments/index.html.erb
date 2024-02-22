@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-7">
+  </div>
+  <div class="col-2">
+    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModalcourse">
+      <b><%= I18n.t('views.inner_text.enrollments.assign_to_all') %></b>
+    </button>
+    <%= render partial: "all_enrollment_modal", locals: { course: @course } %>
+  </div>
+  <div class="col-2">
+    <%= link_to 'Dispose all user',
+                "/dashboard/unassign_to_all/#{@course.id}",
+                class: "btn btn-sm btn-danger",
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: I18n.t('views.inner_text.enrollments.dispose_confirmation_message')
+                } %>
+  </div>
+</div>
+<table class="table table-striped w-100">
+  <thead>
+  <tr>
+    <th scope="col"><%= I18n.t('activerecord.attributes.username') %></th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.role') %></th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.deadline') %></th>
+    <th scope="col"><%= I18n.t('activerecord.attributes.active_status') %></th>
+    <th scope="col"><%= I18n.t('views.inner_text.dashboards.action') %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% total_lesson = Lesson.where(course_id: @course.id).count %>
+  <% @users.each do |user| %>
+    <tr>
+      <% enrolled = user.enrollments.where(course_id: @course.id).first %>
+      <% if enrolled.present? %>
+        <% complete_lesson = UserCourseProgress.where(user_id: user.id, enrollment_id: enrolled.id).count %>
+      <% end %>
+      <td><%= user.name %></td>
+      <% if enrolled.present? && enrolled.enrollment_type == 'instructor' %>
+        <td> <%= I18n.t('user_role.instructor') %></td>
+      <% elsif user.admin? %>
+        <td> <%=I18n.t('user_role.admin') %></td>
+      <% else %>
+        <td><%= I18n.t('user_role.learner') %></td>
+      <% end %>
+      <td><%= enrolled.completion_time.strftime("%d-%m-%Y") if enrolled.present? && enrolled.completion_time.present? %></td>
+      <% if (enrolled.present? && enrolled.enrollment_type == 'instructor') || total_lesson == complete_lesson %>
+        <td>Completed</td>
+      <% elsif user.admin? %>
+        <td>----</td>
+      <% elsif enrolled.present? && total_lesson != complete_lesson %>
+        <td>Incomplete</td>
+      <% else %>
+        <td>Not Assigned</td>
+      <% end %>
+      <td>
+        <% if enrolled.present? %>
+          <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
+            <b style="font-size: 20px;">-</b>
+          </button>
+          <%= render partial: "dis_enrollment_model", locals: { user: user, course: @course } %>
+        <% else %>
+          <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#myModal<%= user.id %>">
+            <b style="font-size: 20px;">+</b>
+          </button>
+          <%= render partial: "enrollment_modal", locals: { user: user, course: @course } %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,3 @@
+<%= form_with url: "/dashboard/delete_content/#{content.id}", method: :delete do |form| %>
+  <%= form.button I18n.t('views.button.delete'), class: 'nav-link text-danger text-decoration-underline', data: { content_id: content.id } %>
+<% end %>

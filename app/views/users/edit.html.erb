@@ -15,28 +15,40 @@
           <div class="text-danger"><%= message %></div>
         <% end %>
         <div class="mb-3">
-          <%= form.label :first_name, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.first_name'), class: 'form-label' %>
           <%= form.text_field :first_name, class: 'form-control' %>
+          <% @user.errors.full_messages_for(:first_name).each do |message| %>
+            <div class="text-danger"><%= message %></div>
+          <% end %>
         </div>
         <div class="mb-3">
-          <%= form.label :last_name, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.last_name'), class: 'form-label' %>
           <%= form.text_field :last_name, class: 'form-control' %>
+          <% @user.errors.full_messages_for(:last_name).each do |message| %>
+            <div class="text-danger"><%= message %></div>
+          <% end %>
         </div>
         <div class="mb-3">
-          <%= form.label :email, class: 'form-label' %> </br>
+          <%= form.label I18n.t('activerecord.attributes.email'), class: 'form-label' %> </br>
           <%= form.text_field :email, class: 'form-control', disabled: true %>
         </div>
         <div class="mb-3">
-          <%= form.label :phone, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.phone'), class: 'form-label' %>
           <%= form.phone_field :phone, class: 'form-control' %>
+          <% @user.errors.full_messages_for(:phone).each do |message| %>
+            <div class="text-danger"><%= message %></div>
+          <% end %>
         </div>
         <div class="mb-3">
-          <%= form.label :address, class: 'form-label' %>
+          <%= form.label I18n.t('activerecord.attributes.address'), class: 'form-label' %>
           <%= form.text_area :address, class: 'form-control' %>
+          <% @user.errors.full_messages_for(:address).each do |message| %>
+            <div class="text-danger"><%= message %></div>
+          <% end %>
         </div>
         <div class="row">
           <div class="col-12">
-            <%= form.submit "Update", class: 'btn btn-primary' %>
+            <%= form.submit I18n.t('views.button.update'), class: 'btn btn-primary' %>
           </div>
         </div>
       <% end %>

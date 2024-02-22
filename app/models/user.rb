@@ -8,11 +8,14 @@ class User < ApplicationRecord
   before_validation :remove_trailling_and_leading_space
   before_save :downcase_email
   belongs_to :organization
-  has_many :enrollments
+  has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments, dependent: :destroy
   has_many :user_course_progresses
-  validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, presence: true
+  validates :first_name, :last_name, length: { minimum: 2, maximum: 30 }, format: { with: /\A[A-Za-z]+\z/ }, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
+  validates :password, format:
+    { with: /\A(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}\z/,
+      message: I18n.t('activerecord.user.password')}, allow_nil: true
   validates_plausible_phone :phone, presence: true
   validates :address, length: { minimum: 2, maximum: 100 }, presence: true
   phony_normalize :phone, default_country_code: 'BD'

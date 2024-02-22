@@ -3,17 +3,23 @@
     <div class="card m-3">
       <div class="card-body">
         <%= form_with(model: @lesson, url: "/dashboard/add_lesson/#{@course.id}") do |form| %>
-          <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
           <div class="mt-4">
-            <%= form.label :title %> </br>
-            <%= form.text_field :title, style: 'width:100%', placeholder: 'Enter your lesson title', required: true %>
+            <%= form.label I18n.t('activerecord.attributes.title') %> </br>
+            <%= form.text_field :title, style: 'width:100%', placeholder: I18n.t('views.placeholder.title', field_name: I18n.t('activerecord.details.lesson')), required: true %>
             <% @lesson.errors.full_messages_for(:title).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
           </div>
+          <div class="mt-4">
+            <%= form.label I18n.t('activerecord.attributes.score') %> </br>
+            <%= form.text_field :score, style: 'width:100%', placeholder: I18n.t('views.placeholder.score'), min: 1, max: 10 , required: true %>
+            <% @lesson.errors.full_messages_for(:score).each do |message| %>
+              <div class="text-danger"><%= message %></div>
+            <% end %>
+          </div> </br>
           <div>
-            <%= form.label :description %> <br>
-            <%= form.text_area :description, style: 'width:100%;', placeholder: 'Enter lesson content', required: true %>
+            <%= form.label I18n.t('activerecord.attributes.description') %> <br>
+            <%= form.text_area :description, style: 'width:100%;', placeholder: I18n.t('views.placeholder.description', field_name: I18n.t('activerecord.details.lesson')), required: true %>
             <% @lesson.errors.full_messages_for(:description).each do |message| %>
               <div class="text-danger"><%= message %></div>
             <% end %>
@@ -21,7 +27,7 @@
           <br>
           <div class="row">
             <div class="col-6">
-              <%= form.submit "Add", class: 'btn btn-primary' %>
+              <%= form.submit I18n.t('views.button.add'), class: 'btn btn-primary' %>
             </div>
           </div>
         <% end %>

@@ -3,29 +3,33 @@
     <div class="card m-3" style="font-size: medium;">
       <div class="card-body">
         <%= form_with(model: @content, url: "/dashboard/save_content/#{lesson.id}", multipart: true) do |form| %>
-          <%#= render partial: "shared/form_errors", locals: { object: form.object } %>
           <div class="mt-4">
-            <%= form.label :title %> </br>
-            <%= form.text_field :title, style: 'width:100%', placeholder: 'Enter your title', required: true %>
+            <%= form.label I18n.t('activerecord.attributes.title') %> </br>
+            <%= form.text_field :title, style: 'width:100%', placeholder: I18n.t('views.placeholder.title', field_name: I18n.t('activerecord.details.content')), required: true %>
           </div>
           <br>
           <div class="full-width-select">
-            <%= form.label :content_type %> </br>
-            <%= form.select :content_type, [["Text", "text"], ["Pdf", "pdf"], ["Image", "image"], ["Video", 'video']], selected: "text", class: 'full-width-select' %>
+            <label for="content_content_type"><%= I18n.t('views.label.content_type') %></label>
+            <select name="content[content_type]" onclick="select_option('<%= lesson.id %>')" id="content_type<%= lesson.id %>">
+              <option selected="selected" value="text">Text</option>
+              <option value="pdf">Pdf</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select>
           </div>
           <br>
-          <div id='text_type'>
-            <%= form.label :description %> <br>
-            <%= form.text_area :description, style: 'width:100%;', placeholder: 'Enter your descriptions' %>
+          <div id="text_type<%=lesson.id%>">
+            <%= form.label I18n.t('activerecord.attributes.description') %> <br>
+            <%= form.text_area :description, style: 'width:100%;', placeholder: I18n.t('views.placeholder.description', field_name: I18n.t('activerecord.details.content')) %>
           </div>
-          <div id='file_type' style="display: none;">
-            <%= form.label "Upload file" %> <br>
+          <div id="file_type<%=lesson.id%>" style="display: none;">
+            <%= form.label I18n.t('views.label.upload_file') %> <br>
             <%= file_field_tag :files %>
           </div>
           <br>
           <div class="row">
             <div class="col-6">
-              <%= form.submit "Add", class: 'btn btn-primary' %>
+              <%= form.submit I18n.t('views.button.add'), class: 'btn btn-primary' %>
             </div>
           </div>
         <% end %>
@@ -33,3 +37,25 @@
     </div>
   </div>
 </div>
+
+<script>
+  function select_option(lesson_id){
+      var contentTypeSelect = document.getElementById("content_type"+lesson_id);
+      var textTypeDiv = document.getElementById('text_type'+lesson_id);
+      var fileTypeDiv = document.getElementById('file_type'+lesson_id);
+      toggleDivVisibility();
+      if (textTypeDiv.value === '')
+          textTypeDiv.value = 'Enter your descriptions'
+      contentTypeSelect.addEventListener('change', toggleDivVisibility);
+      function toggleDivVisibility() {
+          var selectedValue = contentTypeSelect.value;
+          if (selectedValue === 'text') {
+              textTypeDiv.style.display = 'block';
+              fileTypeDiv.style.display = 'none';
+          } else {
+              textTypeDiv.style.display = 'none';
+              fileTypeDiv.style.display = 'block';
+          }
+      }
+  }
+</script>

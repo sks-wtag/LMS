@@ -1,31 +1,235 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      active_status: Status
+      address: Address
+      completion_time: Deadline
+      first_name: First name
+      last_name: Last name
+      email: Email
+      phone: Phone
+      username: Username
+      role: Role
+      deadline: Deadline
+      password: Password
+      password_confirmation: Confirm Password
+      picture: Picture
+      title: Title
+      description: Description
+      score: Score
+    details:
+      content: content
+      course: course
+      lesson: lesson
+      user: user
+    enrollment:
+      completion_time: can't be set past the date or can't be set within 3 days.
+    lesson:
+      score: must be between 1 and 10
+    user:
+      password: must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be between 8 to 16 characters long
+      country: BD
+  controller:
+    confirmations:
+      create:
+        email_confirmation_notice: Please check your email for confirmation instructions
+      edit:
+        account_confirmed: Your account has been confirmed
+    content:
+      create_content:
+        description: Saved in file
+        content_added: A new content is added
+        image_formats:
+          - image/jpeg
+          - image/png
+          - image/jpg
+        pdf_formats:
+          - application/pdf
+        video_formats:
+          - video/mp4
+          - video/mpeg
+      destroy_content:
+        content_deleted: This content has been deleted
+    courses:
+      new_course:
+        add_new_course: Dashboard -> Add a course
+      create_course:
+        course_added: This course has been added
+      show_course:
+        show_courses: Dashboard -> Show courses
+      show_single_course:
+        show_course: Dashboard -> Show a course
+      edit_course:
+        edit_a_course: Dashboard -> Edit a course
+      save_course:
+        success_notice: Successfully updated
+      delete_course:
+        success_notice: This course is deleted successfully
+    dashboards:
+      index:
+        dashboard_title: Dashboard
+      new_user:
+        add_user_title: Dashboard -> Add User
+      create_user:
+        success_notice: Added a user successfully
+      change_status:
+        success_notice: Status successfully updated.
+      show_user:
+        users_title: Dashboard -> Users
+    enrollments:
+      index:
+        title: Dashboard -> Enrollment
+      enroll:
+        enrolled_notice: This course has already been enrolled
+        enroll_success_notice: Enrolled successfully
+      dis_enroll:
+        already_dis_enroll_notice: This course has not already been enrolled in by this user.
+        owner_notice: He/She is the owner of this course.
+        completed_notice: This course has already been completed.
+        success_notice: Successfully dis-enroll.
+      complete_lesson:
+        success_notice: Thanks for completing this lesson!
+      assign_all_user:
+        processing_notice: Assignments are processing
+      dispose_all_user:
+        success_notice: Disposed successfully
+    lessons:
+      create_lesson:
+        success_notice: A new lesson is added
+      destroy_lesson:
+        success_notice: This lesson is deleted
+      edit_lesson:
+        title: Dashboard -> Edit a lesson
+      save_lesson:
+        success_notice: This lesson is updated
+    passwords:
+      create:
+        reset_notice: Reset instruction is sent to user emails
+        email_confirmation_notice: Please confirm the email first, and your confirmation instructions will be sent to your email.
+      update:
+        success_notice: Password updated successfully
+    sessions:
+      create:
+        success_notice: Successfully logged in
+        confirm_notice: Please confirm the email first
+      destroy:
+        logged_out_notice: Logged out
+    users:
+      change_password:
+        change_password_notice: Current password can't be the same as the new password
+        success_notice: Password updated
+      create:
+        check_email_instruction_notice: Please check your email confirmation instructions
+      destroy:
+        success_notice: This user account has been deleted
+      update:
+        picture_upload_error: Please upload your profile picture
+        success_notice: Account updated
+        picture_format_mismatch: Picture must be a JPEG or PNG format
+        picture_size_error: Picture size is too big
+  errors:
+    messages:
+      try_again: Please try again!
+      invalid_params: Invalid params
+      invalid_token: Invalid token
+      invalid_credentials: Invalid Credentials
+      does_not_match_file_format: Does not match file format
+      authorized_alert: You are not authorized to perform this action.
+      logged_in_notice: You are already logged in.
+      logged_in_alert: You need to login before access that page
+      logged_out: Logged out
+      blocking_email_notice: You've reached the maximum login attempts. Please try again later.
+  user_role:
+    admin: Admin
+    instructor: Instructor
+    learner: Learner
+  views:
+    button:
+      add: Add
+      add_course: Add course
+      add_user: Add User
+      add_lesson: Add a lesson
+      add_content: Add a content
+      assign: Assign
+      close: Close
+      complete: Complete
+      courses: Courses
+      change_password: Change password
+      delete: Delete
+      dashboard: Dashboard
+      details: Details
+      enroll: Enroll
+      edit: Edit
+      edit_lesson: Edit a lesson
+      forgot_password: Forgot password
+      mailer:
+        reset_password: Click here to reset your password.
+        confirm_email: Click here to confirm your email.
+      login: Login
+      login_here: Login here
+      logout: Logout
+      update: Update
+      update_profile: Update profile
+      submit: Submit
+      send_mail: Send email
+      sign_up_here: Signup here
+      sign_up: Signup
+      users: Users
+      yes: Yes
+    label:
+      content_type: Content Type
+      upload_file: Upload file
+      current_password: Current_password
+      organization_name: Organization name
+    placeholder:
+      address: Enter your address...
+      description: Enter your %{field_name} descriptions
+      email: Enter your email
+      first_name: Enter your first name
+      last_name: Enter your last name
+      organization_name: Enter your unique organization name
+      phone: Enter your phone number
+      password: Enter your password
+      password_confirmation: Enter your confirmation password
+      score: Gives point for this lesson
+      search: Search
+      title: Enter your %{field_name} title
+    inner_text:
+      confirmations:
+        form_title: Confirmation email
+      courses:
+        add_course: Add a course
+        content_type: Content type
+        course_content: All of the content of this course
+        delete_course: Delete a course
+        edit_course: Edit a course
+        delete_confirmation_message: If you delete this course, it will automatically delete all of the content. Do you want to delete this?
+      lessons:
+        completed: Completed
+      dashboards:
+        add_user: Add a user
+        action: Action
+        delete_user: Delete an user
+        delete_confirmation_message: Do you want to delete this user?
+        serial_no: Serial No
+        role: Role
+      enrollments:
+        enroll_here: Enroll here
+        dis_enroll: Dispose here
+        dispose_confirmation_message:  Are you want to dispose this course from this user?
+        assign_to_all: Assign to all
+      users:
+        edit_information_title: Edit Your Information
+        registration_title: Register as an administrator
+  user_mailer:
+    confirmation_instruction: Confirmation Instructions
+    password_reset_instruction: Password Reset Instructions
+    email_send_message: Your LMS account has been created with temporary password. After getting this email please change your password using this temporary password
+    confirmation_inner_text: Please confirm your account
+    deadline_notice: Your course deadline is near. Please complete your course.
+    course_details: Here is your course details
+    course_link: Here is your link
+    delete_notice: A course has been deleted from your
+    account_create: Your account has been created
+    schedule_mail_warning: Warning %{title} deadline is near to you
+    delete_course_warning: Warning This %{title} course is removed

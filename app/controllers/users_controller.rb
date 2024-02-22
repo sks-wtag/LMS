@@ -5,14 +5,14 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: %i[edit destroy update edit_password change_password]
 
   def new
-    @organization = Organization.new({})
-    @user = @organization.users.build({})
+    @organization = Organization.new
+    @user = @organization.users.build
   end
 
   def destroy
     current_user.destroy
     reset_session
-    redirect_to root_path, notice: 'This user account has been deleted'
+    redirect_to root_path, notice: I18n.t('controller.users.destroy.success_notice')
   end
 
   def edit_password
@@ -26,29 +26,34 @@ class UsersController < ApplicationController
   def change_password
     @user = current_user
     if @user.authenticate(params[:user][:current_password])
-      if @user.update(
+      if params[:user][:current_password] == params[:user][:password]
+        flash[:notice] = I18n.t('controller.users.change_password.change_password_notice')
+      elsif @user.update(
         password: params[:user][:password],
         password_confirmation: params[:user][:password_confirmation])
-        redirect_to root_path, notice: 'Password updated'
+        flash[:notice] = I18n.t('controller.users.change_password.success_notice')
       else
-        redirect_to change_password, status: :unprocessable_entity
+        flash[:alert] = @user.errors.full_messages.join(", ")
       end
     else
-      flash[:error] = 'Incorrect password'
-      redirect_to change_password, status: :unprocessable_entity
+      flash[:alert] = I18n.t('errors.messages.invalid_credentials')
     end
+    redirect_to user_change_password_path, method: :get
   end
 
   def update
     @user = current_user
     error = acceptable_image(params[:user][:picture], @user)
-    if error.size == 0
+    if params[:user][:picture].present? && error.size == 0
       @user.picture.purge
+      @user.picture.attach(params[:user][:picture])
     end
-    if error.size == 0 && @user.update(update_params)
-      redirect_to user_update_path, notice: 'Account updated'
+    if @user.update(update_params)
+      redirect_to user_update_path, notice: I18n.t('controller.users.update.success_notice')
     else
-      flash[:notice] = 'Please try again'
+      unless @user.errors.size
+        flash[:alert] = I18n.t('errors.messages.try_again')
+      end
       render 'edit', status: :unprocessable_entity
     end
   end
@@ -59,12 +64,12 @@ class UsersController < ApplicationController
 
   def create
     @organization = Organization.new(organization_params)
-    error = acceptable_image(params[:organization][:users_attributes]["0"][:picture], @organization.users.first)
+    error = acceptable_image(params[:organization][:users_attributes]['0'][:picture], @organization.users.first)
     if error.size == 0 && @organization.save
-      current_email = params[:organization][:users_attributes]["0"][:email]
+      current_email = params[:organization][:users_attributes]['0'][:email]
       @user = @organization.users.find_by(email: current_email)
       @user.send_confirmation_email!
-      redirect_to root_path, notice: 'Please check your email confirmation instructions'
+      redirect_to root_path, notice: I18n.t('controller.users.create.check_email_instruction_notice')
     else
       render :new, status: :unprocessable_entity
     end
@@ -105,8 +110,7 @@ class UsersController < ApplicationController
       :first_name,
       :last_name,
       :phone,
-      :address,
-      :picture)
+      :address)
   end
 
   def get_email
@@ -114,17 +118,11 @@ class UsersController < ApplicationController
   end
 
   def acceptable_image(picture, record)
-    unless picture.present?
-      record.errors.add(:picture, 'Please upload your profile picture')
-      return record.errors
-    end
-    unless File.size(picture) <= 1.megabyte
-      record.errors.add(:picture, "is too big")
-    end
-    acceptable_types = ["image/jpeg", "image/png", "image/jpg"]
-    unless acceptable_types.include?(picture.content_type)
-      record.errors.add(:picture, "must be a JPEG or PNG format")
-    end
+    return record.errors unless picture.present?
+
+    record.errors.add(:picture, I18n.t('controller.users.update.picture_size_error')) unless File.size(picture) <= 1.megabyte
+    acceptable_types = I18n.t('controller.content.create_content.image_formats')
+    record.errors.add(:picture, I18n.t('controller.users.update.picture_format_mismatch')) unless acceptable_types.include?(picture.content_type)
     record.errors
   end
 end

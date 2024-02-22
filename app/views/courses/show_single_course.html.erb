@@ -1,13 +1,29 @@
 <div class="card">
   <div class="card-body">
     <h2 class="card-title "><%= @course.title %>
-      <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo">Add new lesson</button>
+      <% if policy(@course).edit_course? %>
+        <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo"><%= I18n.t('views.button.add_lesson') %></button>
+      <% end %>
+      <% enrollment = Enrollment.where(course_id: @course.id, user_id: current_user.id).first %>
+      <% if current_user.learner? || !policy(@course).edit_course? %>
+        <% if enrollment.present? %>
+          <% gained_score = UserCourseProgress.joins(:lesson).where(enrollment_id: enrollment.id).pluck(:score).sum %>
+          <% total_score = Lesson.where(course_id: @course.id).pluck(:score).sum %>
+          <p style="font-size: 16px;color: green">
+            <% if gained_score == total_score && total_score != 0 %>
+              <%= I18n.t('views.inner_text.lessons.completed') %>
+            <% else %>
+              Your Score: <%= gained_score %> / <%= total_score %></p>
+            <% end %>
+
+        <% end %>
+      <% end %>
     </h2>
     <p class="card-text"><%= @course.description %></p>
     <%= render 'new_lesson_collapse' %>
     <br>
     <br>
-    <h5>Course content</h5>
+    <h5><%= I18n.t('views.inner_text.courses.course_content') %></h5>
     <br>
     <div class="accordion" id="accordionExample">
       <% @course.lessons.each do |lesson| %>
@@ -16,19 +32,35 @@
             <div class="row">
               <div class="col-10">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= lesson.id %>" aria-expanded="false" aria-controls="collapse<%= lesson.id %>">
-                  <h6><%= lesson.title %></h6>
+                  <h6><%= lesson.title %> <b style="color:red">(<%= lesson.score %> Points)</b></h6>
                 </button>
                 <%= render partial: 'new_content_collapse', locals: { lesson: lesson } %>
               </div>
               <div class="col-2">
-                <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo<%= lesson.id %>">Add
-                  new content
-                </button>
-                <%= link_to 'Edit', "/dashboard/edit_lesson/#{lesson.id}", class: "btn btn-sm btn-success" %>
-                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= lesson.id %>">
-                  Delete
-                </button>
-                <%= render partial: 'delete_modal', locals: { lesson: lesson } %>
+                <% if policy(lesson).edit_lesson? %>
+                  <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#demo<%= lesson.id %>">
+                    <%= I18n.t('views.button.add_content') %>
+                  </button>
+                  <%= link_to I18n.t('views.button.edit'), "/dashboard/edit_lesson/#{lesson.id}", class: "btn btn-sm btn-success" %>
+                <% end %>
+                <% if policy(lesson).destroy_lesson? %>
+                  <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal<%= lesson.id %>">
+                    <%= I18n.t('views.button.delete') %>
+                  </button>
+                  <%= render partial: 'delete_modal', locals: { lesson: lesson } %>
+                <% end %>
+                <% unless policy(lesson).destroy_lesson? %>
+                  <% enrollment = Enrollment.where(course_id: @course.id, user_id: current_user.id).first %>
+                  <% course_progress = UserCourseProgress.where(lesson_id: lesson.id, user_id: current_user.id, enrollment_id: enrollment.id).first %>
+                  <% if course_progress.present? && course_progress.complete_status %>
+                    <button class="btn btn-sm btn-success"><%= I18n.t('views.inner_text.lessons.completed') %></button>
+                  <% else %>
+                    <%= form_with(url: "/dashboard/complete_lesson/#{lesson.id}", method: :post) do |form| %>
+                      <%= form.hidden_field :enrollment_id, value: enrollment.id %>
+                      <%= form.submit I18n.t('views.button.complete'), class: "btn btn-sm btn-secondary" %>
+                    <% end %>
+                  <% end %>
+                <% end %>
               </div>
             </div>
           </h2>
@@ -39,20 +71,43 @@
                 <% if content.content_type == 'text' %>
                   <div class="row mt-3 mb-3">
                     <div class="row" style="font-size: medium">
-                      <b><%= content.title %>  (<%= content.content_type %>) </b>
+                      <div class="col-10">
+                        <b><%= content.title %>  (<%= content.content_type %>) </b>
+                      </div>
+                      <div class="col-2">
+                        <% if policy(content).destroy_content? %>
+                          <%= render partial: 'delete_content_button', locals: { content: content } %>
+                        <% end %>
+                      </div>
                     </div>
                     <div class="row" style="font-size: small">
                       <p><%= content.description %></p>
                     </div>
                   </div>
                 <% elsif content.content_type == 'pdf' %>
-                  <%= link_to content.title, url_for(content.files), target: "_blank" %>
+                  <div class="row">
+                    <div class="col-10">
+                      <%= link_to content.title, url_for(content.files), target: "_blank" %>
+                    </div>
+                    <div class="col-2">
+                      <% if policy(content).destroy_content? %>
+                        <%= render partial: 'delete_content_button', locals: { content: content } %>
+                      <% end %>
+                    </div>
+                  </div>
                 <% else %>
                   <div class="row mb-3 text-left">
-                    <button type="button" class="btn btn-sm btn-secondary text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
-                      <%= content.title %>  <b>(<%= content.content_type %>)</b>
-                    </button>
-                    <%= render partial: 'show_image', locals: { content: content } %>
+                    <div class="col-10">
+                      <button type="button" class="btn btn-sm btn-secondary text-start" data-bs-toggle="modal" data-bs-target="#myModal<%= content.id %>">
+                        <%= content.title %>  <b>(<%= content.content_type %>)</b>
+                      </button>
+                      <%= render partial: 'show_image', locals: { content: content } %>
+                    </div>
+                    <div class="col-2">
+                      <% if policy(content).destroy_content? %>
+                        <%= render partial: 'delete_content_button', locals: { content: content } %>
+                      <% end %>
+                    </div>
                   </div>
                 <% end %>
               <% end %>
@@ -64,25 +119,3 @@
   </div>
 </div>
 
-<script>
-    document.addEventListener('click', function () {
-        var contentTypeSelect = document.getElementById('content_content_type');
-        var textTypeDiv = document.getElementById('text_type');
-        var fileTypeDiv = document.getElementById('file_type');
-        toggleDivVisibility();
-        if (textTypeDiv.value === '')
-            textTypeDiv.value = 'Enter your descriptions'
-        contentTypeSelect.addEventListener('change', toggleDivVisibility);
-
-        function toggleDivVisibility() {
-            var selectedValue = contentTypeSelect.value;
-            if (selectedValue === 'text') {
-                textTypeDiv.style.display = 'block';
-                fileTypeDiv.style.display = 'none';
-            } else {
-                textTypeDiv.style.display = 'none';
-                fileTypeDiv.style.display = 'block';
-            }
-        }
-    });
-</script>

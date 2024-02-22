@@ -20,7 +20,7 @@ RSpec.describe 'Dashboards', type: :request do
     it 'When a user role is learner or instructor it can not access this route' do
       user.update(role: 'instructor')
       get dashboard_add_user_path
-      expect(flash[:notice]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
   describe 'POST /dashboard/add_user' do
@@ -41,7 +41,7 @@ RSpec.describe 'Dashboards', type: :request do
     end
     it 'When a request is created with valid params for adding a user it return a flash message' do
       post dashboard_add_user_path, params: { user: valid_user }
-      expect(flash[:notice]).to eq('Added a user successfully')
+      expect(flash[:notice]).to eq(I18n.t('controller.dashboards.create_user.success_notice'))
     end
     it 'When a request is created with invalid params for adding a user it render the new_user page' do
       post dashboard_add_user_path, params: { user: invalid_user }
@@ -51,18 +51,18 @@ RSpec.describe 'Dashboards', type: :request do
   describe 'POST /dashboard/change_status/:id' do
     it 'When created a valid request as a admin' do
       get "/dashboard/change_status/#{user.id}"
-      expect(response).to redirect_to dashboard_show_user_path
-      expect(flash[:notice]).to eq('Status successfully updated.')
+      expect(response).to have_http_status(302)
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
     it 'When created a invalid request as a admin' do
       get "/dashboard/change_status/#{123123}"
-      expect(response).to redirect_to dashboard_show_user_path
-      expect(flash[:notice]).to eq('Please try again')
+      expect(response).to have_http_status(302)
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.invalid_params'))
     end
     it 'When created a valid request as a learner or instructor' do
       user.update(role: 'instructor')
       get "/dashboard/change_status/#{user.id}"
-      expect(flash[:notice]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
   describe "GET /dashboard/show_user" do
@@ -93,7 +93,7 @@ RSpec.describe 'Dashboards', type: :request do
     it 'When created a valid request as a learner or instructor' do
       user.update(role: 'learner')
       delete "/dashboard/delete_user/#{active_user.id}"
-      expect(flash[:notice]).to eq('You are not authorized to perform this action.')
+      expect(flash[:alert]).to eq(I18n.t('errors.messages.authorized_alert'))
     end
   end
 

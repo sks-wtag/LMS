@@ -46,6 +46,7 @@ group :development, :test do
   gem 'phony_rails'
   gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 6.1.0'
+  gem 'rspec-support', '~> 3.13'
   gem 'rubocop', '~> 1.59', require: false
 end
 group :development do
@@ -63,3 +64,6 @@ group :test do
 end
 gem "pundit", "~> 2.3"
 gem 'pundit-matchers'
+gem 'rack-attack'
+gem 'sidekiq'
+gem 'sidekiq-scheduler'

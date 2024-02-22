@@ -1,0 +1,25 @@
+<div class="modal" id="myModal<%=user.id %>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title"><%= I18n.t('views.inner_text.enrollments.enroll_here') %></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: "/dashboard/enroll_course/#{course.id}", method: 'post') do |form| %>
+          <div>
+            <label for="completion_time" ><%= I18n.t('activerecord.attributes.completion_time') %></label><br>
+            <%= form.datetime_local_field :completion_time %>
+          </div>
+          <%= form.hidden_field :user_id, value: user.id %>
+          <div class="row mt-3">
+             <div class="col-4">
+               <%= form.submit I18n.t('views.button.enroll'), class: "btn btn-sm btn-info"%>
+             </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,8 +6,12 @@
   <div class="alert alert-danger">
     <%= flash[:alert] %>
   </div>
+<% elsif flash[:error] %>
+  <div class="alert alert-warning">
+    <%= flash[:error] %>
+  </div>
 <% elsif flash[:message] %>
-  <div class="alert alert-danger">
+  <div class="alert alert-info">
     <%= flash[:message] %>
   </div>
 <% end %>

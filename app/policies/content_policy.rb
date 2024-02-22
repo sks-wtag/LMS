@@ -1,4 +1,7 @@
 class ContentPolicy < ApplicationPolicy
+  def destroy_content?
+    user.admin? || (Enrollment.find_by(user_id: user.id, course_id: record.lesson.course.id, enrollment_type: 'instructor').present?)
+  end
   class Scope
     def initialize(user, scope)
       @user = user

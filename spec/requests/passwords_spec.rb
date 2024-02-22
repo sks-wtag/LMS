@@ -27,7 +27,7 @@ RSpec.describe 'Passwords', type: :request do
     end
     it 'when get a valid email then a user get notice' do
       post passwords_path, params: { user: { email: user.email } }
-      expect(flash[:notice]).to eq('Reset instruction is sent to user emails')
+      expect(flash[:notice]).to eq(I18n.t('controller.passwords.create.reset_notice'))
     end
     it 'when get a valid email but unconfirmed then have status' do
       post passwords_path, params: { user: { email: user.email } }
@@ -36,11 +36,11 @@ RSpec.describe 'Passwords', type: :request do
     it 'when get a valid email but unconfirmed return alert' do
       allow_any_instance_of(User).to receive(:confirmed?).and_return(false)
       post passwords_path, params: { user: { email: user.email } }
-      expect(flash[:notice]).to eq('Please confirm email first.')
+      expect(flash[:notice]).to eq(I18n.t('controller.passwords.create.email_confirmation_notice'))
     end
     it 'when get a invalid email' do
       post passwords_path, params: { user: { email: 'random@gmail.com' } }
-      expect(flash[:notice]).to eq("Invalid Email or Password!")
+      expect(flash[:notice]).to eq(I18n.t('errors.messages.invalid_credentials'))
     end
   end
   describe 'GET /passwords/password_reset_token' do
@@ -59,7 +59,7 @@ RSpec.describe 'Passwords', type: :request do
       allow_any_instance_of(User).to receive(:unconfirmed?).and_return(true)
       password_reset_token = user.generate_password_reset_token
       get "/passwords/#{password_reset_token}/edit"
-      expect(flash[:notice]).to eq('You must have confirm email before sign in')
+      expect(flash[:notice]).to eq(I18n.t('controller.passwords.create.email_confirmation_notice'))
     end
     it 'when it requested with invalid token it redirect to new password path' do
       get '/passwords/fasfdasdasdasdfaseasdfasdfas/edit'
@@ -67,17 +67,18 @@ RSpec.describe 'Passwords', type: :request do
     end
     it 'when it requested with invalid token return an alert' do
       get '/passwords/fasfdasdasdasdfaseasdfasdfas/edit'
-      expect(flash[:notice]).to eq('Invalid or expired token')
+      expect(flash[:notice]).to eq(I18n.t('errors.messages.invalid_token'))
     end
   end
 
   describe 'POST /passwords/password_reset_token' do
+
     it 'when it requested with valid password_reset_token' do
       password_reset_token = user.generate_password_reset_token
       put "/passwords/#{password_reset_token}",
            params: { user: { password: user.password, password_confirmation: user.password_confirmation } }
-      expect(response).to redirect_to(login_path)
-      expect(flash[:notice]).to eq('Sign in')
+      expect(response).to have_http_status(422)
+      expect(flash[:alert]).to eq(I18n.t('controller.users.change_password.change_password_notice'))
     end
     it 'when it requested with valid password_reset_token but user is unconfirmed' do
       allow_any_instance_of(User).to receive(:unconfirmed?).and_return(true)
@@ -85,7 +86,7 @@ RSpec.describe 'Passwords', type: :request do
       put "/passwords/#{password_reset_token}",
           params: { user: { password: user.password, password_confirmation: user.password_confirmation } }
       expect(response).to redirect_to(new_confirmation_path)
-      expect(flash[:notice]).to eq('You must have confirm email before login')
+      expect(flash[:notice]).to eq(I18n.t('controller.passwords.create.email_confirmation_notice'))
     end
     it 'when it requested with invalid password_reset_token' do
       put "/passwords/sdfasdfasdasdasd",

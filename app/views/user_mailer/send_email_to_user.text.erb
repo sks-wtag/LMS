@@ -1,8 +1,7 @@
-
 Dear <%= @user.name %>
-Your LMS account has been created with temporary password. After getting email please reset your password using this temporary password
-
-Password: <%= @password %>
-
-Login url:
-<%= link_to "Click here to confirm your email.", edit_confirmation_url(@confirmation_token) %>
+<p><%= I18n.t('user_mailer.email_send_message') %></p>
+<br>
+<p><b>Temp password: </b> <%= @password %> </p>
+<br>
+<h5><%= I18n.t('user_mailer.confirmation_inner_text') %>: </h5>
+<%= link_to I18n.t('views.button.mailer.confirm_email'), edit_confirmation_url(@confirmation_token) %>

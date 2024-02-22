@@ -1,14 +1,18 @@
 class LessonPolicy < ApplicationPolicy
   def create_lesson?
-    user.admin? || (user.instructor? && record.courses.where(id: user.id).present?)
+    (user.enrollments.where(course_id: record.course_id, enrollment_type: 'instructor').present?)
   end
 
   def destroy_lesson?
-    edit_lesson?
+    edit_lesson? || user.admin?
   end
 
   def edit_lesson?
-    user.admin? || (user.instructor? && user.courses.where(id: record.course_id).present?)
+    (user.enrollments.where(course_id: record.course_id, enrollment_type: 'instructor').present?)
+  end
+
+  def complete_lesson?
+    !(edit_lesson? || user.admin?)
   end
 
   class Scope

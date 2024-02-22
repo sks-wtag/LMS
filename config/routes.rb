@@ -32,14 +32,20 @@ Rails.application.routes.draw do
   delete 'dashboard/delete_lesson/:lesson_id', to: 'lessons#destroy_lesson'
   get 'dashboard/edit_lesson/:lesson_id', to: 'lessons#edit_lesson'
   patch 'dashboard/edit_lesson/:lesson_id', to: 'lessons#save_lesson'
-  #all of content related rotutes
+  #all of content related routes
   post 'dashboard/save_content/:lesson_id', to: 'contents#create_content'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  delete 'dashboard/delete_content/:content_id', to: 'contents#destroy_content'
+  #all of enrollment related routes
+  get 'dashboard/enroll_course/:course_id', to: 'enrollments#index'
+  post 'dashboard/enroll_course/:course_id', to: 'enrollments#enroll'
+  post 'dashboard/assign_to_all/:course_id', to: 'enrollments#assign_all_user'
+  delete 'dashboard/unassign_to_all/:course_id', to: 'enrollments#unassign_all_user'
+  delete 'dashboard/dis_enroll_course/:course_id', to: 'enrollments#dis_enroll'
+  post 'dashboard/complete_lesson/:lesson_id', to: 'enrollments#complete_lesson'
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
   get 'up' => 'rails/health#show', as: :rails_health_check
   resources :confirmations, only: %i[create edit new], param: :confirmation_token
   resources :passwords, only: %i[create edit new update], param: :password_reset_token
-  # Defines the root path route ("/")
-  # root "posts#index"
+  match "*path", to: "application#not_found", via: :all, constraints: ->(req) { !req.path.start_with?('/rails/active_storage') }
 end

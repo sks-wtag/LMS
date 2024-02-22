@@ -4,44 +4,58 @@ class LessonsController < ApplicationController
 
   def create_lesson
     @course = Course.find_by(id: params[:course_id])
-    authorize @course, policy_class: LessonPolicy
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @course.present?
+
     @lesson = @course.lessons.build(lesson_params)
+    authorize @lesson, policy_class: LessonPolicy
     if @lesson.save
-      flash[:notice] = 'A new lesson is added'
+      flash[:notice] = I18n.t('controller.lessons.create_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{@course.id}"
     else
-      flash[:notice] = "Please try again!"
+      if @lesson.errors.any?
+        flash[:error] = @lesson.errors.full_messages.join(", ")
+      else
+        flash[:alert] = I18n.t('errors.messages.try_again')
+      end
       redirect_to "/dashboard/show_a_course/#{@course.id}"
     end
   end
 
   def destroy_lesson
     @lesson = Lesson.find_by(id: params[:lesson_id])
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @lesson.present?
+
     authorize @lesson
     course_id = @lesson.course_id
     if @lesson.present? && @lesson.destroy
-      flash[:notice] = "This lesson is deleted"
+      flash[:notice] = I18n.t('controller.lessons.destroy_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{course_id}"
     else
-      flash[:notice] = "Please try again"
+      flash[:alert] = I18n.t('errors.messages.try_again')
       redirect_to "/dashboard/show_a_course/#{course_id}"
     end
   end
 
   def edit_lesson
-    @page_title = 'Dashboard -> Edit a lesson'
+    @page_title = I18n.t('controller.lessons.edit_lesson.title')
     @lesson = Lesson.find_by(id: params[:lesson_id])
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @lesson.present?
+
     authorize @lesson
   end
 
   def save_lesson
     @lesson = Lesson.find_by(id: params[:lesson_id])
+    return invalid_params(redirect_path: dashboard_show_course_path) unless @lesson.present?
+
     authorize @lesson, :edit_lesson?
     if @lesson.update(lesson_params)
-      flash[:notice] = "This lesson is updated"
+      flash[:notice] = I18n.t('controller.lessons.save_lesson.success_notice')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
+    elsif  @lesson.errors.any?
+      render 'edit_lesson', status: :unprocessable_entity
     else
-      flash[:notice] = "Please try again"
+      flash[:notice] = I18n.t('errors.messages.try_again')
       redirect_to "/dashboard/show_a_course/#{@lesson.course_id}"
     end
   end
@@ -54,6 +68,6 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    params.require(:lesson).permit(:title, :description)
+    params.require(:lesson).permit(:title, :description, :score)
   end
 end
